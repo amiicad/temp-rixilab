@@ -18,7 +18,7 @@
     .sidebar a:hover { background: #495057; }
     .sidebar i { margin-right: 10px; }
     .main-content { margin-left: 250px; padding: 30px; }
-    .card:hover { transform: scale(1.03); transition: 0.3s; }
+    /* .card:hover { transform: scale(1.03); transition: 0.3s; } */
     .badge-pending { background-color: #ffc107; color: black; }
     .badge-approved { background-color: #28a745; }
     .badge-rejected { background-color: #dc3545; }
@@ -31,57 +31,99 @@
 <div class="d-flex">
 
   <!-- Sidebar -->
-  <div class="sidebar position-fixed w-25">
-    <h4 class="text-center mb-4">Admin Panel</h4>
-    <p><%= admin.name %></p>
+  <div class="sidebar position-fixed w-20">
+    <h2 class="text-center"><img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab</h2>
+    <h4 class="text-center">Admin Panel</h4>
+    <br/>
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
-    <a href="#createUser"><i class="bi bi-person-plus"></i> Create User</a>
+    <a href="#createUser"><i class="bi bi-person-plus"></i> Create Intern</a>
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
+    <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
     <a href="#confirmationMail"><i class="bi bi-envelope-check"></i> Send Confirmation Mail</a>
     <a href="#congratsMail"><i class="bi bi-gift"></i> Send Congratulations Mail</a>
-    <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Project Submissions</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
   <!-- Main Content -->
   <div class="main-content flex-grow-1">
+      <h4 class="section-title mb-4">Welcome to Rixi Lab, <%= admin.name %></h4>
+    <!-- Create Intern -->
+<section id="createUser" style="display:none;">
+  <h4 class="section-title">Create User</h4>
+  <div class="card p-4 shadow-sm mb-4">
+    <form action="/create-user" method="POST" class="row g-3">
+      <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
+      <div class="col-md-6"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
 
-    <!-- Create User -->
-    <section id="createUser" style="display:none;">
-      <h4 class="section-title">Create User</h4>
-      <div class="card p-4 shadow-sm mb-4">
-        <form action="/create-user" method="POST" class="row g-3">
-          <div class="col-md-2"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
-          <div class="col-md-2"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
-          <div class="col-md-2"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
-          <div class="col-md-2"><input type="text" name="domain" class="form-control" placeholder="<%= admin.domain %>" value="<%= admin.domain %>"  readonly></div>
-          <div class="col-md-2"><input type="text" name="college" class="form-control" placeholder="College"></div>
-          <div class="col-md-2"><input type="text" name="university" class="form-control" placeholder="University"></div>
-          <div class="col-md-2"><input type="text" name="phone" class="form-control" placeholder="Phone"></div>
-          <div class="col-md-2"><input type="text" name="branch" class="form-control" placeholder="Branch"></div>
-          <div class="col-md-2"><input type="text" name="course" class="form-control" placeholder="Course"></div>
-          <div class="col-md-2"><input type="text" name="year_sem" class="form-control" placeholder="Year/Sem"></div>
-          <div class="col-md-2"><input type="text" name="intern_id" class="form-control" placeholder="Intern ID"></div>
-          <div class="col-md-2"><input type="text" name="duration"  class="form-control" placeholder="Duration"></div>
-          <div class="col-md-2"><input type="text" name="batch_no" class="form-control" placeholder="Batch" ></div>
-          <div class="col-md-2"><button class="btn btn-primary w-100">Create</button></div>
-        </form>
-      </div>
-    </section>
+      <div class="col-md-6"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
+      <div class="col-md-6"><input type="text" name="domain" class="form-control" placeholder="<%= admin.domain %>" value="<%= admin.domain %>" readonly></div>
+
+      <div class="col-md-6"><input type="text" name="college" class="form-control" placeholder="College"></div>
+      <div class="col-md-6"><input type="text" name="university" class="form-control" placeholder="University"></div>
+
+      <div class="col-md-6"><input type="text" name="phone" class="form-control" placeholder="Phone"></div>
+      <div class="col-md-6"><input type="text" name="branch" class="form-control" placeholder="Branch"></div>
+
+      <div class="col-md-6"><input type="text" name="course" class="form-control" placeholder="Course"></div>
+      <div class="col-md-6"><input type="text" name="year_sem" class="form-control" placeholder="Year/Sem"></div>
+
+      <div class="col-md-6"><input type="text" name="intern_id" class="form-control" placeholder="Intern ID"></div>
+      <div class="col-md-6"><input type="text" name="duration" class="form-control" placeholder="Duration"></div>
+
+      <div class="col-md-6"><input type="text" name="batch_no" class="form-control" placeholder="Batch"></div>
+      <div class="col-md-6"><button class="btn btn-primary w-100">Create</button></div>
+    </form>
+  </div>
+</section>
+
 
     <!-- Upload Project -->
-    <section id="uploadProject" style="display:none;">
-      <h4 class="section-title">Upload Project</h4>
-      <div class="card p-4 shadow-sm mb-4">
-        <form action="/upload-project" method="POST" enctype="multipart/form-data" class="row g-3">
-          <div class="col-md-3"><input type="text" name="title" class="form-control" placeholder="Title" required></div>
-          <div class="col-md-3"><input type="text" name="description" class="form-control" placeholder="Description"></div>
-          <div class="col-md-2"><input type="text" name="domain" class="form-control" placeholder="Domain" required></div>
-          <div class="col-md-3"><input type="file" name="projectFile" class="form-control"></div>
-          <div class="col-md-1"><button class="btn btn-success w-100">Upload</button></div>
-        </form>
+   <section id="uploadProject" style="display:none;">
+  <h4 class="section-title">Upload Project</h4>
+  <div class="card p-4 shadow-sm mb-4">
+    <form method="POST" action="/admin/projects" class="row g-3">
+      
+      <div class="col-md-3">
+        <input type="text" name="title" class="form-control" placeholder="Project Title" required>
       </div>
-    </section>
+
+      <div class="col-md-3">
+        <input type="text" name="description" class="form-control" placeholder="Description">
+      </div>
+
+      <div class="col-md-3">
+        <input type="url" name="downloadLink" class="form-control" placeholder="Download Link">
+      </div>
+
+      <div class="col-md-3">
+        <input type="url" name="uploadLink" class="form-control" placeholder="Upload Link">
+      </div>
+
+      <div class="col-md-3">
+        <select name="batch_no" class="form-select" required>
+          <option value="" disabled selected>Select Batch</option>
+          <% batches.forEach(b => { %>
+            <option value="<%= b %>"><%= b %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <select name="week" class="form-select" required>
+          <option value="" disabled selected>Select Week</option>
+          <% for (let i = 1; i <= 8; i++) { %>
+            <option value="<%= i %>">Week <%= i %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <button class="btn btn-primary w-100">Create</button>
+      </div>
+    </form>
+  </div>
+</section>
+
 
     <!-- Confirmation Mail -->
     <section id="confirmationMail" style="display:none;">
@@ -122,57 +164,74 @@
     </section>
 
     <!-- View Interns (Default) -->
-    <section id="viewInterns">
+    <section id="viewInterns" style="display:none;">
       <h4 class="section-title">Interns</h4>
        <!-- Batch Dropdown -->
       <div class="mb-3">
         <label for="batchFilter" class="form-label">Select Batch</label>
         <select id="batchFilter" class="form-select" onchange="filterByBatch()">
-          <option value="all">All Batches</option>
+          <option value="all" selected>All Batches</option>
           <% batches.forEach(batch => { %>
             <option value="<%= batch %>">Batch <%= batch %></option>
           <% }) %>
         </select>
       </div>
 
-      <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="row row-cols-1 row-cols-md-1 g-8">
         <% interns.forEach(i => { %>
           <div class="col intern-card" data-batch="<%= i.batch_no %>">
-            <div class="card h-100 shadow-sm border-primary">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title"><%= i.name %></h5>
-                <p class="card-text">
-                  <strong>Email:</strong> <%= i.email %><br>
-                  <strong>Domain:</strong> <%= i.domain %><br>
-                  <strong>Batch:</strong> <%= i.batch_no %>
-                </p>
-                <div class="mt-auto d-flex gap-2">
-                  <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm flex-grow-1">View</a>
-                  <button class="btn btn-warning btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button>
-                </div>
-              </div>
-            </div>
+            <div class="card shadow-sm border-primary mb-3">
+  <div class="card-body d-flex justify-content-between align-items-center">
 
-            <!-- Update Modal -->
+    <!-- Left side: all details in one line -->
+    <div class="d-flex gap-4 align-items-center">
+      <span><strong>Name:</strong> <%= i.name %></span>
+      <span><strong>Email:</strong> <%= i.email %></span>
+      <span><strong>Domain:</strong> <%= i.domain %></span>
+      <span><strong>Batch:</strong> <%= i.batch_no %></span>
+    </div>
+
+    <!-- Right side: buttons -->
+    <div class="d-flex gap-2">
+      <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm">View</a>
+      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">
+        Update
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+            <!-- Update Intern -->
             <div class="modal fade" id="updateModal<%= i._id %>" tabindex="-1" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header"><h5 class="modal-title">Update <%= i.name %></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                   <form action="/update-user/<%= i._id %>" method="POST">
                     <div class="modal-body">
+                      <label class="form-label">Name : </label>
                       <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
+                      <label class="form-label">Email : </label>
                       <input type="email" name="email" class="form-control mb-2" value="<%= i.email %>" required>
+                      <label class="form-label">Phone : </label>
                       <input type="text" name="phone" class="form-control" value="<%= i.phone %>">
+                      <label class="form-label">College : </label>
                       <input type="text" name="college" class="form-control" value="<%= i.college %>">
+                      <label class="form-label">University : </label>
                       <input type="text" name="university" class="form-control" value="<%= i.university %>">
+                      <label class="form-label">Course : </label>
                       <input type="text" name="course" class="form-control" value="<%= i.course %>">
+                      <label class="form-label">Branch : </label>
                       <input type="text" name="branch" class="form-control" value="<%= i.branch %>">
+                      <label class="form-label">Y/S : </label>
                       <input type="text" name="year_sem" class="form-control" value="<%= i.year_sem %>">
+                      <label class="form-label">Batch No : </label>
                       <input type="text" name="batch_no" class="form-control" value="<%= i.batch_no %>" readonly>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-primary">Update</button>
+                      <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> -->
+                      <button class="btn btn-warning btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button>
                     </div>
                   </form>
                 </div>
@@ -185,62 +244,79 @@
     </section>
 
     <!-- Project Submissions -->
-    <section id="viewProjects" style="display:none;">
-      <h4 class="section-title">Project Submissions</h4>
-      <% projects.forEach(p => { %>
-        <div class="card mb-3 shadow-sm border-success">
-          <div class="card-header bg-success text-white">
-            <h6><%= p.title %> (<%= p.domain %>)</h6>
-          </div>
-          <div class="card-body">
-            <p><%= p.description %></p>
-            <% if(p.file){ %>
-              <a href="/download/<%= p.file %>" class="btn btn-light btn-sm mb-2">Download Project File</a>
-            <% } %>
-            <h6 class="mt-3">Submissions</h6>
-            <div class="table-responsive">
-              <table class="table table-sm table-bordered table-hover">
-                <thead class="table-dark">
-                  <tr>
-                    <th>Intern ID</th>
-                    <th>Name</th>
-                    <th>File</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% p.submissions.forEach(s => { %>
-                    <tr>
-                      <td><%= s.internId._id %></td>
-                      <td><%= s.internId.name %></td>
-                      <td><%= s.file %></td>
-                      <td>
-                        <span class="badge <%= s.status==='pending'?'badge-pending':s.status==='approved'?'badge-approved':'badge-rejected' %>">
-                          <%= s.status.charAt(0).toUpperCase() + s.status.slice(1) %>
-                        </span>
-                      </td>
-                      <td class="d-flex gap-1">
-                        <% if(s.status==='pending'){ %>
-                          <form action="/submission/<%= p._id %>/<%= s.internId._id %>" method="POST" class="d-inline">
-                            <input type="hidden" name="action" value="approved">
-                            <button class="btn btn-success btn-sm">Approve</button>
-                          </form>
-                          <form action="/submission/<%= p._id %>/<%= s.internId._id %>" method="POST" class="d-inline">
-                            <input type="hidden" name="action" value="rejected">
-                            <button class="btn btn-danger btn-sm">Reject</button>
-                          </form>
-                        <% } %>
-                      </td>
-                    </tr>
-                  <% }) %>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+<section id="viewProjects" style="display:none;">
+  <h4 class="section-title">Projects</h4>
+
+  <!-- Batch Dropdown -->
+  <div class="mb-3">
+    <label for="projectBatchFilter" class="form-label">Select Batch</label>
+    <select id="projectBatchFilter" class="form-select" onchange="filterProjectsByBatch()">
+      <option value="all" selected>All Batches</option  >
+      <% batches.forEach(batch => { %>
+        <option value="<%= batch %>">Batch <%= batch %></option>
       <% }) %>
-    </section>
+    </select>
+  </div>
+
+  <!-- Project Cards -->
+  <div class="row row-cols-1 row-cols-md-1 g-8">
+    <% projects.forEach(p => { %>
+      <div class="col project-card" data-batch="<%= p.batch_no %>">
+       <div class="card shadow-sm border-primary mb-3">
+  <div class="card-body d-flex justify-content-between align-items-center">
+
+    <!-- Left side: all details in one line -->
+    <div class="d-flex gap-4 align-items-center">
+      <span><strong>Title:</strong> <%= p.title %></span>
+      <span><strong>Week:</strong> <%= p.week %></span>
+      <span><strong>Batch:</strong> <%= p.batch_no %></span>
+      <span><strong>Description:</strong> <%= p.domain %></span>
+    </div>
+
+    <!-- Right side: buttons -->
+    <div class="d-flex gap-2">
+      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
+        Update
+      </button>
+    </div>
+
+  </div>
+</div>
+
+              <div class="modal fade" id="updateModal<%= p._id %>" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header"><h5 class="modal-title">Update <%= p.name %></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                  <form action="/admin/project/update/<%= p._id %>" method="POST">
+                    <div class="modal-body">
+                      <label class="form-label">Title : </label>
+                      <input type="text" name="title" class="form-control mb-2" value="<%= p.title %>" required>
+                      <label class="form-label">Description : </label>
+                      <textarea name="description" class="form-control mb-2"><%= p.description %></textarea>
+                      <label class="form-label">Domain</label>
+                      <input type="text" name="domain" class="form-control" value="<%= p.domain %>">
+                      <label class="form-label">Week : </label>
+                      <input type="number" name="week" class="form-control" value="<%= p.week %>" min="1" max="8" required>
+                      <label class="form-label">Batch : </label>
+                      <input type="number" name="batch_no" class="form-control" value="<%= p.batch_no %>">
+                      <label class="form-label">Upload Link : </label>
+                      <input type="text" name="uploadLink" class="form-control" value="<%= p.uploadLink %>">
+                      <label class="form-label">Download Link : </label>
+                      <input type="text" name="downloadLink" class="form-control" value="<%= p.downloadLink %>">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
 
   </div>
 </div>
@@ -286,12 +362,23 @@ function filterByBatch() {
       }
     });
   }
+  function filterProjectsByBatch() {
+    const selectedBatch = document.getElementById("projectBatchFilter").value;
+    const cards = document.querySelectorAll(".project-card");
+
+    cards.forEach(card => {
+      if (selectedBatch === "all" || card.dataset.batch === selectedBatch) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
 
   // Run once on page load to hide all
-  window.onload = function () {
-    document.getElementById("batchFilter").value = ""; // force "no batch selected"
+  window.addEventListener('DOMContentLoaded', (event) => {
     filterByBatch();
-  };
+  });
 </script>
 </body>
 </html>

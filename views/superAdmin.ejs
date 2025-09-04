@@ -131,11 +131,16 @@
                   </div>
                   <form action="/update-user/<%= admin._id %>" method="POST">
                     <div class="modal-body">
+                      <label class="form-label">Name : </label>
                       <input type="text" name="name" class="form-control mb-2" value="<%= admin.name %>" required>
+                      <label class="form-label">Email : </label>
                       <input type="email" name="email" class="form-control mb-2" value="<%= admin.email %>" required>
-                      <input type="text" name="emp_id" class="form-control mb-2" value="<%= admin.emp_id %>">
-                      <input type="text" name="domain" class="form-control mb-2" value="<%= admin.domain %>">
-                      <input type="text" name="phone" class="form-control mb-2" value="<%= admin.phone %>">
+                      <label class="form-label">Emp Id : </label>
+                      <input type="text" name="emp_id" class="form-control mb-2" value="<%= admin.emp_id %>" required>
+                      <label class="form-label">Domain</label>
+                      <input type="text" name="domain" class="form-control mb-2" value="<%= admin.domain %>" required>
+                      <label class="form-label">Phone</label>
+                      <input type="text" name="phone" class="form-control mb-2" value="<%= admin.phone %>" required>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

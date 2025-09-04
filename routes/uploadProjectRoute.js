@@ -1,27 +1,45 @@
 const express = require('express');
 const router = express.Router();
-const path = require("path");
 const Project = require("../models/Project");
 const authRole = require('../middleware/authRole');
-const multer = require("multer");
-const upload = multer({ storage: multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
-  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
-}) });
-const app = express();
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const User = require("../models/User");
 
-router.post("/upload-project", authRole("admin"), upload.single("projectFile"), async (req, res) => {
-  const { title, description, domain } = req.body;
-  const project = new Project({
-    title,
-    description,
-    domain,
-    file: req.file ? req.file.filename : null
-  });
-  await project.save();
-  res.redirect("/admin");
+router.post("/admin/projects", authRole("admin"), async (req, res) => {
+  try {
+    console.log("📌 Incoming Project Data:", req.body);
+
+    const adminId = req.session.user;
+    const admin = await User.findById(adminId);
+
+    if (!admin) {
+      console.log("❌ Admin not found");
+      return res.status(404).send("Admin not found");
+    }
+
+    const { title, description, downloadLink, uploadLink, week, batch_no } = req.body;
+
+    // ✅ Build new project according to schema
+    const newProject = new Project({
+      title,
+      description,
+      domain: admin.domain, // lock to admin's domain
+      downloadLink,
+      uploadLink,
+      week,
+      batch_no,
+      createdBy: admin._id
+    });
+
+    console.log("📌 New Project Before Save:", newProject);
+
+    await newProject.save();
+
+    console.log("✅ Project Created Successfully!");
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("🔥 Error in /admin/projects:", err);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;

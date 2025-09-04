@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   domain: { type: String },
   college: { type: String },
-  duration: { type: String },
+  duration: { type: Number },
   branch: { type: String },
   course : { type: String },
   university: { type: String },

@@ -136,7 +136,7 @@
             <!--------------------------------------------------------------------------------------- Project 1  -->
 
 
-            <div class="contact-info-grid">
+            <!-- <div class="contact-info-grid">
               <div class="info-item" data-aos="zoom-in" data-aos-delay="250">
                 <a href="#" download="">
                   <div class="info-icon">
@@ -155,7 +155,40 @@
               </div>
 
 
-            </div>
+            </div> -->
+            <div class="contact-info-grid">
+  <% if (projects.length > 0) { %>
+    <% projects.forEach(p => { %>
+      <div class="info-item" data-aos="zoom-in" data-aos-delay="250">
+
+        <!-- Download Icon -->
+        <a href="<%= p.downloadLink %>" download target="_blank">
+          <div class="info-icon">
+            <i class="bi bi-download"></i>
+          </div>
+        </a>
+
+        <!-- Project Info -->
+        <div class="info-content">
+          <h5><%= p.title %></h5>
+          <small><%= p.description %></small>
+        </div>
+
+        <!-- Upload Icon -->
+        <a href="<%= p.uploadLink %>" target="_blank">
+          <div class="info-icon">
+            <i class="bi bi-upload"></i>
+          </div>
+        </a>
+
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p>No projects assigned yet.</p>
+  <% } %>
+</div>
+
+
           </div>
         </div>
       </div>

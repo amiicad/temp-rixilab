@@ -102,7 +102,11 @@ app.post('/create-admin', createAdminRouter);
 
 // Upload Project
 const uploadProjectRouter = require('./routes/uploadProjectRoute');
-app.post('/upload-project', uploadProjectRouter); 
+app.post('/admin/projects', uploadProjectRouter); 
+
+// Update Project
+const updateProjectRouter = require('./routes/updateProjectRoute');
+app.post('/admin/project/update/:id', updateProjectRouter);
 
 // View specific intern (admin only)
 const viewInternRouter = require('./routes/viewInternRoute');
@@ -135,68 +139,11 @@ app.post("/delete-user/:id", authRole("superAdmin"), async (req, res) => {
   }
 });
 
-// Update user (get form)
-// app.get("/update-user/:id", authRole(['admin', 'superAdmin']), async (req, res) => {
-//   const user = await User.findById(req.params.id);
-//   if (!user) return res.redirect("/admin");
-//   res.render("update-user", { user });
-// });
-
 // Update user (post form)
 const updateUserRouter = require('./routes/updateUserRoute');
 app.post('/update-user/:id', updateUserRouter);
 
 
-// app.post("/update-user/:id", authRole(['admin', 'superadmin']), async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
-//     const sessionRole = req.session.role ? req.session.role.toLowerCase() : null;
-
-//     if (!user) {
-//       return res.status(404).send("User not found");
-//     }
-
-//     let updateData = {};
-
-//     // --- SuperAdmin updating Admin or Intern ---
-//     if (sessionRole === "superadmin") {
-//       if (user.role === "admin") {
-//         // Only admin fields
-//         const { name, email, domain, emp_id } = req.body;
-//         updateData = { name, email, domain, emp_id };
-//       } else if (user.role === "intern") {
-//         // Intern fields
-//         const { name, email, domain, college, duration, branch, course, university, year_sem, intern_id, phone } = req.body;
-//         updateData = { name, email, domain, college, duration, branch, course, university, year_sem, intern_id, phone };
-//       } else {
-//         return res.status(403).send("Access Denied");
-//       }
-//       await User.findByIdAndUpdate(req.params.id, updateData);
-//       return res.redirect('/superAdmin');
-//     }
-
-//     // --- Admin updating Intern only ---
-//     if (sessionRole === "admin") {
-//       if (user.role === "intern") {
-//         const { name, email, domain, college, university, year_sem, phone, branch } = req.body;
-//         updateData = { name, email, domain, college, university, year_sem, phone, branch };
-//         await User.findByIdAndUpdate(req.params.id, updateData);
-//         return res.redirect('/admin');
-//       } else {
-//         return res.status(403).send("Access Denied");
-//       }
-//     }
-
-//     // Anything else is forbidden
-//     return res.status(403).send("Access Denied");
-
-//   } catch (err) {
-//     console.error("Update Error:", err);
-//     res.status(500).send("Failed to update user");
-//   }
-// });
-
-  
 
 // --- Intern Routes ---
 

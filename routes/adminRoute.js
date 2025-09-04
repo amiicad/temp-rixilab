@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Project = require("../models/Project");
 const authRole = require('../middleware/authRole');
 
+
 // Admin Dashboard
 router.get("/admin", authRole("admin"), async (req, res) => {
   try {
@@ -16,19 +17,22 @@ router.get("/admin", authRole("admin"), async (req, res) => {
 
     // Fetch interns only in the admin's domain
     const interns = await User.find({ role: "intern", domain: admin.domain });
-    
+
+    // Extract unique batches from interns
     const batches = [...new Set(interns.map(i => i.batch_no))];
 
-    // Fetch projects assigned for this domain
-    const projects = await Project.find({ domain: admin.domain }).populate("submissions.internId");
+    // Fetch only projects from this admin's domain
+    const projects = await Project.find({ domain: admin.domain })
+      .populate("submissions.internId");
 
     // Render admin page
-    res.render("admin", { admin, interns, projects,batches });
+    res.render("admin", { admin, interns, projects, batches });
 
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
+
 
 module.exports = router;
