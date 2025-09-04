@@ -28,7 +28,7 @@ router.get("/intern", authRole("intern"), async (req, res) => {
       }
       return false;
     });
-
+    req.flash('success_msg', 'Welcome to Intern Dashboard');
     res.render("intern", { intern, projects });
   } catch (err) {
     console.error("Error in /intern:", err);

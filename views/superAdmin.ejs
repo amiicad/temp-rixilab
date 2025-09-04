@@ -11,70 +11,38 @@
   <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
 
   <style>
-    body { 
-      overflow-x: hidden; 
-      background-color: #f8f9fa; 
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .sidebar { 
-      min-height: 100vh; 
-      background: #212529; 
-      color: white; 
-      padding-top: 20px; 
-    }
-    .sidebar h4, .sidebar h5 {
-      font-weight: 600;
-    }
-    .sidebar a { 
-      color: white; 
-      text-decoration: none; 
-      display: flex; 
-      align-items: center; 
-      padding: 12px 20px; 
-      border-radius: 6px; 
-      margin-bottom: 8px; 
-      transition: background 0.2s ease;
-    }
-    .sidebar a:hover { background: #343a40; }
+     body { overflow-x: hidden; background-color: #f0f2f5; }
+     .sidebar { width: 250px; }
+    .sidebar { min-height: 100vh; background: #343a40; color: white; padding-top: 20px; }
+    .sidebar a { color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 20px; border-radius: 6px; margin-bottom: 5px; }
+    .sidebar a:hover { background: #495057; }
     .sidebar i { margin-right: 10px; }
     .main-content { margin-left: 250px; padding: 30px; }
-    .section-title { 
-      font-weight: 700; 
-      margin-bottom: 20px; 
-      color: #212529; 
-      border-left: 4px solid #0d6efd;
-      padding-left: 10px;
-    }
-    .card {
-      border-radius: 12px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover { 
-      transform: translateY(-4px); 
-      box-shadow: 0 6px 18px rgba(0,0,0,0.15); 
-    }
-    .card-body p {
-      margin-bottom: 6px;
-    }
-    .btn-sm { font-weight: 500; }
-    .modal-header { background-color: #0d6efd; color: white; }
-    .modal-content { border-radius: 10px; }
+    /* .card:hover { transform: scale(1.03); transition: 0.3s; } */
+    .badge-pending { background-color: #ffc107; color: black; }
+    .badge-approved { background-color: #28a745; }
+    .badge-rejected { background-color: #dc3545; }
+    .table td, .table th { vertical-align: middle; }
+    .section-title { font-weight: 600; margin-bottom: 15px; }
+    .modal-header { background-color: #343a40; color: white; }
   </style>
 </head>
 <body>
   <div class="d-flex">
     <!-- Sidebar -->
-    <div class="sidebar position-fixed w-25">
-      <h4 class="text-center mb-4">Super Admin Panel</h4>
-      <h5 class="text-center mb-4"><%=superAdmin.name %></h5>
-      <a href="#viewAdmin"><i class="bi bi-people"></i> View Admins</a>
-      <a href="#viewInterns"><i class="bi bi-person-workspace"></i> View Interns</a>
-      <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
-      <a class="btn btn-danger w-75 mx-auto mt-3" href="/logout">Logout</a>
-    </div>
+  <div class="sidebar position-fixed w-20">
+    <h2 class="text-center"><img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab</h2>
+    <h4 class="text-center">Super Admin Panel</h4>
+    <br/>
+    <a href="#viewAdmin"><i class="bi bi-people"></i> View Admins</a>
+    <a href="#viewInterns"><i class="bi bi-person-workspace"></i> View Interns</a>
+    <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
+    <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+  </div>
 
     <!-- Main Content -->
     <div class="main-content flex-grow-1">
+      <h4 class="section-title mb-4">Welcome to Rixi Lab, <%= superAdmin.name %></h4>
       <!-- Create Admin -->
       <section id="createAdmin" style="display:none;">
         <h4 class="section-title">Create Admin</h4>
@@ -102,24 +70,44 @@
       </section>
 
       <!-- View Admins -->
-      <section id="viewAdmin">
+      <section id="viewAdmin" style="display:none;">
         <h4 class="section-title">Admins</h4>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-1 g-4">
           <% admins.forEach(admin => { %>
           <div class="col">
-            <div class="card h-100 shadow-sm border-0">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title text-primary fw-bold"><%= admin.name %></h5>
-                <p><strong>Email:</strong> <%= admin.email %></p>
-                <p><strong>Domain:</strong> <%= admin.domain %></p>
-                <p><strong>Emp ID:</strong> <%= admin.emp_id %></p>
-                <div class="mt-auto d-flex gap-2">
-                  <a href="/superAdmin/admin/<%= admin._id %>" class="btn btn-info btn-sm flex-grow-1">View</a>
-                  <button class="btn btn-warning btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#updateAdminModal<%= admin._id %>">Update</button>
-                  <button class="btn btn-danger btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#deleteAdminModal<%= admin._id %>">Delete</button>
-                </div>
-              </div>
-            </div>
+<div class="card h-100 shadow-sm border-0">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <!-- Name -->
+      <div class="col-md-3 fw-bold text-primary">
+        <%= admin.name %>
+      </div>
+      
+      <!-- Email -->
+      <div class="col-md-3">
+        <strong>Email:</strong> <%= admin.email %>
+      </div>
+      
+      <!-- Domain -->
+      <div class="col-md-2">
+        <strong>Domain:</strong> <%= admin.domain %>
+      </div>
+      
+      <!-- Emp ID -->
+      <div class="col-md-2">
+        <strong>Emp ID:</strong> <%= admin.emp_id %>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="col-md-2 d-flex gap-1">
+        <a href="/superAdmin/admin/<%= admin._id %>" class="btn btn-info btn-sm flex-grow-1">View</a>
+        <button class="btn btn-warning btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#updateAdminModal<%= admin._id %>">Update</button>
+        <button class="btn btn-danger btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#deleteAdminModal<%= admin._id %>">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
             <!-- Update Admin Modal -->
             <div class="modal fade" id="updateAdminModal<%= admin._id %>" tabindex="-1" aria-hidden="true">
@@ -176,32 +164,52 @@
       </section>
 
       <!-- View Interns -->
-      <section id="viewInterns">
+      <section id="viewInterns" style="display:none;">
         <h4 class="section-title">Interns</h4>
                <!-- Batch Dropdown -->
       <div class="mb-3">
         <label for="batchFilter" class="form-label">Select Batch</label>
         <select id="batchFilter" class="form-select" onchange="filterByBatch()">
-          <option value="all">All Batches</option>
+          <option value="all" selected>All Batches</option>
           <% batches.forEach(batch => { %>
             <option value="<%= batch %>">Batch <%= batch %></option>
           <% }) %>
         </select>
       </div>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-1 g-4">
           <% interns.forEach(intern => { %>
           <div class="col intern-card" data-batch="<%= intern.batch_no %>">
-            <div class="card h-100 shadow-sm border-0">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title text-success fw-bold"><%= intern.name %></h5>
-                <p><strong>Email:</strong> <%= intern.email %></p>
-                <p><strong>Domain:</strong> <%= intern.domain %></p>
-                <div class="mt-auto d-flex gap-2">
-                  <a href="/admin/intern/<%= intern._id %>" class="btn btn-info btn-sm flex-grow-1">View</a>
-                  <button class="btn btn-danger btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#deleteInternModal<%= intern._id %>">Delete</button>
-                </div>
-              </div>
-            </div>
+<div class="card h-100 shadow-sm border-0 mb-3">
+  <div class="card-body d-flex justify-content-between align-items-center">
+
+    <!-- Left side: data in aligned columns -->
+    <div class="row w-100">
+      <div class="col-md-3">
+        <strong>Name:</strong> <%= intern.name %>
+      </div>
+      <div class="col-md-3">
+        <strong>Email:</strong> <%= intern.email %>
+      </div>
+      <div class="col-md-3">
+        <strong>Domain:</strong> <%= intern.domain %>
+      </div>
+      <div class="col-md-3">
+        <strong>Intern ID:</strong> <%= intern.intern_id %>
+      </div>
+    </div>
+
+    <!-- Right side: buttons -->
+    <div class="d-flex gap-2 ms-3">
+      <a href="/admin/intern/<%= intern._id %>" class="btn btn-info btn-m">View</a>
+      <button class="btn btn-danger btn-m" data-bs-toggle="modal" data-bs-target="#deleteInternModal<%= intern._id %>">
+        Delete
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
 
             <!-- Delete Intern Modal -->
             <div class="modal fade" id="deleteInternModal<%= intern._id %>" tabindex="-1" aria-hidden="true">
@@ -259,16 +267,10 @@
       }
     });
   }
-  window.onload = function () {
-    document.getElementById("batchFilter").value = ""; // force "no batch selected"
+  // Run once on page load to hide all
+  window.addEventListener('DOMContentLoaded', (event) => {
     filterByBatch();
-  };
-    window.onload = function () {
-    document.getElementById("batchFilter").value = ""; // force "no batch selected"
-    filterByBatch();
-  };
-    // Show Interns by default
-    // document.getElementById('viewInterns').style.display = 'block';
+  });
   </script>
 </body>
 </html>

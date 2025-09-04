@@ -26,10 +26,13 @@ router.get("/admin", authRole("admin"), async (req, res) => {
       .populate("submissions.internId");
 
     // Render admin page
+    req.flash('success_msg', 'Welcome to Admin Dashboard');
     res.render("admin", { admin, interns, projects, batches });
 
   } catch (err) {
+    res.redirect("/login");
     console.error(err);
+
     res.status(500).send("Server Error");
   }
 });

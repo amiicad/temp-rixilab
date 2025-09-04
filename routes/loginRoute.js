@@ -6,9 +6,15 @@ const User = require("../models/User");
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (!user) return res.send("Invalid email or password");
+  if (!user){
+    req.flash('error_msg', 'Invalid email');
+     return res.redirect("/login");
+  } 
   const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.send("Invalid email or password");
+  if (!match) {
+     req.flash('error_msg', 'Invalid password');
+    return res.redirect("/login");
+  };
 
   req.session.user = user._id;
   req.session.role = user.role;

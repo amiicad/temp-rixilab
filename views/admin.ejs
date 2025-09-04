@@ -25,6 +25,7 @@
     .table td, .table th { vertical-align: middle; }
     .section-title { font-weight: 600; margin-bottom: 15px; }
     .modal-header { background-color: #343a40; color: white; }
+    .nav{background-color: #ffc197; color:black; }
   </style>
 </head>
 <body>
@@ -39,17 +40,16 @@
     <a href="#createUser"><i class="bi bi-person-plus"></i> Create Intern</a>
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
-    <a href="#confirmationMail"><i class="bi bi-envelope-check"></i> Send Confirmation Mail</a>
-    <a href="#congratsMail"><i class="bi bi-gift"></i> Send Congratulations Mail</a>
+    <a href="#submitedProjects" style="margin-right: 4rem;"><i class="bi bi-folder2-open"></i> Submitted Project</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
   <!-- Main Content -->
   <div class="main-content flex-grow-1">
-      <h4 class="section-title mb-4">Welcome to Rixi Lab, <%= admin.name %></h4>
+      <h4 class="section-title mb-4 nav" style="padding: 30px; ">Welcome to Rixi Lab, <%= admin.name %></h4>
     <!-- Create Intern -->
 <section id="createUser" style="display:none;">
-  <h4 class="section-title">Create User</h4>
+  <h4 class="section-title">Create Intern</h4>
   <div class="card p-4 shadow-sm mb-4">
     <form action="/create-user" method="POST" class="row g-3">
       <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
@@ -58,20 +58,21 @@
       <div class="col-md-6"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
       <div class="col-md-6"><input type="text" name="domain" class="form-control" placeholder="<%= admin.domain %>" value="<%= admin.domain %>" readonly></div>
 
-      <div class="col-md-6"><input type="text" name="college" class="form-control" placeholder="College"></div>
-      <div class="col-md-6"><input type="text" name="university" class="form-control" placeholder="University"></div>
+      <div class="col-md-6"><input type="text" name="college" class="form-control" placeholder="College" required ></div>
+      <div class="col-md-6"><input type="text" name="university" class="form-control" placeholder="University" required></div>
 
-      <div class="col-md-6"><input type="text" name="phone" class="form-control" placeholder="Phone"></div>
-      <div class="col-md-6"><input type="text" name="branch" class="form-control" placeholder="Branch"></div>
+      <div class="col-md-6"><input type="text" name="phone" class="form-control" placeholder="Phone" required></div>
+      <div class="col-md-6"><input type="text" name="branch" class="form-control" placeholder="Branch" required></div>
 
-      <div class="col-md-6"><input type="text" name="course" class="form-control" placeholder="Course"></div>
-      <div class="col-md-6"><input type="text" name="year_sem" class="form-control" placeholder="Year/Sem"></div>
+      <div class="col-md-6"><input type="text" name="course" class="form-control" placeholder="Course" required></div>
+      <div class="col-md-6"><input type="text" name="year_sem" class="form-control" placeholder="Year/Sem" required></div>
 
-      <div class="col-md-6"><input type="text" name="intern_id" class="form-control" placeholder="Intern ID"></div>
-      <div class="col-md-6"><input type="text" name="duration" class="form-control" placeholder="Duration"></div>
+      <div class="col-md-6"><input type="text" name="intern_id" class="form-control" placeholder="Intern ID" required></div>
+      <div class="col-md-6"><input type="text" name="duration" class="form-control" placeholder="Duration" required></div>
 
-      <div class="col-md-6"><input type="text" name="batch_no" class="form-control" placeholder="Batch"></div>
-      <div class="col-md-6"><button class="btn btn-primary w-100">Create</button></div>
+      <div class="col-md-6"><input type="text" name="batch_no" class="form-control" placeholder="Batch" required></div>
+      <div class="col-md-6"><input type="text" name="certificate_id" class="form-control" placeholder="Certificate ID"></div>
+      <div class="col-md-6 mx-auto "><button class="btn btn-primary w-100">Create</button></div>
     </form>
   </div>
 </section>
@@ -125,43 +126,6 @@
 </section>
 
 
-    <!-- Confirmation Mail -->
-    <section id="confirmationMail" style="display:none;">
-      <h4 class="section-title">Send Confirmation Mail</h4>
-      <div class="card p-4 shadow-sm mb-4">
-        <form action="/send-email" method="POST">
-          <div class="mb-2">
-            <input type="checkbox" id="selectAllConfirm" onclick="toggleConfirmAll()"> Select All
-          </div>
-          <% interns.forEach(i => { %>
-            <div class="form-check">
-              <input type="checkbox" name="internIds" value="<%= i._id %>" class="confirmCheckbox form-check-input" id="conf-<%= i._id %>">
-              <label class="form-check-label" for="conf-<%= i._id %>"><%= i.name %> (<%= i.email %>)</label>
-            </div>
-          <% }) %>
-          <button class="btn btn-primary mt-3">Send Confirmation</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- Congratulations Mail -->
-    <section id="congratsMail" style="display:none;">
-      <h4 class="section-title">Send Congratulations Mail</h4>
-      <div class="card p-4 shadow-sm mb-4">
-        <form action="/send-email" method="POST">
-          <div class="mb-2">
-            <input type="checkbox" id="selectAllCongrats" onclick="toggleCongratsAll()"> Select All
-          </div>
-          <% interns.forEach(i => { %>
-            <div class="form-check">
-              <input type="checkbox" name="internIds" value="<%= i._id %>" class="congratsCheckbox form-check-input" id="cong-<%= i._id %>">
-              <label class="form-check-label" for="cong-<%= i._id %>"><%= i.name %> (<%= i.email %>)</label>
-            </div>
-          <% }) %>
-          <button class="btn btn-success mt-3">Send Congratulations</button>
-        </form>
-      </div>
-    </section>
 
     <!-- View Interns (Default) -->
     <section id="viewInterns" style="display:none;">
@@ -180,19 +144,27 @@
       <div class="row row-cols-1 row-cols-md-1 g-8">
         <% interns.forEach(i => { %>
           <div class="col intern-card" data-batch="<%= i.batch_no %>">
-            <div class="card shadow-sm border-primary mb-3">
+     <div class="card shadow-sm  mb-3">
   <div class="card-body d-flex justify-content-between align-items-center">
 
-    <!-- Left side: all details in one line -->
-    <div class="d-flex gap-4 align-items-center">
-      <span><strong>Name:</strong> <%= i.name %></span>
-      <span><strong>Email:</strong> <%= i.email %></span>
-      <span><strong>Domain:</strong> <%= i.domain %></span>
-      <span><strong>Batch:</strong> <%= i.batch_no %></span>
+    <!-- Left side: data in aligned columns -->
+    <div class="row w-100">
+      <div class="col-md-3">
+        <strong>Name:</strong> <%= i.name %>
+      </div>
+      <div class="col-md-3">
+        <strong>Email:</strong> <%= i.email %>
+      </div>
+      <div class="col-md-3">
+        <strong>Domain:</strong> <%= i.domain %>
+      </div>
+      <div class="col-md-3">
+        <strong>Intern ID:</strong> <%= i.intern_id %>
+      </div>
     </div>
 
     <!-- Right side: buttons -->
-    <div class="d-flex gap-2">
+   <div class="d-flex gap-2">
       <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm">View</a>
       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">
         Update
@@ -200,7 +172,6 @@
     </div>
 
   </div>
-</div>
 
 
             <!-- Update Intern -->
@@ -228,6 +199,8 @@
                       <input type="text" name="year_sem" class="form-control" value="<%= i.year_sem %>">
                       <label class="form-label">Batch No : </label>
                       <input type="text" name="batch_no" class="form-control" value="<%= i.batch_no %>" readonly>
+                      <label class="form-label">Certificate ID : </label>
+                      <input type="text" name="certificate_id" class="form-control" value="<%= i. certificate_id %>" >
                     </div>
                     <div class="modal-footer">
                       <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> -->
@@ -243,7 +216,7 @@
       </div>
     </section>
 
-    <!-- Project Submissions -->
+    <!-- View Projects -->
 <section id="viewProjects" style="display:none;">
   <h4 class="section-title">Projects</h4>
 
@@ -316,6 +289,7 @@
     <% }) %>
   </div>
 </section>
+    <!-- Submitted Projects -->
 
 
   </div>

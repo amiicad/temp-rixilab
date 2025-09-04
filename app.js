@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
-
+require('dotenv').config();
+const flash = require('connect-flash');
 require("./db"); // Mongoose connection
 const User = require("./models/User");
 const Project = require("./models/Project");
@@ -21,10 +22,21 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(session({
-  secret: "internship_secret_key",
-  resave: false,
+  secret: process.env.SESSION_SECRET || 'defaultsecret',
+  resave: true,
   saveUninitialized: false
 }));
+
+app.use(flash());
+
+// Make flash messages available in all templates
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
+
+
 
 // File upload
 const storage = multer.diskStorage({
@@ -76,12 +88,13 @@ app.get("/", homeRoute);
 // mount logout router
 app.use("/", logoutRouter);   // ✅ attaches /logout route
 
-
+const verifyCertificateRouter = require('./routes/verifyCertificateRouter');
+app.get("/certificate", (req, res) => res.render("certificate"));
+app.post('/verify-certificate', verifyCertificateRouter);
 
 app.get("/internship", (req, res) => {
   res.render("internship");
 });
-
 // --- Admin Routes ---
 
 const adminRoute = require('./routes/adminRoute');
