@@ -37,12 +37,14 @@
     <a href="#viewAdmin"><i class="bi bi-people"></i> View Admins</a>
     <a href="#viewInterns"><i class="bi bi-person-workspace"></i> View Interns</a>
     <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
+    <a href="#createAdmin"><i class="bi bi-envelope-plus"></i> Confirmation Mail</a>
+    <a href="#createAdmin"><i class="bi bi-envelope-plus"></i> Completion Mail</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
     <!-- Main Content -->
     <div class="main-content flex-grow-1">
-      <h4 class="section-title mb-4">Welcome to Rixi Lab, <%= superAdmin.name %></h4>
+      <h4 class="section-title mb-4">Welcome to Rixi Lab, <%= superAdmin.name %>, <%=superAdmin.designation%></h4>
       <!-- Create Admin -->
       <section id="createAdmin" style="display:none;">
         <h4 class="section-title">Create Admin</h4>
@@ -64,6 +66,7 @@
             </div>
             <div class="col-md-2"><input type="text" name="emp_id" class="form-control" placeholder="Employee ID"></div>
             <div class="col-md-2"><input type="text" name="phone" class="form-control" placeholder="Phone"></div>
+            <div class="col-md-2"><input type="text" name="designation" class="form-control" placeholder="Designation"></div>
             <div class="col-12"><button class="btn btn-primary w-100">Create Admin</button></div>
           </form>
         </div>
@@ -97,6 +100,10 @@
       <div class="col-md-2">
         <strong>Emp ID:</strong> <%= admin.emp_id %>
       </div>
+      <!-- Designation -->
+      <div class="col-md-2">
+        <strong>Designation:</strong> <%= admin.designation %>
+      </div>
       
       <!-- Buttons -->
       <div class="col-md-2 d-flex gap-1">
@@ -129,6 +136,8 @@
                       <input type="text" name="domain" class="form-control mb-2" value="<%= admin.domain %>" required>
                       <label class="form-label">Phone</label>
                       <input type="text" name="phone" class="form-control mb-2" value="<%= admin.phone %>" required>
+                      <label class="form-label">Designation</label>
+                      <input type="text" name="designation" class="form-control mb-2" value="<%= admin.designation %>" required>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
