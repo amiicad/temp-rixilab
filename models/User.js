@@ -18,6 +18,20 @@ const userSchema = new mongoose.Schema({
   designation: { type: String },
   batch_no:{ type: String},
   certificate_id: { type: String, unique: true ,sparse: true },
+projectAssigned: [
+    {
+      projectId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Project'
+      },
+      week: Number,
+      status: {
+        type: String,
+        enum: ['pending', 'accepted', 'rejected'],
+        default: 'pending'
+      }
+    }
+  ]
 });
 
 module.exports = mongoose.model("User", userSchema);

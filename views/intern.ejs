@@ -156,13 +156,16 @@
 
 
             </div> -->
-            <div class="contact-info-grid">
-  <% if (projects.length > 0) { %>
-    <% projects.forEach(p => { %>
+           <div class="contact-info-grid">
+  <% if (intern.projectAssigned && intern.projectAssigned.length > 0) { %>
+    <% intern.projectAssigned.forEach(sub => { 
+         // Find project details from projects array
+         const proj = projects.find(p => p._id.toString() === sub.projectId.toString());
+    %>
       <div class="info-item" data-aos="zoom-in" data-aos-delay="250">
 
         <!-- Download Icon -->
-        <a href="<%= p.downloadLink %>" download target="_blank">
+        <a href="<%= proj ? proj.downloadLink : '#' %>" download target="_blank">
           <div class="info-icon">
             <i class="bi bi-download"></i>
           </div>
@@ -170,16 +173,32 @@
 
         <!-- Project Info -->
         <div class="info-content">
-          <h5><%= p.title %></h5>
-          <small><%= p.description %></small>
+          <h5><%= proj ? proj.title : 'N/A' %></h5>
+          <small>
+    <%= proj ? proj.description : '' %>  
+    <% if (sub.status === 'accepted') { %>
+      <span style="color: #00ff66;  margin-left: 8px;"> (<%= sub.status.toUpperCase() %>)</span>
+    <% } else if (sub.status === 'rejected') { %>
+      <span style="color: #ff3300;  margin-left: 8px;"> (<%= sub.status.toUpperCase() %>)</span>
+    <% } %>
+    <!-- nothing is rendered if status is pending -->
+  </small>
         </div>
 
-        <!-- Upload Icon -->
-        <a href="<%= p.uploadLink %>" target="_blank">
-          <div class="info-icon">
-            <i class="bi bi-upload"></i>
+        <!-- Upload / Status -->
+        <% if (sub.status === 'accepted') { %>
+          <!-- Green Check when Accepted -->
+          <div class="info-icon text-success">
+            <i class="bi bi-check-circle-fill" style="color:#00ff66;"></i>
           </div>
-        </a>
+        <% } else { %>
+          <!-- Upload button if not accepted -->
+          <a href="<%= proj ? proj.uploadLink : '#' %>" target="_blank">
+            <div class="info-icon">
+              <i class="bi bi-upload"></i>
+            </div>
+          </a>
+        <% } %>
 
       </div>
     <% }) %>
@@ -187,6 +206,8 @@
     <p>No projects assigned yet.</p>
   <% } %>
 </div>
+
+
 
 
           </div>

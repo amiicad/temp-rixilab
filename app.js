@@ -126,8 +126,9 @@ const viewInternRouter = require('./routes/viewInternRoute');
 app.get('/admin/intern/:internId', viewInternRouter);
 
 // Approve/Reject Submission
-const projectSubmissionRouter = require('./routes/projectSubmissionRoute');
-app.post('/submission/:projectId/:internId', projectSubmissionRouter);
+const projectStatusRouter = require('./routes/projectStatusRoute');
+app.use('/admin', projectStatusRouter);
+  
 
 
 // Email placeholders
@@ -166,32 +167,5 @@ app.get('/intern', internRouter);
 const viewAdminRouter = require('./routes/viewAdminRoute');
 app.get('/superAdmin/admin/:adminId', viewAdminRouter);
 
-// Intern Submit Project
-app.post("/intern/submit/:projectId", authRole("intern"), upload.single("projectFile"), async (req, res) => {
-  const project = await Project.findById(req.params.projectId);
-  project.submissions.push({
-    internId: req.session.user,
-    file: req.file.filename,
-    status: "pending"
-  });
-  await project.save();
-  res.redirect("/intern");
-});
-
-// Intern download project file (domain restricted)
-app.get("/intern/download/:filename", authRole("intern"), async (req, res) => {
-  const intern = await User.findById(req.session.user);
-  const project = await Project.findOne({ file: req.params.filename, domain: intern.domain });
-  if (!project) return res.status(403).send("Access Denied");
-
-  const file = path.join(__dirname, "uploads", req.params.filename);
-  res.download(file);
-});
-
-// Admin download file
-app.get("/download/:filename", authRole("admin"), (req, res) => {
-  const file = path.join(__dirname, "uploads", req.params.filename);
-  res.download(file);
-});
 
 app.listen(3000, () => console.log("Server running at http://localhost:3000"));

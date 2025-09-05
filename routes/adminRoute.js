@@ -16,7 +16,9 @@ router.get("/admin", authRole("admin"), async (req, res) => {
     if (!admin) return res.status(404).send("Admin not found");
 
     // Fetch interns only in the admin's domain
-    const interns = await User.find({ role: "intern", domain: admin.domain });
+    const interns = await User.find({ role: "intern", domain: admin.domain })
+  .populate('projectAssigned.projectId').exec() // populate project details
+;
 
     // Extract unique batches from interns
     const batches = [...new Set(interns.map(i => i.batch_no))];

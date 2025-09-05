@@ -40,7 +40,7 @@
     <a href="#createUser"><i class="bi bi-person-plus"></i> Create Intern</a>
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
-    <a href="#submitedProjects" style="margin-right: 4rem;"><i class="bi bi-folder2-open"></i> Submitted Project</a>
+    <a href="#submittedProjects" style="margin-right: 4rem;"><i class="bi bi-folder2-open"></i> Submitted Project</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
@@ -236,7 +236,7 @@
     <% projects.forEach(p => { %>
       <div class="col project-card" data-batch="<%= p.batch_no %>">
        <div class="card shadow-sm border-primary mb-3">
-  <div class="card-body d-flex justify-content-between align-items-center">
+   <div class="card-body d-flex justify-content-between align-items-center">
 
     <!-- Left side: all details in one line -->
     <div class="d-flex gap-4 align-items-center">
@@ -290,6 +290,88 @@
   </div>
 </section>
     <!-- Submitted Projects -->
+<section id="submittedProjects" style="display:none;">
+  <h4 class="section-title">Submitted Projects</h4>
+
+  <% 
+    // Local variable for batch filtering
+    var currentSubmittedBatch = typeof submittedBatch !== 'undefined' ? submittedBatch : 'all';
+  %>
+
+  <!-- Batch Filter -->
+  <div class="mb-3">
+    <label for="submittedBatchFilter" class="form-label">Select Batch</label>
+    <select class="form-select" onchange="filterSubmittedProjects(this.value)">
+      <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
+      <% batches.forEach(batch => { %>
+        <option value="<%= batch %>" <%= currentSubmittedBatch === batch ? 'selected' : '' %>>Batch <%= batch %></option>
+      <% }) %>
+    </select>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-1 g-8">
+    <% interns.forEach(intern => { %>
+      <% if (Array.isArray(intern.projectAssigned) && intern.projectAssigned.length > 0) { %>
+        <% if (currentSubmittedBatch === 'all' || intern.batch_no === currentSubmittedBatch) { %>
+          <div class="col mb-3 intern-card" data-batch="<%= intern.batch_no %>">
+            <div class="card shadow-sm border-primary">
+              <div class="card-body">
+                <h5><%= intern.name %> (<%= intern.batch_no %>)</h5>
+                <p>Email: <%= intern.email %></p>
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Project Title</th>
+                      <th>Week</th>
+                      <th>Status</th>
+                      <th>Update Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% intern.projectAssigned.forEach(sub => { %>
+                      <tr>
+                        <td><%= sub.projectId ? sub.projectId.title : 'N/A' %></td>
+                        <td>Week <%= sub.week %></td>
+                        <td>
+                          <% 
+                            let badgeClass = 'badge-pending';
+                            if(sub.status === 'accepted') badgeClass = 'badge-approved';
+                            else if(sub.status === 'rejected') badgeClass = 'badge-rejected';
+                          %>
+                          <span class="badge <%= badgeClass %>"><%= sub.status %></span>
+                        </td>
+                        <td>
+                          <form method="POST" action="/admin/projects/update-status">
+  <input type="hidden" name="userId" value="<%= intern._id %>">
+  <input type="hidden" name="projectId" value="<%= sub.projectId ? sub.projectId._id : sub.projectId %>">
+
+  <select name="status" class="form-select">
+    <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
+    <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
+  </select>
+
+  <button type="submit" class="btn btn-primary btn-sm mt-2">Update</button>
+</form>
+
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+          </div>
+        <% } %>
+      <% } %>
+    <% }) %>
+  </div>
+</section>
+
+
+
+   
 
 
   </div>
@@ -346,6 +428,14 @@ function filterByBatch() {
       } else {
         card.style.display = "none";
       }
+    });
+  }
+    // Client-side batch filter
+  function filterSubmittedProjects(batch) {
+    const cards = document.querySelectorAll('#submittedProjects .intern-card');
+    cards.forEach(card => {
+      const internBatch = card.dataset.batch;
+      card.style.display = (batch === 'all' || internBatch === batch) ? 'block' : 'none';
     });
   }
 
