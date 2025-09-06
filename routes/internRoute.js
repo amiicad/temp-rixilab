@@ -10,10 +10,14 @@ router.get("/intern", authRole("intern"), async (req, res) => {
     if (!intern) return res.status(404).send("Intern not found");
 
     // fetch projects for intern’s domain + batch
-    let projects = await Project.find({
-      domain: intern.domain,
-      batch_no: intern.batch_no
-    }).sort({ week: 1 }).populate("submissions.internId");
+    let projects = await Project.find({ 
+      domain: intern.domain, 
+      batch_no: intern.batch_no 
+    });
+
+    const acceptedCount = intern.projectAssigned.filter(p => p.status === "accepted").length;
+    const total = intern.duration || intern.projectAssigned.length || 1;
+    const progress = Math.min(100, Math.round((acceptedCount / total) * 100));
 
     // filter based on intern duration rules
     projects = projects.filter(p => {
@@ -29,7 +33,7 @@ router.get("/intern", authRole("intern"), async (req, res) => {
       return false;
     });
     req.flash('success_msg', 'Welcome to Intern Dashboard');
-    res.render("intern", { intern, projects });
+    res.render("intern", { intern, projects, progress });
   } catch (err) {
     console.error("Error in /intern:", err);
     res.status(500).send("Server Error");

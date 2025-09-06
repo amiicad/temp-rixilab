@@ -22,19 +22,23 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'defaultsecret',
-  resave: true,
-  saveUninitialized: false
+  secret: process.env.SESSION_SECRET || "defaultsecret", 
+  resave: false,              // better: don't resave if nothing changed
+  saveUninitialized: false,   // don't create empty sessions
+  cookie: { 
+    maxAge: 1000 * 60 * 60,   // 1 hour (adjust as needed)
+    httpOnly: true            // prevents client-side JS from accessing cookies
+    // secure: true,          // uncomment if using HTTPS
+  }
 }));
-
 app.use(flash());
-
 // Make flash messages available in all templates
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   next();
 });
+
 
 
 
@@ -142,16 +146,8 @@ app.post("/send-email", authRole("admin"), async (req, res) => {
 
 // --- Update/Delete Intern ---
 
-// Delete user
-app.post("/delete-user/:id", authRole("superAdmin"), async (req, res) => {
-  try {
-    await User.findByIdAndDelete(req.params.id);
-    res.redirect("/superAdmin");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Failed to delete user");
-  }
-});
+const deleteUserRouter = require('./routes/deleteUser');
+app.post('/delete-user/:id', deleteUserRouter);
 
 // Update user (post form)
 const updateUserRouter = require('./routes/updateUserRoute');

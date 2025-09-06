@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Project = require("../models/Project");
-const authRole = require('../middleware/authRole');
 const User = require("../models/User");
+const authRole = require('../middleware/authRole');
 
 router.post("/admin/projects", authRole("admin"), async (req, res) => {
   try {
@@ -10,56 +10,55 @@ router.post("/admin/projects", authRole("admin"), async (req, res) => {
 
     const adminId = req.session.user;
     const admin = await User.findById(adminId);
-    const interns = await User.find({ role: "intern", domain: admin.domain })
+    if (!admin) return res.status(404).send("Admin not found");
 
-    if (!admin) {
-      console.log("❌ Admin not found");
-      return res.status(404).send("Admin not found");
-    }
+    let { title, description, downloadLink, uploadLink, week, batch_no } = req.body;
 
-    const { title, description, downloadLink, uploadLink, week, batch_no } = req.body;
+    // Convert week to number
+    week = Number(week);
 
-    // ✅ Build new project according to schema
+    // ✅ Create new project
     const newProject = new Project({
       title,
       description,
-      domain: admin.domain, // lock to admin's domain
+      domain: admin.domain,
       downloadLink,
       uploadLink,
       week,
       batch_no,
       createdBy: admin._id
     });
-
-    console.log("📌 New Project Before Save:", newProject);
-
     await newProject.save();
+    console.log("✅ Project Created:", newProject._id);
 
-    // Add this project to all interns in the same domain and batch
-    await User.updateMany(
-  { 
-    role: "intern", 
-    domain: admin.domain, 
-    batch_no: batch_no,
-    duration: { $lte: newProject.week }   // ✅ only interns whose duration <= project week
-  },
-  { 
-    $push: { 
-      projectAssigned: { 
-        projectId: newProject._id,
-        week: newProject.week,
-        status: "pending"
-      } 
-    } 
-  }
-);
+    // 🔹 Determine eligible intern durations
+    const allDurations = [4, 6, 8];
+    const eligibleDurations = allDurations.filter(d => d >= week);
 
-
-    console.log("✅ Project Created Successfully!");
-    res.redirect("/admin");
+    // 🔹 Assign project to eligible interns
+    const result = await User.updateMany(
+      {
+        role: "intern",
+        domain: admin.domain,
+        batch_no,
+        duration: { $in: eligibleDurations }
+      },
+      {
+        $push: {
+          projectAssigned: {
+            projectId: newProject._id,
+            week: newProject.week,
+            status: "pending"
+          }
+        }
+      }
+    );
+    req.flash('success', 'Project Created Successfully!');
+    console.log(`✅ Users updated for batch ${batch_no}:`, result.modifiedCount);
+    res.redirect("/admin#uploadProject");
   } catch (err) {
-    console.error("🔥 Error in /admin/projects:", err);
-    res.status(500).send("Server Error");
+   req.flash('error', 'Server Error');
+    res.redirect('/admin#uploadproject');
   }
 });
 

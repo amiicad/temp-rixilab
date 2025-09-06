@@ -25,18 +25,7 @@ const projectSchema = new mongoose.Schema({
   },
 
   // Submissions tracking
-  submissions: [
-    {
-      internId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-      file: String, // optional if not using Google Form
-      submittedAt: { type: Date, default: Date.now },
-      status: {
-        type: String,
-        enum: ["pending", "accepted", "rejected"],
-        default: "pending",
-      },
-    },
-  ],
+
 });
 
 module.exports = mongoose.model("Project", projectSchema);

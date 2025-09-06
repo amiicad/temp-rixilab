@@ -191,3 +191,27 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+
+// Bootstarp form validation
+ (function () {
+    const form = document.getElementById('loginForm');
+
+    form.addEventListener('submit', function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // Bootstrap way: add was-validated
+      form.classList.add('was-validated');
+
+      // Custom way: add .is-invalid to each bad field
+      Array.from(form.elements).forEach(input => {
+        if (!input.checkValidity()) {
+          input.classList.add('is-invalid');
+        } else {
+          input.classList.remove('is-invalid');
+        }
+      });
+    }, false);
+  })()

@@ -22,7 +22,7 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
         designation
       });
 
-      return res.redirect('/superAdmin');
+      return res.redirect('/superAdmin#viewAdmin');
     }
 
     // Admin updating an intern
@@ -41,12 +41,13 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
         batch_no,
         certificate_id
       });
-
-      return res.redirect('/admin');
+      req.flash('success', 'Intern Updated Successfully!');
+      return res.redirect('/admin#viewInterns');
     }
 
     // If role mismatch
-    return res.status(403).send("Access Denied");
+    req.flash('error', 'Access Denied');
+    return res.redirect('/login');
 
   } catch (err) {
     console.error("Update Error:", err);

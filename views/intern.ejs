@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Rixi Lab Students Dashboard</title>
+  <title>Rixi Lab Interns Dashboard</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -128,9 +128,12 @@
         <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
           <div class="contact-info-section">
             <div class="info-header">
-              <h3>Your Projects Timeline</h3>
+              <h3>Your Projects Timeline  <span style="color: #ff6600;"><%= progress %>%</span></h3>
               <p>You can upload and download your assigned project here!</p>
-            </div>
+              <progress value="<%= progress %>" max="100" style="height:10px; width:100%;background-color: #00ff66;border-radius: 10px;
+  overflow: hidden; margin-bottom: 8px;margin-top: 8px;"></progress>
+             
+             <div
 
             
             <!--------------------------------------------------------------------------------------- Project 1  -->

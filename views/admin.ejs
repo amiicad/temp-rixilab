@@ -30,6 +30,7 @@
 </head>
 <body>
 <div class="d-flex">
+<%- include("partials/toaster") %>
 
   <!-- Sidebar -->
   <div class="sidebar position-fixed w-20">
@@ -51,7 +52,7 @@
 <section id="createUser" style="display:none;">
   <h4 class="section-title">Create Intern</h4>
   <div class="card p-4 shadow-sm mb-4">
-    <form action="/create-user" method="POST" class="row g-3">
+    <form action="/create-user" method="POST" class="row g-3 needs-validation"  novalidate>
       <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
       <div class="col-md-6"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
 
@@ -82,22 +83,22 @@
    <section id="uploadProject" style="display:none;">
   <h4 class="section-title">Upload Project</h4>
   <div class="card p-4 shadow-sm mb-4">
-    <form method="POST" action="/admin/projects" class="row g-3">
+    <form method="POST" action="/admin/projects" class="row g-3 needs-validation" novalidate>
       
       <div class="col-md-3">
         <input type="text" name="title" class="form-control" placeholder="Project Title" required>
       </div>
 
       <div class="col-md-3">
-        <input type="text" name="description" class="form-control" placeholder="Description">
+        <input type="text" name="description" class="form-control" placeholder="Description" required>
       </div>
 
       <div class="col-md-3">
-        <input type="url" name="downloadLink" class="form-control" placeholder="Download Link">
+        <input type="url" name="downloadLink" class="form-control" placeholder="Download Link" required>
       </div>
 
       <div class="col-md-3">
-        <input type="url" name="uploadLink" class="form-control" placeholder="Upload Link">
+        <input type="url" name="uploadLink" class="form-control" placeholder="Upload Link" required>
       </div>
 
       <div class="col-md-3">
@@ -109,13 +110,16 @@
         </select>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-3" >
         <select name="week" class="form-select" required>
-          <option value="" disabled selected>Select Week</option>
-          <% for (let i = 1; i <= 8; i++) { %>
-            <option value="<%= i %>">Week <%= i %></option>
-          <% } %>
-        </select>
+  <option value="" disabled selected>Select Week</option>
+  <% for (let i = 1; i <= 8; i++) { %>
+    <% if (i !== 5 && i !== 7) { %>
+      <option value="<%= i %>">Week <%= i %></option>
+    <% } %>
+  <% } %>
+</select>
+
       </div>
 
       <div class="col-md-3">
@@ -129,7 +133,7 @@
 
     <!-- View Interns (Default) -->
     <section id="viewInterns" style="display:none;">
-      <h4 class="section-title">Interns</h4>
+      <h4 class="section-title">Interns <%= admin.domain %></h4>
        <!-- Batch Dropdown -->
       <div class="mb-3">
         <label for="batchFilter" class="form-label">Select Batch</label>
@@ -156,7 +160,7 @@
         <strong>Email:</strong> <%= i.email %>
       </div>
       <div class="col-md-3">
-        <strong>Domain:</strong> <%= i.domain %>
+        <strong>Duration:</strong> <%= i.duration %><span> weeks</span>
       </div>
       <div class="col-md-3">
         <strong>Intern ID:</strong> <%= i.intern_id %>
@@ -179,7 +183,7 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header"><h5 class="modal-title">Update <%= i.name %></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                  <form action="/update-user/<%= i._id %>" method="POST">
+                  <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
                     <div class="modal-body">
                       <label class="form-label">Name : </label>
                       <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
@@ -250,6 +254,9 @@
     <div class="d-flex gap-2">
       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
         Update
+      </button>
+      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
+        Delete
       </button>
     </div>
 
@@ -341,20 +348,20 @@
                           %>
                           <span class="badge <%= badgeClass %>"><%= sub.status %></span>
                         </td>
-                        <td>
-                          <form method="POST" action="/admin/projects/update-status">
-  <input type="hidden" name="userId" value="<%= intern._id %>">
-  <input type="hidden" name="projectId" value="<%= sub.projectId ? sub.projectId._id : sub.projectId %>">
+                       <td>
+  <form method="POST" action="/admin/projects/update-status" class="d-flex align-items-center gap-2">
+    <input type="hidden" name="userId" value="<%= intern._id %>">
+    <input type="hidden" name="projectId" value="<%= sub.projectId ? sub.projectId._id : sub.projectId %>">
 
-  <select name="status" class="form-select">
-    <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
-    <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
-  </select>
+    <select name="status" class="form-select form-select-sm">
+      <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
+      <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
+    </select>
 
-  <button type="submit" class="btn btn-primary btn-sm mt-2">Update</button>
-</form>
+    <button type="submit" class="btn btn-primary btn-sm">Update</button>
+  </form>
+</td>
 
-                        </td>
                       </tr>
                     <% }) %>
                   </tbody>

@@ -6,9 +6,15 @@ const Project = require("../models/Project");
 
 router.get("/admin/intern/:internId", authRole(['admin','superAdmin']), async (req, res) => {
   const intern = await User.findById(req.params.internId);
-  if (!intern || intern.role !== "intern") return res.redirect("/admin");
+  if (!intern || intern.role !== "intern"){
+    req.flash("error", "Intern not found");
+    return res.redirect("/admin")
+  } ;
+  const acceptedCount = intern.projectAssigned.filter(p => p.status === "accepted").length;
+  const total = intern.duration || intern.projectAssigned.length || 1;
+  const progress = Math.min(100, Math.round((acceptedCount / total) * 100));
 
-  const projects = await Project.find({ domain: intern.domain }).populate("submissions.internId");
-  res.render("intern", { intern, projects });
+  const projects = await Project.find({ domain: intern.domain });
+  res.render("intern", { intern, projects,progress });
 });
 module.exports = router;

@@ -49,12 +49,12 @@
       <section id="createAdmin" style="display:none;">
         <h4 class="section-title">Create Admin</h4>
         <div class="card p-4 shadow-sm mb-4">
-          <form action="/create-admin" method="POST" class="row g-3">
+          <form action="/create-admin" method="POST" class="row g-3 needs-validation" novalidate>
             <div class="col-md-2"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
             <div class="col-md-2"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
             <div class="col-md-2"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
             <div class="col-md-2">
-              <select name="domain" class="form-select">
+              <select name="domain" class="form-select" required>
                 <option value="" disabled selected>Domain</option>
                 <option value="Web Development">Web Development</option>
                 <option value="Graphics Designning">Graphics Designning</option>
@@ -64,9 +64,9 @@
                 <option value="Python Programming">Python Programming</option>
               </select>
             </div>
-            <div class="col-md-2"><input type="text" name="emp_id" class="form-control" placeholder="Employee ID"></div>
-            <div class="col-md-2"><input type="text" name="phone" class="form-control" placeholder="Phone"></div>
-            <div class="col-md-2"><input type="text" name="designation" class="form-control" placeholder="Designation"></div>
+            <div class="col-md-2"><input type="text" name="emp_id" class="form-control" placeholder="Employee ID" required></div>
+            <div class="col-md-2"><input type="text" name="phone" class="form-control" placeholder="Phone" required></div>
+            <div class="col-md-2"><input type="text" name="designation" class="form-control" placeholder="Designation" required></div>
             <div class="col-12"><button class="btn btn-primary w-100">Create Admin</button></div>
           </form>
         </div>
@@ -124,7 +124,7 @@
                     <h5 class="modal-title">Update <%= admin.name %></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
-                  <form action="/update-user/<%= admin._id %>" method="POST">
+                  <form action="/update-user/<%= admin._id %>" class="needs-validation" method="POST" novalidate>
                     <div class="modal-body">
                       <label class="form-label">Name : </label>
                       <input type="text" name="name" class="form-control mb-2" value="<%= admin.name %>" required>

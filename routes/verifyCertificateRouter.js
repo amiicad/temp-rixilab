@@ -16,8 +16,8 @@ router.post("/verify-certificate", async (req, res) => {
     } else {
       // If not found, render certificate page with error message
       
-      req.flash('error_msg', 'Invalid Intern ID or Certificate ID');  
-      res.status(400).send("Invalid Intern ID or Certificate ID");
+      req.flash('error', 'Invalid Intern ID or Certificate ID');  
+      res.redirect("/certificate");
     }
   } catch (err) {
     console.error(err);

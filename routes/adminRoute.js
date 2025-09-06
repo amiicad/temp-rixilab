@@ -4,40 +4,30 @@ const User = require("../models/User");
 const Project = require("../models/Project");
 const authRole = require('../middleware/authRole');
 
-
 // Admin Dashboard
 router.get("/admin", authRole("admin"), async (req, res) => {
   try {
-    // Get logged-in admin ID from session
     const adminId = req.session.user;
 
-    // Fetch admin details
     const admin = await User.findById(adminId);
     if (!admin) return res.status(404).send("Admin not found");
 
-    // Fetch interns only in the admin's domain
+    // Interns in this admin’s domain with projects populated
     const interns = await User.find({ role: "intern", domain: admin.domain })
-  .populate('projectAssigned.projectId').exec() // populate project details
-;
+      .populate("projectAssigned.projectId");
 
-    // Extract unique batches from interns
-    const batches = [...new Set(interns.map(i => i.batch_no))];
+    // Unique batch numbers (skip empty ones)
+    const batches = [...new Set(interns.map(i => i.batch_no).filter(Boolean))];
 
-    // Fetch only projects from this admin's domain
-    const projects = await Project.find({ domain: admin.domain })
-      .populate("submissions.internId");
+    // Projects created in this domain
+    const projects = await Project.find({ domain: admin.domain }); 
 
-    // Render admin page
-    req.flash('success_msg', 'Welcome to Admin Dashboard');
+    req.flash("success_msg", "Welcome to Admin Dashboard");
     res.render("admin", { admin, interns, projects, batches });
-
   } catch (err) {
-    res.redirect("/login");
-    console.error(err);
-
+    console.error("🔥 Admin dashboard error:", err);
     res.status(500).send("Server Error");
   }
 });
-
 
 module.exports = router;
