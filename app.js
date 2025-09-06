@@ -22,14 +22,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || "defaultsecret", 
-  resave: false,              // better: don't resave if nothing changed
-  saveUninitialized: false,   // don't create empty sessions
-  cookie: { 
-    maxAge: 1000 * 60 * 60,   // 1 hour (adjust as needed)
-    httpOnly: true            // prevents client-side JS from accessing cookies
-    // secure: true,          // uncomment if using HTTPS
-  }
+  secret: "secretKey",
+  resave: false,
+  saveUninitialized: true,
 }));
 app.use(flash());
 // Make flash messages available in all templates

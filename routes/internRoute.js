@@ -14,30 +14,35 @@ router.get("/intern", authRole("intern"), async (req, res) => {
       domain: intern.domain, 
       batch_no: intern.batch_no 
     });
+    
+      // fetch intern's project progress
+      const assignedProjects = intern.projectAssigned || [];
+      const acceptedCount = assignedProjects.filter(p => p.status === 'accepted').length;
+      let duration = intern.duration;
+      let arr = [0,1,2,3,4,6,8];
+      const progress = Math.round((arr[acceptedCount] / duration)*100);
+      console.log("Progress:", progress);
 
-    const acceptedCount = intern.projectAssigned.filter(p => p.status === "accepted").length;
-    const total = intern.duration || intern.projectAssigned.length || 1;
-    const progress = Math.min(100, Math.round((acceptedCount / total) * 100));
 
-    // filter based on intern duration rules
-    projects = projects.filter(p => {
-      if (intern.duration == 6 && p.isCombined && p.combinedWeeks.includes(5)) {
-        return true; // show combined 5-6 only
-      }
-      if (intern.duration == 8 && p.isCombined && p.combinedWeeks.includes(7)) {
-        return true; // show combined 7-8 only
-      }
-      if (!p.isCombined && p.week <= intern.duration) {
-        return true; // normal projects up to intern’s duration
-      }
-      return false;
-    });
-    req.flash('success_msg', 'Welcome to Intern Dashboard');
-    res.render("intern", { intern, projects, progress });
-  } catch (err) {
-    console.error("Error in /intern:", err);
-    res.status(500).send("Server Error");
-  }
-});
+      // filter based on intern duration rules
+      projects = projects.filter(p => {
+        if (intern.duration == 6 && p.isCombined && p.combinedWeeks.includes(5)) {
+          return true; // show combined 5-6 only
+        }
+        if (intern.duration == 8 && p.isCombined && p.combinedWeeks.includes(7)) {
+          return true; // show combined 7-8 only
+        }
+        if (!p.isCombined && p.week <= intern.duration) {
+          return true; // normal projects up to intern’s duration
+        }
+        return false;
+      });
+      req.flash('success_msg', 'Welcome to Intern Dashboard');
+      res.render("intern", { intern, projects, progress });
+    } catch (err) {
+      console.error("Error in /intern:", err);
+      res.status(500).send("Server Error");
+    }
+  });
 
-module.exports = router;
+  module.exports = router;

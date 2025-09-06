@@ -1,18 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
+  if (!req.session) {
+    return res.redirect("/login"); // or handle gracefully
+  }
+
   req.session.destroy((err) => {
     if (err) {
-      console.error("Logout Error:", err);
-      req.flash("error", `Failed to log out`);
+      console.error("Logout error:", err);
       return res.status(500).send("Failed to log out");
     }
-    res.clearCookie('connect.sid'); // clears session cookie
-    req.flash("success", "Logged out successfully");
-    res.redirect('/'); // back to index.ejs
+    res.clearCookie("connect.sid");
+    res.redirect("/login");
   });
 });
+
 
 module.exports = router;
 
