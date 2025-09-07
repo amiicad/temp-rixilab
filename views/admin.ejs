@@ -135,99 +135,94 @@
 <section id="viewInterns" style="display:none;">
   <h4 class="section-title">Interns <%= admin.domain %></h4>
 
-  <!-- Batch Dropdown -->
-  <div class="mb-3">
-    <label for="batchFilter" class="form-label">Select Batch</label>
-    <select id="batchFilter" class="form-select" onchange="filterByBatch()">
-      <option value="all" selected>All Batches</option>
-      <% batches.forEach(batch => { %>
-        <option value="<%= batch %>">Batch <%= batch %></option>
-      <% }) %>
-    </select>
+  <!-- Filters -->
+  <div class="mb-3 d-flex align-items-center flex-wrap gap-3">
+    <!-- Batch Filter -->
+    <div style="min-width: 250px;">
+      <label for="batchFilter" class="form-label">Select Batch</label>
+      <select id="batchFilter" class="form-select" onchange="applyInternFilters()">
+        <option value="all" selected>All Batches</option>
+        <% batches.forEach(batch => { %>
+          <option value="<%= batch %>">Batch <%= batch %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <!-- Intern Search -->
+    <div>
+      <label for="internSearch" class="form-label">Search by Intern ID</label>
+      <input type="text" id="internSearch" class="form-control" placeholder="Enter Intern ID" onkeyup="applyInternFilters()">
+    </div>
+
+    <!-- Clear Filters -->
+    <div class="align-self-end">
+      <button class="btn btn-secondary mt-4" onclick="clearInternFilters()">Clear Filters</button>
+    </div>
   </div>
 
   <!-- Intern Cards -->
   <div class="row row-cols-1 row-cols-md-1 g-8">
     <% interns.forEach(i => { %>
-      <div class="col intern-card" data-batch="<%= i.batch_no %>">
+      <div class="col mb-3 intern-card" data-batch="<%= i.batch_no %>">
         <div class="card shadow-sm mb-3">
-         <div class="card-body">
-  <div class="row w-100 align-items-center">
-    <div class="col-md-3">
-      <strong>Name:</strong> <%= i.name %>
-    </div>
-    <div class="col-md-3">
-      <strong>Email:</strong> <%= i.email %>
-    </div>
-    <div class="col-md-2">
-      <strong>Duration:</strong> <%= i.duration %> weeks
-    </div>
-    <div class="col-md-2">
-      <strong>Intern ID:</strong> <%= i.intern_id %>
-    </div>
-    <!-- Buttons on the same line -->
-    <div class="col-md-2 d-flex gap-2 justify-content-end">
-      <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm">View</a>
-      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">
-        Update
-      </button>
-    </div>
-  </div>
-</div>
-
-        </div>
-      </div>
-
-      <!-- Update Intern Modal -->
-      <div class="modal fade" id="updateModal<%= i._id %>" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Update <%= i.name %></h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <div class="card-body">
+            <div class="row w-100 align-items-center">
+              <div class="col-md-3"><strong>Name:</strong> <%= i.name %></div>
+              <div class="col-md-3"><strong>Email:</strong> <%= i.email %></div>
+              <div class="col-md-2"><strong>Duration:</strong> <%= i.duration %> weeks</div>
+              <div class="col-md-2"><strong>Intern ID:</strong> <span class="intern-id d-none"><%= i.intern_id %></span><%= i.intern_id %></div>
+              <!-- Buttons on the same line -->
+              <div class="col-md-2 d-flex gap-2 justify-content-end">
+                <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm">View</a>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button>
+              </div>
             </div>
-            <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
-              <div class="modal-body">
-                <label class="form-label">Name:</label>
-                <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
+          </div>
+        </div>
 
-                <label class="form-label">Email:</label>
-                <input type="email" name="email" class="form-control mb-2" value="<%= i.email %>" required>
-
-                <label class="form-label">Phone:</label>
-                <input type="text" name="phone" class="form-control mb-2" value="<%= i.phone %>">
-
-                <label class="form-label">College:</label>
-                <input type="text" name="college" class="form-control mb-2" value="<%= i.college %>">
-
-                <label class="form-label">University:</label>
-                <input type="text" name="university" class="form-control mb-2" value="<%= i.university %>">
-
-                <label class="form-label">Course:</label>
-                <input type="text" name="course" class="form-control mb-2" value="<%= i.course %>">
-
-                <label class="form-label">Branch:</label>
-                <input type="text" name="branch" class="form-control mb-2" value="<%= i.branch %>">
-
-                <label class="form-label">Y/S:</label>
-                <input type="text" name="year_sem" class="form-control mb-2" value="<%= i.year_sem %>">
-
-                <label class="form-label">Batch No:</label>
-                <input type="text" name="batch_no" class="form-control mb-2" value="<%= i.batch_no %>" readonly>
-
-                <label class="form-label">Certificate ID:</label>
-                <input type="text" name="certificate_id" class="form-control" value="<%= i.certificate_id %>">
+        <!-- Update Intern Modal -->
+        <div class="modal fade" id="updateModal<%= i._id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update <%= i.name %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <div class="modal-footer">
-                <button class="btn btn-warning btn-sm">Update</button>
-              </div>
-            </form>
+              <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
+                <div class="modal-body">
+                  <label class="form-label">Name:</label>
+                  <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
+                  <label class="form-label">Email:</label>
+                  <input type="email" name="email" class="form-control mb-2" value="<%= i.email %>" required>
+                  <label class="form-label">Phone:</label>
+                  <input type="text" name="phone" class="form-control mb-2" value="<%= i.phone %>">
+                  <label class="form-label">College:</label>
+                  <input type="text" name="college" class="form-control mb-2" value="<%= i.college %>">
+                  <label class="form-label">University:</label>
+                  <input type="text" name="university" class="form-control mb-2" value="<%= i.university %>">
+                  <label class="form-label">Course:</label>
+                  <input type="text" name="course" class="form-control mb-2" value="<%= i.course %>">
+                  <label class="form-label">Branch:</label>
+                  <input type="text" name="branch" class="form-control mb-2" value="<%= i.branch %>">
+                  <label class="form-label">Y/S:</label>
+                  <input type="text" name="year_sem" class="form-control mb-2" value="<%= i.year_sem %>">
+                  <label class="form-label">Batch No:</label>
+                  <input type="text" name="batch_no" class="form-control mb-2" value="<%= i.batch_no %>" readonly>
+                  <label class="form-label">Certificate ID:</label>
+                  <input type="text" name="certificate_id" class="form-control" value="<%= i.certificate_id %>">
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-warning btn-sm">Update</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     <% }) %>
   </div>
 </section>
+
 
 
     <!-- View Projects -->
@@ -265,9 +260,11 @@
       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
         Update
       </button>
-      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
-        Delete
-      </button>
+       <form action="/delete-project/<%= p._id %>" method="POST" style="display:inline;">
+    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete <%= p.title %>?')">
+      Delete
+    </button>
+  </form>
     </div>
 
   </div>
@@ -306,6 +303,9 @@
     <% }) %>
   </div>
 </section>
+
+
+
     <!-- Submitted Projects -->
 <section id="submittedProjects" style="display:none;">
   <h4 class="section-title">Submitted Projects</h4>
@@ -496,6 +496,28 @@ function clearFilters() {
   applyFilters();
 }
 
+// Intern Filters
+function applyInternFilters() {
+  let batchFilter = document.getElementById("batchFilter").value.toLowerCase();
+  let internSearch = document.getElementById("internSearch").value.toLowerCase();
+  let cards = document.querySelectorAll("#viewInterns .intern-card");
+
+  cards.forEach(card => {
+    let cardBatch = card.getAttribute("data-batch").toLowerCase();
+    let internId = card.querySelector(".intern-id")?.textContent.toLowerCase() || "";
+
+    let matchesBatch = (batchFilter === "all" || cardBatch === batchFilter);
+    let matchesIntern = (internSearch === "" || internId.includes(internSearch));
+
+    card.style.display = (matchesBatch && matchesIntern) ? "block" : "none";
+  });
+}
+
+function clearInternFilters() {
+  document.getElementById("batchFilter").value = "all";
+  document.getElementById("internSearch").value = "";
+  applyInternFilters();
+}
   // Run once on page load to hide all
   window.addEventListener('DOMContentLoaded', (event) => {
     filterByBatch();

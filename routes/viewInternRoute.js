@@ -10,9 +10,12 @@ router.get("/admin/intern/:internId", authRole(['admin','superAdmin']), async (r
     req.flash("error", "Intern not found");
     return res.redirect("/admin")
   } ;
-  const acceptedCount = intern.projectAssigned.filter(p => p.status === "accepted").length;
-  const total = intern.duration || intern.projectAssigned.length || 1;
-  const progress = Math.min(100, Math.round((acceptedCount / total) * 100));
+      const assignedProjects = intern.projectAssigned || [];
+      const acceptedCount = assignedProjects.filter(p => p.status === 'accepted').length;
+      let duration = intern.duration;
+      let arr = [0,1,2,3,4,6,8];
+      const progress = Math.round((arr[acceptedCount] / duration)*100);
+      console.log("Progress:", progress);
 
   const projects = await Project.find({ domain: intern.domain });
   res.render("intern", { intern, projects,progress });

@@ -120,6 +120,10 @@ app.post('/admin/projects', uploadProjectRouter);
 const updateProjectRouter = require('./routes/updateProjectRoute');
 app.post('/admin/project/update/:id', updateProjectRouter);
 
+// Delete Project
+const deleteProjectRouter = require('./routes/deleteProjectRouter');
+app.post('/delete-project/:id', deleteProjectRouter);
+
 // View specific intern (admin only)
 const viewInternRouter = require('./routes/viewInternRoute');
 app.get('/admin/intern/:internId', viewInternRouter);
