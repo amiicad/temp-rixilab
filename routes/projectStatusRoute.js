@@ -11,7 +11,7 @@ router.post('/projects/update-status', async (req, res) => {
     if (!userId || !projectId || !status) {
       console.error('Missing required fields:', req.body);
       req.flash('error', 'Missing required fields');
-      res.redirect('/admin#submittedProjects')
+      res.redirect('/admin')
     }
 
     // Update the specific project status
@@ -20,19 +20,24 @@ router.post('/projects/update-status', async (req, res) => {
       { $set: { 'projectAssigned.$.status': status } },
       { new: true }
     );
+     if(status==='accepted'){
+      req.flash('success', `${updatedUser.name} Project  ${status}`);
+     }else{
+      req.flash('error', `${updatedUser.name} Project  ${status}`);
+     }
 
     if (!updatedUser) {
       console.error('User or project not found:', req.body);
       req.flash('error', 'User or Project not found');
-      return res.redirect('/admin#submittedProjects');
+      return res.redirect('/admin');
     }
 
     console.log('Updated user:', updatedUser);
-    res.redirect('/admin#submittedProjects'); // back to admin dashboard
+    res.redirect('/admin'); // back to admin dashboard
   } catch (err) {
     console.error('🔥 Error updating project status:', err);
     req.flash('error', 'Error Updating Project Status');
-    res.redirect('/admin#submittedProjects')
+    res.redirect('/admin')
   }
 });
 

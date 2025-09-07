@@ -37,19 +37,32 @@
     <h2 class="text-center"><img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab</h2>
     <h4 class="text-center">Admin Panel</h4>
     <br/>
+    <a href="#dashboard"><i class="bi bi-people"></i> Dashboard</a>
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
     <a href="#createUser"><i class="bi bi-person-plus"></i> Create Intern</a>
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
     <a href="#submittedProjects" style="margin-right: 4rem;"><i class="bi bi-folder2-open"></i> Submitted Project</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <!-- <button id="dashboard" class="btn">Dashboard</button>
+    <button id="viewInterns" class="btn">View Interns</button>
+    <button id="createProject" class="btn">Create Projects</button>
+    <button id="uploadProject" class="btn">Upload Project</button>
+    <button id="viewProjects" class="btn">View Projects</button>
+    <button id="submittedProjects" class="btn">Submitted Projects</button>
+    <button class="btn"><a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></button> -->
   </div>
 
   <!-- Main Content -->
-  <div class="main-content flex-grow-1">
+  <div class="main-content flex-grow-1" >
+    <div>
       <h4 class="section-title mb-4 nav" style="padding: 30px; ">Welcome to Rixi Lab, <%= admin.name %>, <%=admin.designation%></h4>
-    <!-- Create Intern -->
-<section id="createUser" style="display:none;">
+    </div>
+      <section id="dashboard">
+        <h4 class="section-title mb-4 " style="padding: 30px; ">Admin Dashboard</h4>
+      </section>
+      <!-- Create Intern -->
+   <section id="createUser" style="display:none;">
   <h4 class="section-title">Create Intern</h4>
   <div class="card p-4 shadow-sm mb-4">
     <form action="/create-user" method="POST" class="row g-3 needs-validation"  novalidate>
@@ -139,7 +152,7 @@
   <div class="mb-3 d-flex align-items-center flex-wrap gap-3">
     <!-- Batch Filter -->
     <div style="min-width: 250px;">
-      <label for="batchFilter" class="form-label">Select Batch</label>
+      <!-- <label for="batchFilter" class="form-label">Select Batch</label> -->
       <select id="batchFilter" class="form-select" onchange="applyInternFilters()">
         <option value="all" selected>All Batches</option>
         <% batches.forEach(batch => { %>
@@ -150,20 +163,20 @@
 
     <!-- Intern Search -->
     <div>
-      <label for="internSearch" class="form-label">Search by Intern ID</label>
+      <!-- <label for="internSearch" class="form-label">Search by Intern ID</label> -->
       <input type="text" id="internSearch" class="form-control" placeholder="Enter Intern ID" onkeyup="applyInternFilters()">
     </div>
 
     <!-- Clear Filters -->
     <div class="align-self-end">
-      <button class="btn btn-secondary mt-4" onclick="clearInternFilters()">Clear Filters</button>
+      <button class="btn btn-secondary " onclick="clearInternFilters()">Clear Filters</button>
     </div>
   </div>
 
   <!-- Intern Cards -->
   <div class="row row-cols-1 row-cols-md-1 g-8">
     <% interns.forEach(i => { %>
-      <div class="col mb-3 intern-card" data-batch="<%= i.batch_no %>">
+      <div class="col  intern-card" data-batch="<%= i.batch_no %>">
         <div class="card shadow-sm mb-3">
           <div class="card-body">
             <div class="row w-100 align-items-center">
@@ -185,7 +198,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Update <%= i.name %></h5>
+                <h5 class="modal-title">Update <%= i.name.trim() %></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
               <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
@@ -318,7 +331,7 @@
   <div class="mb-3 d-flex  align-items-center flex-wrap gap-3">
     <!-- Batch Filter -->
     <div>
-      <label for="submittedBatchFilter" class="form-label">Select Batch</label>
+      <!-- <label for="submittedBatchFilter" class="form-label">Select Batch</label> -->
       <select class="form-select" id="submittedBatchFilter" onchange="applyFilters()">
         <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
         <% batches.forEach(batch => { %>
@@ -329,13 +342,13 @@
 
     <!-- Intern Search -->
     <div>
-      <label for="internSearch" class="form-label">Search by Intern ID</label>
+      <!-- <label for="internSearch" class="form-label">Search by Intern ID</label> -->
       <input type="text" id="internSearch" class="form-control" placeholder="Enter Intern ID" onkeyup="applyFilters()">
     </div>
 
     <!-- Clear Filters -->
     <div class="align-self-end">
-      <button class="btn btn-secondary mt-4" onclick="clearFilters()">Clear Filters</button>
+      <button class="btn btn-secondary " onclick="clearFilters()">Clear Filters</button>
     </div>
   </div>
 
@@ -344,14 +357,17 @@
       <% if (Array.isArray(intern.projectAssigned) && intern.projectAssigned.length > 0) { %>
         <% if (currentSubmittedBatch === 'all' || intern.batch_no === currentSubmittedBatch) { %>
           <div class="col mb-3 intern-card" data-batch="<%= intern.batch_no %>">
-            <div class="card shadow-sm border-primary">
+            <div class="card shadow-sm " style="border-color: #ff6600 !important;">
               <div class="card-body">
-                <h5>
+                <div class="d-flex justify-content-between align-items-center mb-3 ">
+               <span class="h5 mb-0">
                   <%= intern.name %> (<%= intern.batch_no %>)
-                  <!-- Hidden intern ID for filtering -->
-                  <span class="intern-id d-none"><%= intern.intern_id %></span>
-                </h5>
-                <p>Email: <%= intern.email %> <%= intern.intern_id %></p>
+               </span>
+               <span>
+                 <b>Email:</b> <%= intern.email %>&nbsp;&nbsp; <b>Intern ID:</b> <%= intern.intern_id %>
+               </span>
+            </div>
+
 
                 <table class="table table-bordered">
                   <thead>
@@ -413,22 +429,48 @@
 
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
-  const sidebarLinks = document.querySelectorAll('.sidebar a');
-  const sections = document.querySelectorAll('.main-content section');
+//   const sidebarLinks = document.querySelectorAll('.sidebar a');
+//   const sections = document.querySelectorAll('.main-content section');
+
+// sidebarLinks.forEach(link => {
+//   const href = link.getAttribute('href');
+
+//   if (href.startsWith("#")) {
+//     link.addEventListener('click', e => {
+//       e.preventDefault();
+//       const targetId = href.substring(1);
+//       sections.forEach(sec => sec.style.display = 'none');
+//       const targetSection = document.getElementById(targetId);
+//       if (targetSection){
+//        targetSection.style.display = 'block';
+//        const dashboard = document.getElementById('dashboard').style.display = 'none';
+//       }
+//     });
+//   }
+// });
+
+const sidebarLinks = document.querySelectorAll('.sidebar a[href^="#"]');
+const sections = document.querySelectorAll('.main-content section');
+
+// Initially show only dashboard
+sections.forEach(sec => {
+  sec.style.display = sec.id === 'dashboard' ? 'block' : 'none';
+});
 
 sidebarLinks.forEach(link => {
-  const href = link.getAttribute('href');
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href').substring(1);
 
-  if (href.startsWith("#")) {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const targetId = href.substring(1);
-      sections.forEach(sec => sec.style.display = 'none');
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) targetSection.style.display = 'block';
-    });
-  }
+    // Hide all sections, including dashboard
+    sections.forEach(sec => sec.style.display = 'none');
+
+    // Show only the clicked section
+    const targetSection = document.getElementById(targetId);
+    if (targetSection) targetSection.style.display = 'block';
+  });
 });
+
 
 
   function toggleConfirmAll() {
