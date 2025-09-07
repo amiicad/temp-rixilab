@@ -10,7 +10,10 @@ router.get("/admin", authRole("admin"), async (req, res) => {
     const adminId = req.session.user;
 
     const admin = await User.findById(adminId);
-    if (!admin) return res.status(404).send("Admin not found");
+    if (!admin) {
+      req.flash("error", "Admin not found");
+      return res.redirect("/login");
+    };
 
     // Interns in this admin’s domain with projects populated
     const interns = await User.find({ role: "intern", domain: admin.domain })
@@ -22,11 +25,12 @@ router.get("/admin", authRole("admin"), async (req, res) => {
     // Projects created in this domain
     const projects = await Project.find({ domain: admin.domain }); 
 
-    req.flash("success_msg", "Welcome to Admin Dashboard");
+    req.flash("info", `Welcome ${admin.name}`); 
     res.render("admin", { admin, interns, projects, batches });
   } catch (err) {
-    console.error("🔥 Admin dashboard error:", err);
-    res.status(500).send("Server Error");
+    console.error(err);
+    req.flash("error", "Server Error");
+    res.redirect("/login");
   }
 });
 

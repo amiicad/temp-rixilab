@@ -8,6 +8,7 @@ router.get("/superAdmin", authRole("superAdmin"), async (req, res) => {
    const batches = [...new Set(interns.map(i => i.batch_no))];
    const admins = await User.find({ role: "admin" });
    const superAdmin = await User.findOne({ role: "superAdmin" });
+   req.flash('info', `Welcome  ${superAdmin.name}`);
    res.render("superAdmin", { interns, admins, superAdmin, batches });
 });
 module.exports = router;

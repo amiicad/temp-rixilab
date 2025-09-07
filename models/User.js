@@ -17,7 +17,19 @@ const userSchema = new mongoose.Schema({
   emp_id: { type: String, unique: true ,sparse: true },
   designation: { type: String },
   batch_no:{ type: String},
-  certificate_id: { type: String, unique: true ,sparse: true },
+    certificate_id: {
+    type: String,
+    unique: true,
+    default: function () {
+      // Generate a unique temporary certificate ID
+      return `TEMP-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+    }
+  },
+  certificate_link: { type: String , default: "" },
+  offer_letter: { type: String , default: "" },
+  img_url: { type: String },
+  joining_date: { type: Date, default: Date.now },
+  lastLogin: { type: Date },
 projectAssigned: [
     {
       projectId: {

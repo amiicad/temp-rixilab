@@ -18,6 +18,7 @@ router.get("/admin/intern/:internId", authRole(['admin','superAdmin']), async (r
       console.log("Progress:", progress);
 
   const projects = await Project.find({ domain: intern.domain });
+  req.flash('info', `Viewing Intern: ${intern.name}`);
   res.render("intern", { intern, projects,progress });
 });
 module.exports = router;

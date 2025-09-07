@@ -25,7 +25,7 @@ router.post("/login", async (req, res) => {
     req.session.user = user._id;
     req.session.role = user.role;
 
-    req.flash("success", `Welcome back, ${user.name}!`);
+    req.flash("success", `Welcome, ${user.name.trim()}!`);
 
     // ✅ Role-based redirect
     if (user.role === "admin") {

@@ -26,14 +26,28 @@
     .section-title { font-weight: 600; margin-bottom: 15px; }
     .modal-header { background-color: #343a40; color: white; }
     .nav{background-color: #ffc197; color:black; }
+    .sidebar a.active {
+     background-color: #0d6efd;  /* Bootstrap primary */
+     color: #fff;
+}
+
+   /* .main-content {
+  margin-left: 250px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+.main-content section {
+  flex: 1;
+} */
   </style>
 </head>
 <body>
-<div class="d-flex">
+<div class="d-flex flex-grow-1">
 <%- include("partials/toaster") %>
 
   <!-- Sidebar -->
-  <div class="sidebar position-fixed w-20">
+  <div class="sidebar position-fixed w-20 ">
     <h2 class="text-center"><img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab</h2>
     <h4 class="text-center">Admin Panel</h4>
     <br/>
@@ -44,23 +58,67 @@
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
     <a href="#submittedProjects" style="margin-right: 4rem;"><i class="bi bi-folder2-open"></i> Submitted Project</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
-    <!-- <button id="dashboard" class="btn">Dashboard</button>
-    <button id="viewInterns" class="btn">View Interns</button>
-    <button id="createProject" class="btn">Create Projects</button>
-    <button id="uploadProject" class="btn">Upload Project</button>
-    <button id="viewProjects" class="btn">View Projects</button>
-    <button id="submittedProjects" class="btn">Submitted Projects</button>
-    <button class="btn"><a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></button> -->
+
   </div>
 
   <!-- Main Content -->
   <div class="main-content flex-grow-1" >
-    <div>
+
+    <!--Header Section -->
+    <div class="header mb-4">
       <h4 class="section-title mb-4 nav" style="padding: 30px; ">Welcome to Rixi Lab, <%= admin.name %>, <%=admin.designation%></h4>
     </div>
-      <section id="dashboard">
-        <h4 class="section-title mb-4 " style="padding: 30px; ">Admin Dashboard</h4>
-      </section>
+
+    
+    <!-- Dashboard Section -->
+
+      <section id="dashboard" class="py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Admin Dashboard</h4>
+    <!-- Admin Profile -->
+    <div class="d-flex align-items-center gap-3">
+      <img src="<%= admin.img_url %>" 
+           alt="Admin Image" 
+           class="rounded-circle shadow-sm" 
+           style="width:60px; height:60px; object-fit:cover;">
+      <!-- <div>
+        <h6 class="mb-0 fw-semibold"><%= admin.name %></h6>
+        <small class="text-muted"><%= admin.role %></small>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 text-center p-3">
+        <div class="card-body">
+          <h6 class="text-muted">Total Interns</h6>
+          <p class="display-5 fw-bold text-primary mb-0"><%= interns.length %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 text-center p-3">
+        <div class="card-body">
+          <h6 class="text-muted">Total Projects</h6>
+          <p class="display-5 fw-bold text-success mb-0"><%= projects.length %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 text-center p-3">
+        <div class="card-body">
+          <h6 class="text-muted">Total Batches</h6>
+          <p class="display-5 fw-bold text-info mb-0"><%= batches.length %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
       <!-- Create Intern -->
    <section id="createUser" style="display:none;">
   <h4 class="section-title">Create Intern</h4>
@@ -69,23 +127,24 @@
       <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
       <div class="col-md-6"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
 
-      <div class="col-md-6"><input type="password" name="password" class="form-control" placeholder="Password" required></div>
+      <div class="col-md-6"><input type="text" name="password" class="form-control" placeholder="Password" required></div>
       <div class="col-md-6"><input type="text" name="domain" class="form-control" placeholder="<%= admin.domain %>" value="<%= admin.domain %>" readonly></div>
 
-      <div class="col-md-6"><input type="text" name="college" class="form-control" placeholder="College" required ></div>
-      <div class="col-md-6"><input type="text" name="university" class="form-control" placeholder="University" required></div>
-
       <div class="col-md-6"><input type="text" name="phone" class="form-control" placeholder="Phone" required></div>
-      <div class="col-md-6"><input type="text" name="branch" class="form-control" placeholder="Branch" required></div>
+      <div class="col-md-6"><input type="text" name="intern_id" class="form-control" placeholder="Intern ID" required></div>
+
+      <div class="col-md-6"><input type="text" name="university" class="form-control" placeholder="University" required></div>
+      <div class="col-md-6"><input type="text" name="college" class="form-control" placeholder="College" required ></div>
 
       <div class="col-md-6"><input type="text" name="course" class="form-control" placeholder="Course" required></div>
+      <div class="col-md-6"><input type="text" name="branch" class="form-control" placeholder="Branch" required></div>
+      
       <div class="col-md-6"><input type="text" name="year_sem" class="form-control" placeholder="Year/Sem" required></div>
-
-      <div class="col-md-6"><input type="text" name="intern_id" class="form-control" placeholder="Intern ID" required></div>
       <div class="col-md-6"><input type="text" name="duration" class="form-control" placeholder="Duration" required></div>
 
       <div class="col-md-6"><input type="text" name="batch_no" class="form-control" placeholder="Batch" required></div>
-      <div class="col-md-6"><input type="text" name="certificate_id" class="form-control" placeholder="Certificate ID"></div>
+ 
+      <div class="col-md-6"><input type="text" name="offer_letter" class="form-control" placeholder="Offer Letter Link" ></div>
       <div class="col-md-6 mx-auto "><button class="btn btn-primary w-100">Create</button></div>
     </form>
   </div>
@@ -93,54 +152,69 @@
 
 
     <!-- Upload Project -->
-   <section id="uploadProject" style="display:none;">
-  <h4 class="section-title">Upload Project</h4>
-  <div class="card p-4 shadow-sm mb-4">
-    <form method="POST" action="/admin/projects" class="row g-3 needs-validation" novalidate>
-      
-      <div class="col-md-3">
-        <input type="text" name="title" class="form-control" placeholder="Project Title" required>
-      </div>
+<section id="uploadProject" style="display:none;">
+  <h4 class="section-title mb-4">Upload Project</h4>
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <form method="POST" action="/admin/projects" class="row g-4 needs-validation" novalidate>
+        
+        <!-- Row 1 -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Project Title</label>
+          <input type="text" name="title" class="form-control" placeholder="Enter project title" required>
+        </div>
+        
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Description</label>
+          <input type="text" name="description" class="form-control" placeholder="Enter short description" required>
+        </div>
 
-      <div class="col-md-3">
-        <input type="text" name="description" class="form-control" placeholder="Description" required>
-      </div>
+        <!-- Row 2 -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Download Link</label>
+          <input type="url" name="downloadLink" class="form-control" placeholder="Paste download link" required>
+        </div>
+        
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Upload Link</label>
+          <input type="url" name="uploadLink" class="form-control" placeholder="Paste upload link" required>
+        </div>
 
-      <div class="col-md-3">
-        <input type="url" name="downloadLink" class="form-control" placeholder="Download Link" required>
-      </div>
+        <!-- Row 3 -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Batch</label>
+          <select name="batch_no" class="form-select" required>
+            <option value="" disabled selected>Select Batch</option>
+            <% batches.forEach(b => { %>
+              <option value="<%= b %>"><%= b %></option>
+            <% }) %>
+          </select>
+        </div>
 
-      <div class="col-md-3">
-        <input type="url" name="uploadLink" class="form-control" placeholder="Upload Link" required>
-      </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Week</label>
+          <select name="week" class="form-select" required>
+            <option value="" disabled selected>Select Week</option>
+            <% for (let i = 1; i <= 8; i++) { %>
+              <% if (i !== 5 && i !== 7) { %>
+                <option value="<%= i %>">Week <%= i %></option>
+              <% } %>
+            <% } %>
+          </select>
+        </div>
 
-      <div class="col-md-3">
-        <select name="batch_no" class="form-select" required>
-          <option value="" disabled selected>Select Batch</option>
-          <% batches.forEach(b => { %>
-            <option value="<%= b %>"><%= b %></option>
-          <% }) %>
-        </select>
-      </div>
+        <!-- Button Row -->
+        <div class="col-12 text-center mt-3">
+          <button class="btn btn-primary px-5 py-2 ">
+            Create Project
+          </button>
+        </div>
 
-      <div class="col-md-3" >
-        <select name="week" class="form-select" required>
-  <option value="" disabled selected>Select Week</option>
-  <% for (let i = 1; i <= 8; i++) { %>
-    <% if (i !== 5 && i !== 7) { %>
-      <option value="<%= i %>">Week <%= i %></option>
-    <% } %>
-  <% } %>
-</select>
-
-      </div>
-
-      <div class="col-md-3">
-        <button class="btn btn-primary w-100">Create</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </section>
+
 
 
 
@@ -195,42 +269,95 @@
 
         <!-- Update Intern Modal -->
         <div class="modal fade" id="updateModal<%= i._id %>" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Update <%= i.name.trim() %></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
-                <div class="modal-body">
-                  <label class="form-label">Name:</label>
-                  <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
-                  <label class="form-label">Email:</label>
-                  <input type="email" name="email" class="form-control mb-2" value="<%= i.email %>" required>
-                  <label class="form-label">Phone:</label>
-                  <input type="text" name="phone" class="form-control mb-2" value="<%= i.phone %>">
-                  <label class="form-label">College:</label>
-                  <input type="text" name="college" class="form-control mb-2" value="<%= i.college %>">
-                  <label class="form-label">University:</label>
-                  <input type="text" name="university" class="form-control mb-2" value="<%= i.university %>">
-                  <label class="form-label">Course:</label>
-                  <input type="text" name="course" class="form-control mb-2" value="<%= i.course %>">
-                  <label class="form-label">Branch:</label>
-                  <input type="text" name="branch" class="form-control mb-2" value="<%= i.branch %>">
-                  <label class="form-label">Y/S:</label>
-                  <input type="text" name="year_sem" class="form-control mb-2" value="<%= i.year_sem %>">
-                  <label class="form-label">Batch No:</label>
-                  <input type="text" name="batch_no" class="form-control mb-2" value="<%= i.batch_no %>" readonly>
-                  <label class="form-label">Certificate ID:</label>
-                  <input type="text" name="certificate_id" class="form-control" value="<%= i.certificate_id %>">
-                </div>
-                <div class="modal-footer">
-                  <button class="btn btn-warning btn-sm">Update</button>
-                </div>
-              </form>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update <%= i.name.trim() %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
+        <div class="modal-body">
+          <div class="row">
+            <!-- Name + Email -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Name:</label>
+              <input type="text" name="name" class="form-control" value="<%= i.name %>" required>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Email:</label>
+              <input type="email" name="email" class="form-control" value="<%= i.email %>" required>
+            </div>
+
+            <!-- Phone + College -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Phone:</label>
+              <input type="text" name="phone" class="form-control" value="<%= i.phone %>">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">College:</label>
+              <input type="text" name="college" class="form-control" value="<%= i.college %>">
+            </div>
+
+            <!-- Batch No + Certificate ID -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Batch No:</label>
+              <input type="text" name="batch_no" class="form-control" value="<%= i.batch_no %>" readonly>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Certificate ID:</label>
+              <input type="text" name="certificate_id" class="form-control" value="<%= i.certificate_id %>">
+            </div>
+
+            <!-- University + Course -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">University:</label>
+              <input type="text" name="university" class="form-control" value="<%= i.university %>">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Course:</label>
+              <input type="text" name="course" class="form-control" value="<%= i.course %>">
+            </div>
+
+            <!-- Branch + Year/Sem -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Branch:</label>
+              <input type="text" name="branch" class="form-control" value="<%= i.branch %>">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Y/S:</label>
+              <input type="text" name="year_sem" class="form-control" value="<%= i.year_sem %>">
+            </div>
+
+            <!-- Duration + Intern ID -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Duration:</label>
+              <input type="text" name="duration" class="form-control" value="<%= i.duration%>">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Intern ID:</label>
+              <input type="text" name="intern_id" class="form-control" value="<%= i.intern_id %>" readonly>
+            </div>
+
+            <!-- Offer Letter + Certificate Link -->
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Offer Letter Link:</label>
+              <input type="text" name="offer_letter" class="form-control" value="<%= i.offer_letter %>">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Certificate Link:</label>
+              <input type="text" name="certificate_link" class="form-control" value="<%= i.certificate_link %>">
             </div>
           </div>
         </div>
+        <div class="modal-footer justify-content-center">
+          <button type="submit" class="btn btn-warning btn-sm">Update</button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
       </div>
     <% }) %>
   </div>
@@ -246,7 +373,7 @@
   <div class="mb-3">
     <label for="projectBatchFilter" class="form-label">Select Batch</label>
     <select id="projectBatchFilter" class="form-select" onchange="filterProjectsByBatch()">
-      <option value="all" selected>All Batches</option  >
+      <option value="all" selected>All Batches</option>
       <% batches.forEach(batch => { %>
         <option value="<%= batch %>">Batch <%= batch %></option>
       <% }) %>
@@ -257,61 +384,95 @@
   <div class="row row-cols-1 row-cols-md-1 g-8">
     <% projects.forEach(p => { %>
       <div class="col project-card" data-batch="<%= p.batch_no %>">
-       <div class="card shadow-sm border-primary mb-3">
-   <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="card shadow-sm border-primary mb-3">
+          <div class="card-body d-flex justify-content-between align-items-center">
 
-    <!-- Left side: all details in one line -->
-    <div class="d-flex gap-4 align-items-center">
-      <span><strong>Title:</strong> <%= p.title %></span>
-      <span><strong>Week:</strong> <%= p.week %></span>
-      <span><strong>Batch:</strong> <%= p.batch_no %></span>
-      <span><strong>Description:</strong> <%= p.domain %></span>
-    </div>
+            <!-- Left side: all details in one line -->
+            <div class="d-flex gap-4 align-items-center">
+              <span><strong>Title:</strong> <%= p.title %></span>
+              <span><strong>Week:</strong> <%= p.week %></span>
+              <span><strong>Batch:</strong> <%= p.batch_no %></span>
+              <span><strong>Description:</strong> <%= p.domain %></span>
+            </div>
 
-    <!-- Right side: buttons -->
-    <div class="d-flex gap-2">
-      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
-        Update
-      </button>
-       <form action="/delete-project/<%= p._id %>" method="POST" style="display:inline;">
-    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete <%= p.title %>?')">
-      Delete
-    </button>
-  </form>
-    </div>
+            <!-- Right side: buttons -->
+            <div class="d-flex gap-2">
+              <!-- Update Button -->
+              <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">
+                Update
+              </button>
 
-  </div>
-</div>
+              <!-- Delete Button -->
+              <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProjectModal<%= p._id %>">
+                Delete
+              </button>
+            </div>
 
-              <div class="modal fade" id="updateModal<%= p._id %>" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header"><h5 class="modal-title">Update <%= p.name %></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                  <form action="/admin/project/update/<%= p._id %>" method="POST">
-                    <div class="modal-body">
-                      <label class="form-label">Title : </label>
-                      <input type="text" name="title" class="form-control mb-2" value="<%= p.title %>" required>
-                      <label class="form-label">Description : </label>
-                      <textarea name="description" class="form-control mb-2"><%= p.description %></textarea>
-                      <label class="form-label">Domain</label>
-                      <input type="text" name="domain" class="form-control" value="<%= p.domain %>">
-                      <label class="form-label">Week : </label>
-                      <input type="number" name="week" class="form-control" value="<%= p.week %>" min="1" max="8" required>
-                      <label class="form-label">Batch : </label>
-                      <input type="number" name="batch_no" class="form-control" value="<%= p.batch_no %>">
-                      <label class="form-label">Upload Link : </label>
-                      <input type="text" name="uploadLink" class="form-control" value="<%= p.uploadLink %>">
-                      <label class="form-label">Download Link : </label>
-                      <input type="text" name="downloadLink" class="form-control" value="<%= p.downloadLink %>">
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                  </form>
+          </div>
+        </div>
+
+        <!-- Update Modal -->
+        <div class="modal fade" id="updateModal<%= p._id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update <%= p.title %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <form action="/admin/project/update/<%= p._id %>" method="POST">
+                <div class="modal-body">
+                  <label class="form-label">Title :</label>
+                  <input type="text" name="title" class="form-control mb-2" value="<%= p.title %>" required>
+
+                  <label class="form-label">Description :</label>
+                  <textarea name="description" class="form-control mb-2"><%= p.description %></textarea>
+
+                  <label class="form-label">Domain :</label>
+                  <input type="text" name="domain" class="form-control" value="<%= p.domain %>">
+
+                  <label class="form-label">Week :</label>
+                  <input type="number" name="week" class="form-control" value="<%= p.week %>" min="1" max="8" required>
+
+                  <label class="form-label">Batch :</label>
+                  <input type="number" name="batch_no" class="form-control" value="<%= p.batch_no %>">
+
+                  <label class="form-label">Upload Link :</label>
+                  <input type="text" name="uploadLink" class="form-control" value="<%= p.uploadLink %>">
+
+                  <label class="form-label">Download Link :</label>
+                  <input type="text" name="downloadLink" class="form-control" value="<%= p.downloadLink %>">
                 </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteProjectModal<%= p._id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete <%= p.title %>?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this project?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="/delete-project/<%= p._id %>" method="POST" style="display:inline;">
+                  <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
               </div>
             </div>
+          </div>
+        </div>
+
       </div>
     <% }) %>
   </div>
@@ -319,20 +480,18 @@
 
 
 
+
     <!-- Submitted Projects -->
 <section id="submittedProjects" style="display:none;">
   <h4 class="section-title">Submitted Projects</h4>
 
-  <% 
-    var currentSubmittedBatch = typeof submittedBatch !== 'undefined' ? submittedBatch : 'all';
-  %>
+  <% var currentSubmittedBatch = typeof submittedBatch !== 'undefined' ? submittedBatch : 'all'; %>
 
   <!-- Filters -->
-  <div class="mb-3 d-flex  align-items-center flex-wrap gap-3">
+  <div class="mb-3 d-flex align-items-center flex-wrap gap-3">
     <!-- Batch Filter -->
     <div>
-      <!-- <label for="submittedBatchFilter" class="form-label">Select Batch</label> -->
-      <select class="form-select" id="submittedBatchFilter" onchange="applyFilters()">
+      <select class="form-select" id="submittedBatchFilter" onchange="applySubmittedFilters()">
         <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
         <% batches.forEach(batch => { %>
           <option value="<%= batch %>" <%= currentSubmittedBatch === batch ? 'selected' : '' %>>Batch <%= batch %></option>
@@ -340,15 +499,15 @@
       </select>
     </div>
 
-    <!-- Intern Search -->
+    <!-- Intern Search (UNIQUE ID) -->
     <div>
-      <!-- <label for="internSearch" class="form-label">Search by Intern ID</label> -->
-      <input type="text" id="internSearch" class="form-control" placeholder="Enter Intern ID" onkeyup="applyFilters()">
+      <input type="text" id="submittedInternSearch" class="form-control"
+             placeholder="Enter Intern ID" onkeyup="applySubmittedFilters()">
     </div>
 
     <!-- Clear Filters -->
     <div class="align-self-end">
-      <button class="btn btn-secondary " onclick="clearFilters()">Clear Filters</button>
+      <button class="btn btn-secondary" onclick="clearSubmittedFilters()">Clear Filters</button>
     </div>
   </div>
 
@@ -357,37 +516,37 @@
       <% if (Array.isArray(intern.projectAssigned) && intern.projectAssigned.length > 0) { %>
         <% if (currentSubmittedBatch === 'all' || intern.batch_no === currentSubmittedBatch) { %>
           <div class="col mb-3 intern-card" data-batch="<%= intern.batch_no %>">
-            <div class="card shadow-sm " style="border-color: #ff6600 !important;">
+            <div class="card shadow-sm" style="border-color: #ff6600 !important;">
               <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3 ">
-               <span class="h5 mb-0">
-                  <%= intern.name %> (<%= intern.batch_no %>)
-               </span>
-               <span>
-                 <b>Email:</b> <%= intern.email %>&nbsp;&nbsp; <b>Intern ID:</b> <%= intern.intern_id %>
-               </span>
-            </div>
-
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="h5 mb-0"><%= intern.name %> (<%= intern.batch_no %>)</span>
+                  <span>
+                    <b>Email:</b> <%= intern.email %>&nbsp;&nbsp;
+                    <b>Intern ID:</b>
+                    <span class="intern-id d-none"><%= intern.intern_id %></span>
+                    <%= intern.intern_id %>
+                  </span>
+                </div>
 
                 <table class="table table-bordered">
                   <thead>
-                    <tr>
+                    <tr style="text-align:center;">
                       <th>Project Title</th>
                       <th>Week</th>
                       <th>Status</th>
                       <th>Update Status</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody style="text-align:center;">
                     <% intern.projectAssigned.forEach(sub => { %>
                       <tr>
                         <td><%= sub.projectId ? sub.projectId.title : 'N/A' %></td>
                         <td>Week <%= sub.week %></td>
                         <td>
-                          <% 
+                          <%
                             let badgeClass = 'badge-pending';
-                            if(sub.status === 'accepted') badgeClass = 'badge-approved';
-                            else if(sub.status === 'rejected') badgeClass = 'badge-rejected';
+                            if (sub.status === 'accepted') badgeClass = 'badge-approved';
+                            else if (sub.status === 'rejected') badgeClass = 'badge-rejected';
                           %>
                           <span class="badge <%= badgeClass %>"><%= sub.status %></span>
                         </td>
@@ -395,12 +554,10 @@
                           <form method="POST" action="/admin/projects/update-status" class="d-flex align-items-center gap-2">
                             <input type="hidden" name="userId" value="<%= intern._id %>">
                             <input type="hidden" name="projectId" value="<%= sub.projectId ? sub.projectId._id : sub.projectId %>">
-
                             <select name="status" class="form-select form-select-sm">
                               <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
                               <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
                             </select>
-
                             <button type="submit" class="btn btn-primary btn-sm">Update</button>
                           </form>
                         </td>
@@ -420,6 +577,10 @@
 
 
 
+<!-- JS for Filters -->
+
+
+
 
    
 
@@ -428,26 +589,8 @@
 </div>
 
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/admi.js"></script>
 <script>
-//   const sidebarLinks = document.querySelectorAll('.sidebar a');
-//   const sections = document.querySelectorAll('.main-content section');
-
-// sidebarLinks.forEach(link => {
-//   const href = link.getAttribute('href');
-
-//   if (href.startsWith("#")) {
-//     link.addEventListener('click', e => {
-//       e.preventDefault();
-//       const targetId = href.substring(1);
-//       sections.forEach(sec => sec.style.display = 'none');
-//       const targetSection = document.getElementById(targetId);
-//       if (targetSection){
-//        targetSection.style.display = 'block';
-//        const dashboard = document.getElementById('dashboard').style.display = 'none';
-//       }
-//     });
-//   }
-// });
 
 const sidebarLinks = document.querySelectorAll('.sidebar a[href^="#"]');
 const sections = document.querySelectorAll('.main-content section');
@@ -560,12 +703,60 @@ function clearInternFilters() {
   document.getElementById("internSearch").value = "";
   applyInternFilters();
 }
+
+
+document.querySelectorAll('.sidebar a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+  });
+});
+
+
   // Run once on page load to hide all
   window.addEventListener('DOMContentLoaded', (event) => {
     filterByBatch();
     filterProjectsByBatch();
     filterSubmittedProjects('<%= currentSubmittedBatch %>');
   });
+
+
+    // Scoped helpers (Submitted Projects only)
+  function getSubmittedSection() {
+    return document.getElementById('submittedProjects');
+  }
+
+  function filterSubmittedByBatch(card, batchFilter) {
+    const cardBatch = (card.getAttribute('data-batch') || '').toLowerCase();
+    return (batchFilter === 'all' || cardBatch === batchFilter);
+  }
+
+  function filterSubmittedByIntern(card, internSearch) {
+    const internId = (card.querySelector('.intern-id')?.textContent || '').toLowerCase().trim();
+    return (internSearch === '' || internId.includes(internSearch));
+  }
+
+  function applySubmittedFilters() {
+    const section = getSubmittedSection();
+    const batchFilter = section.querySelector('#submittedBatchFilter').value.toLowerCase();
+    const internSearch = section.querySelector('#submittedInternSearch').value.toLowerCase().trim();
+    const cards = section.querySelectorAll('.intern-card');
+
+    cards.forEach(card => {
+      const matchesBatch = filterSubmittedByBatch(card, batchFilter);
+      const matchesIntern = filterSubmittedByIntern(card, internSearch);
+      card.style.display = (matchesBatch && matchesIntern) ? '' : 'none';
+    });
+  }
+
+  function clearSubmittedFilters() {
+    const section = getSubmittedSection();
+    section.querySelector('#submittedBatchFilter').value = 'all';
+    section.querySelector('#submittedInternSearch').value = '';
+    applySubmittedFilters();
+  }
+
+  document.addEventListener('DOMContentLoaded', applySubmittedFilters);
 </script>
 </body>
 </html>

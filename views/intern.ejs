@@ -99,7 +99,7 @@
                   <h5>Internship Offer Letter</h5>
                   <p>Download your offer later from here</p>
                 </div>
-                <a href="/offer_letter/{{Intern_ID}}.pdf" download="">
+                <a href="<%= intern.offer_letter %>" target="_blank">
                   <div class="info-icon">
                     <i class="bi bi-download"></i>
                   </div>
@@ -114,7 +114,7 @@
                   <h5>Internship Certificate</h5>
                   <p>Currently not available</p>
                 </div>
-                <a href="#">
+                <a href="<%= intern.certificate_link %>" target="_blank">
                   <div class="info-icon">
                     <i class="bi bi-download"></i>
                   </div>

@@ -59,7 +59,7 @@ router.post("/create-user", authRole("admin"), async (req, res) => {
       await user.save();
     }
      req.flash("success", `Intern ${name} created successfully!`);
-    console.log(`✅ Intern ${user.name} created & synced with ${eligibleProjects.length} projects`);
+    console.log(`✅ Intern ${user.name} created & synced with ${eligibleProjects.length} projects`,user);
     res.redirect("/admin");
 
   } catch (err) {  

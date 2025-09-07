@@ -7,7 +7,10 @@ const Project = require("../models/Project");
 router.get("/intern", authRole("intern"), async (req, res) => {
   try {
     const intern = await User.findById(req.session.user);
-    if (!intern) return res.status(404).send("Intern not found");
+    if (!intern) {
+      req.flash("error", "Intern not found");
+      return res.redirect("/login");
+    }
 
     // fetch projects for intern’s domain + batch
     let projects = await Project.find({ 

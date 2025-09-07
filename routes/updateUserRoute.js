@@ -22,12 +22,12 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
         designation
       });
 
-      return res.redirect('/superAdmin#viewAdmin');
+      return res.redirect('/superAdmin');
     }
 
     // Admin updating an intern
     if (user.role === "intern" && req.session.role === "admin") {
-      const { name, email, domain, college, university, year_sem, phone, branch,batch_no, certificate_id} = req.body;
+      const { name, email, domain, college, university, year_sem, phone, branch,batch_no, certificate_id,offer_letter,certificate_link,duration} = req.body;
 
       await User.findByIdAndUpdate(req.params.id, {
         name,
@@ -39,19 +39,23 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
         phone,
         branch,
         batch_no,
-        certificate_id
+        certificate_id,
+        offer_letter,
+        certificate_link,
+        duration
       });
       req.flash('success', 'Intern Updated Successfully!');
       return res.redirect('/admin#viewInterns');
     }
 
     // If role mismatch
-    req.flash('error', 'Access Denied');
+    req.flash('error', err.message);
+    console.log(err);
     return res.redirect('/login');
 
   } catch (err) {
     console.error("Update Error:", err);
-    return res.status(500).send("Failed to update user");
+    req.flash("error",err.message);
   }
 });
 module.exports = router;
