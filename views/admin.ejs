@@ -132,93 +132,103 @@
 
 
     <!-- View Interns (Default) -->
-    <section id="viewInterns" style="display:none;">
-      <h4 class="section-title">Interns <%= admin.domain %></h4>
-       <!-- Batch Dropdown -->
-      <div class="mb-3">
-        <label for="batchFilter" class="form-label">Select Batch</label>
-        <select id="batchFilter" class="form-select" onchange="filterByBatch()">
-          <option value="all" selected>All Batches</option>
-          <% batches.forEach(batch => { %>
-            <option value="<%= batch %>">Batch <%= batch %></option>
-          <% }) %>
-        </select>
-      </div>
+<section id="viewInterns" style="display:none;">
+  <h4 class="section-title">Interns <%= admin.domain %></h4>
 
-      <div class="row row-cols-1 row-cols-md-1 g-8">
-        <% interns.forEach(i => { %>
-          <div class="col intern-card" data-batch="<%= i.batch_no %>">
-     <div class="card shadow-sm  mb-3">
-  <div class="card-body d-flex justify-content-between align-items-center">
+  <!-- Batch Dropdown -->
+  <div class="mb-3">
+    <label for="batchFilter" class="form-label">Select Batch</label>
+    <select id="batchFilter" class="form-select" onchange="filterByBatch()">
+      <option value="all" selected>All Batches</option>
+      <% batches.forEach(batch => { %>
+        <option value="<%= batch %>">Batch <%= batch %></option>
+      <% }) %>
+    </select>
+  </div>
 
-    <!-- Left side: data in aligned columns -->
-    <div class="row w-100">
-      <div class="col-md-3">
-        <strong>Name:</strong> <%= i.name %>
-      </div>
-      <div class="col-md-3">
-        <strong>Email:</strong> <%= i.email %>
-      </div>
-      <div class="col-md-3">
-        <strong>Duration:</strong> <%= i.duration %><span> weeks</span>
-      </div>
-      <div class="col-md-3">
-        <strong>Intern ID:</strong> <%= i.intern_id %>
-      </div>
+  <!-- Intern Cards -->
+  <div class="row row-cols-1 row-cols-md-1 g-8">
+    <% interns.forEach(i => { %>
+      <div class="col intern-card" data-batch="<%= i.batch_no %>">
+        <div class="card shadow-sm mb-3">
+         <div class="card-body">
+  <div class="row w-100 align-items-center">
+    <div class="col-md-3">
+      <strong>Name:</strong> <%= i.name %>
     </div>
-
-    <!-- Right side: buttons -->
-   <div class="d-flex gap-2">
+    <div class="col-md-3">
+      <strong>Email:</strong> <%= i.email %>
+    </div>
+    <div class="col-md-2">
+      <strong>Duration:</strong> <%= i.duration %> weeks
+    </div>
+    <div class="col-md-2">
+      <strong>Intern ID:</strong> <%= i.intern_id %>
+    </div>
+    <!-- Buttons on the same line -->
+    <div class="col-md-2 d-flex gap-2 justify-content-end">
       <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm">View</a>
       <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">
         Update
       </button>
     </div>
-
   </div>
+</div>
 
-
-            <!-- Update Intern -->
-            <div class="modal fade" id="updateModal<%= i._id %>" tabindex="-1" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header"><h5 class="modal-title">Update <%= i.name %></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                  <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
-                    <div class="modal-body">
-                      <label class="form-label">Name : </label>
-                      <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
-                      <label class="form-label">Email : </label>
-                      <input type="email" name="email" class="form-control mb-2" value="<%= i.email %>" required>
-                      <label class="form-label">Phone : </label>
-                      <input type="text" name="phone" class="form-control" value="<%= i.phone %>">
-                      <label class="form-label">College : </label>
-                      <input type="text" name="college" class="form-control" value="<%= i.college %>">
-                      <label class="form-label">University : </label>
-                      <input type="text" name="university" class="form-control" value="<%= i.university %>">
-                      <label class="form-label">Course : </label>
-                      <input type="text" name="course" class="form-control" value="<%= i.course %>">
-                      <label class="form-label">Branch : </label>
-                      <input type="text" name="branch" class="form-control" value="<%= i.branch %>">
-                      <label class="form-label">Y/S : </label>
-                      <input type="text" name="year_sem" class="form-control" value="<%= i.year_sem %>">
-                      <label class="form-label">Batch No : </label>
-                      <input type="text" name="batch_no" class="form-control" value="<%= i.batch_no %>" readonly>
-                      <label class="form-label">Certificate ID : </label>
-                      <input type="text" name="certificate_id" class="form-control" value="<%= i. certificate_id %>" >
-                    </div>
-                    <div class="modal-footer">
-                      <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> -->
-                      <button class="btn btn-warning btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        <% }) %>
+        </div>
       </div>
-    </section>
+
+      <!-- Update Intern Modal -->
+      <div class="modal fade" id="updateModal<%= i._id %>" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update <%= i.name %></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/update-user/<%= i._id %>" method="POST" class="needs-validation" novalidate>
+              <div class="modal-body">
+                <label class="form-label">Name:</label>
+                <input type="text" name="name" class="form-control mb-2" value="<%= i.name %>" required>
+
+                <label class="form-label">Email:</label>
+                <input type="email" name="email" class="form-control mb-2" value="<%= i.email %>" required>
+
+                <label class="form-label">Phone:</label>
+                <input type="text" name="phone" class="form-control mb-2" value="<%= i.phone %>">
+
+                <label class="form-label">College:</label>
+                <input type="text" name="college" class="form-control mb-2" value="<%= i.college %>">
+
+                <label class="form-label">University:</label>
+                <input type="text" name="university" class="form-control mb-2" value="<%= i.university %>">
+
+                <label class="form-label">Course:</label>
+                <input type="text" name="course" class="form-control mb-2" value="<%= i.course %>">
+
+                <label class="form-label">Branch:</label>
+                <input type="text" name="branch" class="form-control mb-2" value="<%= i.branch %>">
+
+                <label class="form-label">Y/S:</label>
+                <input type="text" name="year_sem" class="form-control mb-2" value="<%= i.year_sem %>">
+
+                <label class="form-label">Batch No:</label>
+                <input type="text" name="batch_no" class="form-control mb-2" value="<%= i.batch_no %>" readonly>
+
+                <label class="form-label">Certificate ID:</label>
+                <input type="text" name="certificate_id" class="form-control" value="<%= i.certificate_id %>">
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-warning btn-sm">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
 
     <!-- View Projects -->
 <section id="viewProjects" style="display:none;">
@@ -301,19 +311,32 @@
   <h4 class="section-title">Submitted Projects</h4>
 
   <% 
-    // Local variable for batch filtering
     var currentSubmittedBatch = typeof submittedBatch !== 'undefined' ? submittedBatch : 'all';
   %>
 
-  <!-- Batch Filter -->
-  <div class="mb-3">
-    <label for="submittedBatchFilter" class="form-label">Select Batch</label>
-    <select class="form-select" onchange="filterSubmittedProjects(this.value)">
-      <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
-      <% batches.forEach(batch => { %>
-        <option value="<%= batch %>" <%= currentSubmittedBatch === batch ? 'selected' : '' %>>Batch <%= batch %></option>
-      <% }) %>
-    </select>
+  <!-- Filters -->
+  <div class="mb-3 d-flex  align-items-center flex-wrap gap-3">
+    <!-- Batch Filter -->
+    <div>
+      <label for="submittedBatchFilter" class="form-label">Select Batch</label>
+      <select class="form-select" id="submittedBatchFilter" onchange="applyFilters()">
+        <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
+        <% batches.forEach(batch => { %>
+          <option value="<%= batch %>" <%= currentSubmittedBatch === batch ? 'selected' : '' %>>Batch <%= batch %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <!-- Intern Search -->
+    <div>
+      <label for="internSearch" class="form-label">Search by Intern ID</label>
+      <input type="text" id="internSearch" class="form-control" placeholder="Enter Intern ID" onkeyup="applyFilters()">
+    </div>
+
+    <!-- Clear Filters -->
+    <div class="align-self-end">
+      <button class="btn btn-secondary mt-4" onclick="clearFilters()">Clear Filters</button>
+    </div>
   </div>
 
   <div class="row row-cols-1 row-cols-md-1 g-8">
@@ -323,8 +346,12 @@
           <div class="col mb-3 intern-card" data-batch="<%= intern.batch_no %>">
             <div class="card shadow-sm border-primary">
               <div class="card-body">
-                <h5><%= intern.name %> (<%= intern.batch_no %>)</h5>
-                <p>Email: <%= intern.email %></p>
+                <h5>
+                  <%= intern.name %> (<%= intern.batch_no %>)
+                  <!-- Hidden intern ID for filtering -->
+                  <span class="intern-id d-none"><%= intern.intern_id %></span>
+                </h5>
+                <p>Email: <%= intern.email %> <%= intern.intern_id %></p>
 
                 <table class="table table-bordered">
                   <thead>
@@ -348,20 +375,19 @@
                           %>
                           <span class="badge <%= badgeClass %>"><%= sub.status %></span>
                         </td>
-                       <td>
-  <form method="POST" action="/admin/projects/update-status" class="d-flex align-items-center gap-2">
-    <input type="hidden" name="userId" value="<%= intern._id %>">
-    <input type="hidden" name="projectId" value="<%= sub.projectId ? sub.projectId._id : sub.projectId %>">
+                        <td>
+                          <form method="POST" action="/admin/projects/update-status" class="d-flex align-items-center gap-2">
+                            <input type="hidden" name="userId" value="<%= intern._id %>">
+                            <input type="hidden" name="projectId" value="<%= sub.projectId ? sub.projectId._id : sub.projectId %>">
 
-    <select name="status" class="form-select form-select-sm">
-      <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
-      <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
-    </select>
+                            <select name="status" class="form-select form-select-sm">
+                              <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
+                              <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
+                            </select>
 
-    <button type="submit" class="btn btn-primary btn-sm">Update</button>
-  </form>
-</td>
-
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                          </form>
+                        </td>
                       </tr>
                     <% }) %>
                   </tbody>
@@ -375,6 +401,7 @@
     <% }) %>
   </div>
 </section>
+
 
 
 
@@ -446,9 +473,34 @@ function filterByBatch() {
     });
   }
 
+  function applyFilters() {
+  let batchFilter = document.getElementById("submittedBatchFilter").value.toLowerCase();
+  let internSearch = document.getElementById("internSearch").value.toLowerCase();
+  let cards = document.querySelectorAll("#submittedProjects .intern-card");
+
+  cards.forEach(card => {
+    let cardBatch = card.getAttribute("data-batch").toLowerCase();
+    let internId = card.querySelector(".intern-id")?.textContent.toLowerCase() || "";
+
+    let matchesBatch = (batchFilter === "all" || cardBatch === batchFilter);
+    let matchesIntern = (internSearch === "" || internId.includes(internSearch));
+
+    // Show only if BOTH match
+    card.style.display = (matchesBatch && matchesIntern) ? "block" : "none";
+  });
+}
+
+function clearFilters() {
+  document.getElementById("submittedBatchFilter").value = "all";
+  document.getElementById("internSearch").value = "";
+  applyFilters();
+}
+
   // Run once on page load to hide all
   window.addEventListener('DOMContentLoaded', (event) => {
     filterByBatch();
+    filterProjectsByBatch();
+    filterSubmittedProjects('<%= currentSubmittedBatch %>');
   });
 </script>
 </body>
