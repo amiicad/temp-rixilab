@@ -47,25 +47,34 @@
 <%- include("partials/toaster") %>
 
   <!-- Sidebar -->
-  <div class="sidebar position-fixed w-20 ">
-    <h2 class="text-center"><img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab</h2>
+<div class="sidebar position-fixed w-20 d-flex flex-column justify-content-between" style="height: 100vh;">
+  <div>
+    <h2 class="text-center">
+      <img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab
+    </h2>
     <h4 class="text-center">Admin Panel</h4>
     <br/>
-    <a href="#dashboard"><i class="bi bi-people"></i> Dashboard</a>
+    <a href="#dashboard"><i class="bi bi-person-lines-fill"></i> Dashboard</a>
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
     <a href="#createUser"><i class="bi bi-person-plus"></i> Create Intern</a>
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
     <a href="#submittedProjects" style="margin-right: 4rem;"><i class="bi bi-folder2-open"></i> Submitted Project</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
-
   </div>
+
+  <!-- Footer at the bottom -->
+  <div class="text-center mb-2" style="font-size: 0.85rem; color: #888;">
+    © Copyright 2025 Rixi Lab.<br/> All Rights Reserved <br/><span style="font-size: smaller;">Developed by Anunay Anand (Director)</span>  
+  </div>
+</div>
+
 
   <!-- Main Content -->
   <div class="main-content flex-grow-1" >
 
     <!--Header Section -->
-    <div class="header mb-4">
+    <div class="header mb-4 w-100 !important  ">
       <h4 class="section-title mb-4 nav" style="padding: 30px; ">Welcome to Rixi Lab, <%= admin.name %>, <%=admin.designation%></h4>
     </div>
 

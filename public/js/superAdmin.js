@@ -43,3 +43,26 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   window.addEventListener('DOMContentLoaded', (event) => {
     filterByBatch();
   });
+
+   function applyInternFilters() {
+    const batchFilter = document.getElementById("batchFilter").value.toLowerCase();
+    const searchValue = document.getElementById("internSearchInput").value.toLowerCase();
+    const cards = document.querySelectorAll("#internCardsContainer .intern-card");
+
+    cards.forEach(card => {
+      const cardBatch = card.getAttribute("data-batch").toLowerCase();
+      const name = card.querySelector(".intern-name").textContent.toLowerCase();
+      const internId = card.querySelector(".intern-id").textContent.toLowerCase();
+
+      const matchesBatch = batchFilter === "all" || cardBatch === batchFilter;
+      const matchesSearch = name.includes(searchValue) || internId.includes(searchValue);
+
+      card.style.display = (matchesBatch && matchesSearch) ? "block" : "none";
+    });
+  }
+
+  function clearInternFilters() {
+    document.getElementById("batchFilter").value = "all";
+    document.getElementById("internSearchInput").value = "";
+    applyInternFilters();
+  }

@@ -15,7 +15,7 @@ function authRole(roles) {
 
     if (!sessionRole || !allowedRoles.includes(sessionRole)) {
       // Wrong role
-      req.flash("error", "Access denied. You do not have permission to view this page.");
+      req.flash("error", "Access denied.");
       return res.redirect("/"); // send them back safely
     }
 

@@ -11,7 +11,7 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
 
     // SuperAdmin updating an admin
     if (user.role === "admin" && req.session.role === "superAdmin") {
-      const { name, email, domain, emp_id, phone,designation } = req.body;
+      const { name, email, domain, emp_id, phone,designation,img_url } = req.body;
 
       await User.findByIdAndUpdate(req.params.id, {
         name,
@@ -19,8 +19,10 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
         domain,
         emp_id,
         phone,
-        designation
-      });
+        designation,
+        img_url
+      }); 
+      req.flash('success', 'Admin Updated Successfully!');
 
       return res.redirect('/superAdmin');
     }

@@ -12,10 +12,11 @@ router.get("/superAdmin/admin/:adminId", authRole("superAdmin"), async (req, res
 
   // Get all interns (or only interns under this admin if needed)
   const interns = await User.find({ role: "intern" });
-  const projects = await Project.find({})
+  const projects = await Project.find({});
+  const batches = [...new Set(interns.map(i => i.batch_no).filter(Boolean))];
   
   req.flash('info', `Viewing Admin: ${admin.name}`);
-  res.render("admin", { admin, interns,projects });
+  res.render("admin", { admin, interns,projects,batches });
   } catch (err) {
     console.error(err);
     res.redirect("/superAdmin");
