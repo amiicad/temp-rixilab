@@ -24,9 +24,10 @@ router.get("/admin", authRole("admin"), async (req, res) => {
 
     // Projects created in this domain
     const projects = await Project.find({ domain: admin.domain }); 
+    const certifiedInternsCount = interns.filter(i => i.certificate_link && i.certificate_link.trim() !== "").length;
 
     req.flash("info", `Welcome ${admin.name}`); 
-    res.render("admin", { admin, interns, projects, batches });
+    res.render("admin", { admin, interns, projects, batches, certifiedInternsCount });
   } catch (err) {
     console.error(err);
     req.flash("error", "Server Error");

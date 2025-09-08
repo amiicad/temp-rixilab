@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   certificate_link: { type: String , default: "" },
   offer_letter: { type: String , default: "" },
   img_url: { type: String },
-  joining_date: { type: Date, default: Date.now },
+  joining_date: { type: Date, default: Date.now,immutable: true },
   lastLogin: { type: Date },
 projectAssigned: [
     {

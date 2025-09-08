@@ -5,7 +5,8 @@ const authRole = require('../middleware/authRole');
 const Project = require("../models/Project");
 
 router.get("/admin/intern/:internId", authRole(['admin','superAdmin']), async (req, res) => {
-  const intern = await User.findById(req.params.internId);
+  try{
+    const intern = await User.findById(req.params.internId);
   if (!intern || intern.role !== "intern"){
     req.flash("error", "Intern not found");
     return res.redirect("/admin")
@@ -20,5 +21,10 @@ router.get("/admin/intern/:internId", authRole(['admin','superAdmin']), async (r
   const projects = await Project.find({ domain: intern.domain });
   req.flash('info', `Viewing Intern: ${intern.name}`);
   res.render("intern", { intern, projects,progress });
+  }catch(err){
+    console.error(err);
+    req.flash("error", "Intern details loading failed");
+    res.redirect("/admin");
+  }
 });
 module.exports = router;

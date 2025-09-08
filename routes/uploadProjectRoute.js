@@ -57,7 +57,7 @@ router.post("/admin/projects", authRole("admin"), async (req, res) => {
     console.log(`✅ Users updated for batch ${batch_no}:`, result.modifiedCount);
     res.redirect("/admin#uploadProject");
   } catch (err) {
-   req.flash('error', 'Server Error');
+   req.flash('error', 'Project Creation Failed! '+err.message);
     res.redirect('/admin#uploadproject');
   }
 });

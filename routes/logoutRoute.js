@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 router.get("/logout", (req, res) => {
-  if (!req.session) {
+try{
+    if (!req.session) {
     return res.redirect("/login"); // or handle gracefully
   }
 
@@ -14,6 +15,11 @@ router.get("/logout", (req, res) => {
     res.clearCookie("connect.sid");
     res.redirect("/login");
   });
+}catch(err){
+    console.error(err);
+    req.flash("error", "Error logging out");
+    res.redirect("/login");
+  }
 });
 
 

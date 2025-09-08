@@ -85,44 +85,97 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0">Admin Dashboard</h4>
     <!-- Admin Profile -->
-    <div class="d-flex align-items-center gap-3">
+    <!-- <div class="d-flex align-items-center gap-3">
       <img src="<%= admin.img_url %>" 
            alt="Admin Image" 
            class="rounded-circle shadow-sm" 
            style="width:60px; height:60px; object-fit:cover;">
-      <!-- <div>
-        <h6 class="mb-0 fw-semibold"><%= admin.name %></h6>
-        <small class="text-muted"><%= admin.role %></small>
-      </div> -->
-    </div>
+
+    </div> -->
   </div>
 
   <!-- Stats Row -->
   <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card border-0 shadow-sm h-100 text-center p-3">
+    <div class="col-md-3">
+      <div class="card shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
         <div class="card-body">
           <h6 class="text-muted">Total Interns</h6>
           <p class="display-5 fw-bold text-primary mb-0"><%= interns.length %></p>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card border-0 shadow-sm h-100 text-center p-3">
+    <div class="col-md-3">
+      <div class="card  shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
         <div class="card-body">
           <h6 class="text-muted">Total Projects</h6>
           <p class="display-5 fw-bold text-success mb-0"><%= projects.length %></p>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card border-0 shadow-sm h-100 text-center p-3">
+    <div class="col-md-3">
+      <div class="card shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
         <div class="card-body">
           <h6 class="text-muted">Total Batches</h6>
           <p class="display-5 fw-bold text-info mb-0"><%= batches.length %></p>
         </div>
       </div>
     </div>
+    <div class="col-md-3">
+      <div class="card  shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
+        <div class="card-body">
+          <h6 class="text-muted">Certified Interns</h6>
+          <p class="display-5 fw-bold text-info mb-0"><%= certifiedInternsCount %></p>
+        </div>
+      </div>
+    </div>
+    
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="row g-0">
+
+      <!-- Left: Image (rectangular, full height of card) -->
+      <div class="col-md-4">
+        <img src="<%= admin.img_url %>" 
+             class="img-fluid h-100 w-100 rounded-start" 
+             style="object-fit: cover;" 
+             alt="User Image">
+      </div>
+
+      <!-- Right: Data -->
+      <div class="col-md-8 p-3">
+        <!-- Name takes full row -->
+        <h4 class="card-title mb-3"><%= admin.name %></h4>
+
+        <!-- Other Fields in 2-columns per row -->
+        <div class="row">
+          <div class="col-md-6">
+            <p class="card-text"><strong>Email:</strong> <%= admin.email %></p>
+          </div>
+          <div class="col-md-6">
+            <p class="card-text"><strong>Phone:</strong> <%= admin.phone %></p>
+          </div>
+          <div class="col-md-6">
+            <p class="card-text"><strong>Domain:</strong> <%= admin.domain %></p>
+          </div>
+          <div class="col-md-6">
+            <p class="card-text"><strong>Designation:</strong> <%= admin.designation %></p>
+          </div>
+          <div class="col-md-6">
+            <p class="card-text"><strong>Employee ID:</strong> <%= admin.emp_id %></p>
+          </div>
+          <div class="col-md-6">
+            <p class="card-text"><strong>Joining Date:</strong> <%= admin.joining_date %></p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
   </div>
 </section>
 
@@ -491,6 +544,8 @@
 
 
     <!-- Submitted Projects -->
+
+
 <section id="submittedProjects" style="display:none;">
   <h4 class="section-title">Submitted Projects</h4>
 
