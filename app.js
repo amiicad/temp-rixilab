@@ -36,15 +36,6 @@ app.use((req, res, next) => {
 });
 
 
-
-
-// File upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
-  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
-});
-const upload = multer({ storage });
-
 // Role-based middleware
 const authRole = require('./middleware/authRole');
 
@@ -136,13 +127,12 @@ app.use('/admin', projectStatusRouter);
 
 
 // Email placeholders
-app.post("/send-email", authRole("admin"), async (req, res) => {
-  let internIds = req.body.internIds;
-  if (!internIds) return res.redirect("/admin");
-  if (!Array.isArray(internIds)) internIds = [internIds];
-  console.log("Send email to:", internIds); // Placeholder
-  res.redirect("/admin");
-});
+const confirmationMailRouter = require('./routes/confirmationMailRoute');
+const completionMailRouter = require('./routes/completionMailRoute');
+
+app.use('/', confirmationMailRouter);
+app.use('/', completionMailRouter);
+
 
 // --- Update/Delete Intern ---
 

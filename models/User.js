@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema({
   img_url: { type: String },
   joining_date: { type: Date, default: Date.now,immutable: true },
   lastLogin: { type: Date },
+  confirmationSent : { type: Boolean, default: false },
+  completionSent : { type: Boolean, default: false },
 projectAssigned: [
     {
       projectId: {

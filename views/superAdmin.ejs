@@ -49,8 +49,8 @@
     <a href="#viewAdmin"><i class="bi bi-person-workspace"></i> View Admins</a>
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
     <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
-    <a href="#createAdmin"><i class="bi bi-envelope-plus"></i> Confirmation Mail</a>
-    <a href="#createAdmin"><i class="bi bi-envelope-plus"></i> Completion Mail</a>
+    <a href="#confirmationMail"><i class="bi bi-envelope-plus"></i> Confirmation Mail</a>
+    <a href="#completionMail"><i class="bi bi-envelope-plus"></i> Completion Mail</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
@@ -326,6 +326,136 @@
     <% }) %>
   </div>
 </section>
+<!-- ================= CONFIRMATION MAIL ================= -->
+<section id="confirmationMail" style="display:none;">
+  <h4>Send Confirmation Mail</h4>
+
+  <form action="/send-confirmation-mail" method="POST" id="confirmationForm">
+    <!-- Filters -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <select id="filterConfirm" class="form-select" onchange="applyFilters('confirm')">
+          <option value="all">Show All</option>
+          <option value="sent">Already Sent</option>
+          <option value="notSent">Not Sent</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select id="batchConfirm" class="form-select" onchange="applyFilters('confirm')">
+          <option value="all" selected>All Batches</option>
+          <% batches.forEach(batch => { %>
+            <option value="<%= batch %>">Batch <%= batch %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <input type="text" id="searchConfirm" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('confirm')">
+      </div>
+      <div class="col-md-3">
+  <button class="btn btn-secondary" onclick="clearFilters('confirm')">Clear Filters</button>
+</div>
+
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>  
+          <th>Name</th>
+          <th>Email</th>
+          <th>Batch</th>
+          <th>Status</th>
+          <th><input type="checkbox" id="selectAllConfirm" onclick="toggleSelectAll('confirm')"></th>
+        </tr>
+      </thead>
+      <tbody id="confirmTable">
+        <% interns.forEach(i => { %>
+          <tr data-status="<%= i.confirmationSent?'sent':'notSent' %>" data-batch="<%= i.batch_no %>" data-name="<%= i.name.toLowerCase() %>" data-email="<%= i.email.toLowerCase() %>">
+            <td><%= i.name %></td>
+            <td><%= i.email %></td>
+            <td><%= i.batch_no %></td>
+            <td><%= i.confirmationSent ? 'Sent' : 'Not Sent' %></td>
+            <td>
+              <% if(i.confirmationSent){ %>
+                <input type="checkbox" disabled>
+              <% } else { %>
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="confirmCheckbox">
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" type="submit">Send Confirmation Mail</button>
+  </form>
+</section>
+
+<!-- ================= COMPLETION MAIL ================= -->
+<section id="completionMail" style="display:none;">
+  <h4>Send Completion Mail</h4>
+
+  <form action="/send-completion-mail" method="POST" id="completionForm">
+    <!-- Filters -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <select id="filterCompletion" class="form-select" onchange="applyFilters('completion')">
+          <option value="all">Show All</option>
+          <option value="sent">Already Sent</option>
+          <option value="notSent">Not Sent</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select id="batchCompletion" class="form-select" onchange="applyFilters('completion')">
+          <option value="all" selected>All Batches</option>
+          <% batches.forEach(batch => { %>
+            <option value="<%= batch %>">Batch <%= batch %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <input type="text" id="searchCompletion" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('completion')">
+      </div>
+      <div class="col-md-3">
+  <button class="btn btn-secondary" onclick="clearFilters('confirm')">Clear Filters</button>
+</div>
+
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Batch</th>
+          <th>Status</th>
+          <th><input type="checkbox" id="selectAllCompletion" onclick="toggleSelectAll('completion')"></th>
+        </tr>
+      </thead>
+      <tbody id="completionTable">
+        <% interns.forEach(i => { %>
+          <tr data-status="<%= i.completionSent?'sent':'notSent' %>" data-batch="<%= i.batch_no %>" data-name="<%= i.name.toLowerCase() %>" data-email="<%= i.email.toLowerCase() %>">
+            <td><%= i.name %></td>
+            <td><%= i.email %></td>
+            <td><%= i.batch_no %></td>
+            <td><%= i.completionSent ? 'Sent' : 'Not Sent' %></td>
+            <td>
+              <% if(i.completionSent){ %>
+                <input type="checkbox" disabled>
+              <% } else { %>
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="completionCheckbox">
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <button class="btn btn-success" type="submit">Send Completion Mail</button>
+  </form>
+</section>
+
+
+
+
+
 
 
     </div>
