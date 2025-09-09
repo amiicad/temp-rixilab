@@ -423,20 +423,21 @@ table tr.row-selected {
 <!-- Row selection styles -->
 
 <!-- ================= COMPLETION MAIL ================= -->
-<section id="completionMail" style="display:none;">
-  <h4>Send Completion Mail</h4>
+<section id="completionMail" style="display:none; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);  border: 1px solid #ff6600 !important;">
+  <h4 class="text-center mb-4">Send Internship Completion Mail</h4>
 
   <form action="/send-completion-mail" method="POST" id="completionForm">
-    <!-- Filters -->
-    <div class="row g-3 mb-3">
-      <div class="col-md-3">
+    <!-- Filters + Button Row -->
+    <div class=" mb-3 bg-white rounded d-flex flex-wrap align-items-center gap-2">
+      <div class="flex-grow-0">
         <select id="filterCompletion" class="form-select" onchange="applyFilters('completion')">
           <option value="all">Show All</option>
           <option value="sent">Sent</option>
           <option value="notSent">Pending</option>
         </select>
       </div>
-      <div class="col-md-3">
+
+      <div class="flex-grow-0">
         <select id="batchCompletion" class="form-select" onchange="applyFilters('completion')">
           <option value="all" selected>All Batches</option>
           <% batches.forEach(batch => { %>
@@ -444,11 +445,17 @@ table tr.row-selected {
           <% }) %>
         </select>
       </div>
-      <div class="col-md-4">
+
+      <div class="flex-grow-1">
         <input type="text" id="searchCompletion" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('completion')">
       </div>
-      <div class="col-md-2">
-        <button type="button" class="btn btn-secondary w-100" onclick="clearFilters('completion')">Clear Filters</button>
+
+      <div class="flex-grow-0">
+        <button type="button" class="btn btn-secondary" onclick="clearFilters('completion')">Clear Filters</button>
+      </div>
+
+      <div class="flex-grow-0">
+        <button class="btn btn-success" type="submit">Send Mail</button>
       </div>
     </div>
 
@@ -459,7 +466,9 @@ table tr.row-selected {
           <th>Email</th>
           <th>Batch</th>
           <th>Status</th>
-          <th class="text-center"><input type="checkbox" id="selectAllCompletion" onclick="toggleSelectAll('completion')" class="form-check-input"></th>
+          <th class="text-center">
+            <input type="checkbox" id="selectAllCompletion" onclick="toggleSelectAll('completion')" class="form-check-input">
+          </th>
         </tr>
       </thead>
       <tbody id="completionTable">
@@ -484,9 +493,9 @@ table tr.row-selected {
         <% }) %>
       </tbody>
     </table>
-    <button class="btn btn-success" type="submit">Send Completion Mail</button>
   </form>
 </section>
+
 
 <!-- ================= OFFER LETTER MAIL ================= -->
 
