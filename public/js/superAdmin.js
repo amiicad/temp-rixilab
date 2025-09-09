@@ -212,9 +212,13 @@ async function sendMails(type) {
 
 function updateRowColor(checkbox, type) {
   const row = checkbox.closest("tr");
-  if (checkbox.checked) row.classList.add("row-selected");
-  else row.classList.remove("row-selected");
+  if (checkbox.checked) {
+    row.classList.add("row-selected");
+  } else {
+    row.classList.remove("row-selected");
+  }
 }
+
 
 function toggleSelectAll(type) {
   const table = document.getElementById(type + "Table");
