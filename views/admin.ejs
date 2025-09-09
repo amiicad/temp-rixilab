@@ -27,7 +27,7 @@
     .modal-header { background-color: #343a40; color: white; }
     .nav{background-color: #ffc197; color:black; }
     .sidebar a.active {
-     background-color: #0d6efd;  /* Bootstrap primary */
+     background-color: #ff6600;  /* Bootstrap primary */
      color: #fff;
 }
 
@@ -201,8 +201,31 @@
       <div class="col-md-6"><input type="text" name="course" class="form-control" placeholder="Course" required></div>
       <div class="col-md-6"><input type="text" name="branch" class="form-control" placeholder="Branch" required></div>
       
-      <div class="col-md-6"><input type="text" name="year_sem" class="form-control" placeholder="Year/Sem" required></div>
-      <div class="col-md-6"><input type="text" name="duration" class="form-control" placeholder="Duration" required></div>
+      <!-- Year/Sem Dropdown -->
+<div class="col-md-6">
+  <select name="year_sem" class="form-select" required>
+    <option value="" selected disabled>Select Year/Sem</option>
+    <option value="1st/1sem">1st/1sem</option>
+    <option value="1st/2sem">1st/2sem</option>
+    <option value="2nd/1sem">2nd/1sem</option>
+    <option value="2nd/2sem">2nd/2sem</option>
+    <option value="3rd/1sem">3rd/1sem</option>
+    <option value="3rd/2sem">3rd/2sem</option>
+    <option value="4th/1sem">4th/1sem</option>
+    <option value="4th/2sem">4th/2sem</option>
+  </select>
+</div>
+
+<!-- Duration Dropdown -->
+<div class="col-md-6">
+  <select name="duration" class="form-select" required>
+    <option value="" selected disabled>Select Duration (months)</option>
+    <option value="4">4</option>
+    <option value="6">6</option>
+    <option value="8">8</option>
+  </select>
+</div>
+
 
       <div class="col-md-6"><input type="text" name="batch_no" class="form-control" placeholder="Batch" required></div>
  
@@ -821,6 +844,25 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   }
 
   document.addEventListener('DOMContentLoaded', applySubmittedFilters);
+
+  (() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
 </script>
 </body>
 </html>

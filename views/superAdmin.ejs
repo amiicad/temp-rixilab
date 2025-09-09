@@ -53,6 +53,7 @@
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
     <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
     <a href="#confirmationMail"><i class="bi bi-envelope-plus"></i> Confirmation Mail</a>
+    <a href="#offerLetterMail"><i class="bi bi-envelope-plus"></i> Offer Letter Mail</a>
     <a href="#completionMail"><i class="bi bi-envelope-plus"></i> Certificate Mail</a>
     <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
@@ -411,7 +412,6 @@
 <!-- Row selection styles -->
 
 <!-- ================= COMPLETION MAIL ================= -->
-<!-- ================= COMPLETION MAIL ================= -->
 <section id="completionMail" style="display:none;">
   <h4>Send Completion Mail</h4>
 
@@ -477,8 +477,76 @@
   </form>
 </section>
 
+<!-- ================= OFFER LETTER MAIL ================= -->
 
+<section id="offerLetterMail" style="display:none;">
+  <h4>Send Offer Letter Mail</h4>
 
+  <form action="/send-offerletter-mail" method="POST" id="offerLetterForm">
+    <!-- Filters -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <select id="filterOfferLetter" class="form-select" onchange="applyFilters('offerLetter')">
+          <option value="all">Show All</option>
+          <option value="sent">Already Sent</option>
+          <option value="notSent">Not Sent</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <select id="batchOfferLetter" class="form-select" onchange="applyFilters('offerLetter')">
+          <option value="all" selected>All Batches</option>
+          <% batches.forEach(batch => { %>
+            <option value="<%= batch %>"><%= batch %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <input type="text" id="searchOfferLetter" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('offerLetter')">
+      </div>
+
+      <div class="col-md-2">
+        <button type="button" class="btn btn-secondary w-100" onclick="clearFilters('offerLetter')">Clear Filters</button>
+      </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Batch</th>
+          <th>Status</th>
+          <th><input type="checkbox" id="selectAllOfferLetter" onclick="toggleSelectAll('offerLetter')"></th>
+        </tr>
+      </thead>
+      <tbody id="offerLetterTable">
+        <% interns.forEach(i => { %>
+          <tr data-status="<%= i.offerLetterSent ? 'sent' : 'notSent' %>" 
+              data-batch="<%= i.batch_no %>" 
+              data-name="<%= i.name.toLowerCase() %>" 
+              data-email="<%= i.email.toLowerCase() %>"
+              class="<%= i.offerLetterSent ? 'row-sent' : 'row-notSent' %>">
+            <td><%= i.name %></td>
+            <td><%= i.email %></td>
+            <td><%= i.batch_no %></td>
+            <td><%= i.offer_letter_sent ? 'Sent' : 'Not Sent' %></td>
+            <td>
+              <% if (i.offer_letter_sent) { %>
+                <input type="checkbox" disabled>
+              <% } else { %>
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="offerLetterCheckbox" onclick="updateRowColor(this, 'offerLetter')">
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <button class="btn btn-primary" type="submit">Send Offer Letter Mail</button>
+  </form>
+</section>
 
 
 

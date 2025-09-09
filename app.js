@@ -129,10 +129,11 @@ app.use('/admin', projectStatusRouter);
 // Email placeholders
 const confirmationMailRouter = require('./routes/confirmationMailRoute');
 const completionMailRouter = require('./routes/completionMailRoute');
+const offerLetterMailRouter = require('./routes/offerLetterMailRoute');
 
 app.use('/', confirmationMailRouter);
 app.use('/', completionMailRouter);
-
+app.use('/', offerLetterMailRouter);
 
 // --- Update/Delete Intern ---
 

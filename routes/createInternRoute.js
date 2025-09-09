@@ -32,7 +32,7 @@ router.post("/create-user", authRole("admin"), async (req, res) => {
       course,
       year_sem,
       branch,
-      duration,
+      duration : Number(duration),
       intern_id,
       batch_no
     });
