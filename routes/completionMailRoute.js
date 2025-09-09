@@ -149,7 +149,7 @@ router.post("/send-completion-mail", async (req, res) => {
 
     if (!interns || interns.length === 0) {
       req.flash("error", "No interns selected for completion mail.");
-      return res.redirect("back");
+      return res.redirect("/superAdmin");
     }
 
     const internDocs = await User.find({ intern_id: { $in: interns } });
