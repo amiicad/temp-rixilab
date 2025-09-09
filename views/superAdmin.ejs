@@ -30,6 +30,9 @@
      color: #fff;
      font-weight: bold;
 }
+  .row-sent { background-color: #d1fae5; }
+  .row-notSent { background-color: #fef3c7; }
+  .row-selected { background-color: #bfdbfe !important; }
   </style>
 </head>
 <body>
@@ -327,6 +330,7 @@
   </div>
 </section>
 <!-- ================= CONFIRMATION MAIL ================= -->
+<!-- ================= CONFIRMATION MAIL ================= -->
 <section id="confirmationMail" style="display:none;">
   <h4>Send Confirmation Mail</h4>
 
@@ -340,26 +344,34 @@
           <option value="notSent">Not Sent</option>
         </select>
       </div>
+
       <div class="col-md-3">
-        <select id="batchConfirm" class="form-select" onchange="applyFilters('confirm')">
+        <select id="batchConfirm" name="batchConfirm" class="form-select" onchange="applyFilters('confirm')">
           <option value="all" selected>All Batches</option>
           <% batches.forEach(batch => { %>
-            <option value="<%= batch %>">Batch <%= batch %></option>
+            <option value="<%= batch %>"><%= batch %></option>
           <% }) %>
         </select>
       </div>
-      <div class="col-md-6">
+
+      <div class="col-md-4">
         <input type="text" id="searchConfirm" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('confirm')">
       </div>
-      <div class="col-md-3">
-  <button class="btn btn-secondary" onclick="clearFilters('confirm')">Clear Filters</button>
-</div>
 
+      <div class="col-md-2">
+        <button type="button" class="btn btn-secondary w-100" onclick="clearFilters('confirm')">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- WhatsApp link input -->
+    <div class="mb-3">
+      <label for="whatsappLink" class="form-label">WhatsApp Group Link (required)</label>
+      <input type="text" name="whatsappLink" id="whatsappLink" class="form-control" placeholder="Enter WhatsApp link">
     </div>
 
     <table class="table table-bordered">
       <thead>
-        <tr>  
+        <tr>
           <th>Name</th>
           <th>Email</th>
           <th>Batch</th>
@@ -369,26 +381,36 @@
       </thead>
       <tbody id="confirmTable">
         <% interns.forEach(i => { %>
-          <tr data-status="<%= i.confirmationSent?'sent':'notSent' %>" data-batch="<%= i.batch_no %>" data-name="<%= i.name.toLowerCase() %>" data-email="<%= i.email.toLowerCase() %>">
+          <tr data-status="<%= i.confirmationSent ? 'sent' : 'notSent' %>" 
+              data-batch="<%= i.batch_no %>" 
+              data-name="<%= i.name.toLowerCase() %>" 
+              data-email="<%= i.email.toLowerCase() %>"
+              class="<%= i.confirmationSent ? 'row-sent' : 'row-notSent' %>">
             <td><%= i.name %></td>
             <td><%= i.email %></td>
             <td><%= i.batch_no %></td>
             <td><%= i.confirmationSent ? 'Sent' : 'Not Sent' %></td>
             <td>
-              <% if(i.confirmationSent){ %>
+              <% if (i.confirmationSent) { %>
                 <input type="checkbox" disabled>
               <% } else { %>
-                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="confirmCheckbox">
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="confirmCheckbox" onclick="updateRowColor(this, 'confirm')">
               <% } %>
             </td>
           </tr>
         <% }) %>
       </tbody>
     </table>
-    <button class="btn btn-primary" type="submit">Send Confirmation Mail</button>
+
+    <button class="btn btn-success" type="submit">Send Confirmation Mail</button>
   </form>
 </section>
 
+
+
+<!-- Row selection styles -->
+
+<!-- ================= COMPLETION MAIL ================= -->
 <!-- ================= COMPLETION MAIL ================= -->
 <section id="completionMail" style="display:none;">
   <h4>Send Completion Mail</h4>
@@ -411,13 +433,12 @@
           <% }) %>
         </select>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <input type="text" id="searchCompletion" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('completion')">
       </div>
-      <div class="col-md-3">
-  <button class="btn btn-secondary" onclick="clearFilters('confirm')">Clear Filters</button>
-</div>
-
+      <div class="col-md-2">
+        <button type="button" class="btn btn-secondary w-100" onclick="clearFilters('completion')">Clear Filters</button>
+      </div>
     </div>
 
     <table class="table table-bordered">
@@ -432,16 +453,20 @@
       </thead>
       <tbody id="completionTable">
         <% interns.forEach(i => { %>
-          <tr data-status="<%= i.completionSent?'sent':'notSent' %>" data-batch="<%= i.batch_no %>" data-name="<%= i.name.toLowerCase() %>" data-email="<%= i.email.toLowerCase() %>">
+          <tr data-status="<%= i.completionSent ? 'sent' : 'notSent' %>" 
+              data-batch="<%= i.batch_no %>" 
+              data-name="<%= i.name.toLowerCase() %>" 
+              data-email="<%= i.email.toLowerCase() %>"
+              class="<%= i.completionSent ? 'row-sent' : 'row-notSent' %>">
             <td><%= i.name %></td>
             <td><%= i.email %></td>
             <td><%= i.batch_no %></td>
             <td><%= i.completionSent ? 'Sent' : 'Not Sent' %></td>
             <td>
-              <% if(i.completionSent){ %>
+              <% if (i.completionSent) { %>
                 <input type="checkbox" disabled>
               <% } else { %>
-                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="completionCheckbox">
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="completionCheckbox" onclick="updateRowColor(this, 'completion')">
               <% } %>
             </td>
           </tr>
@@ -451,6 +476,8 @@
     <button class="btn btn-success" type="submit">Send Completion Mail</button>
   </form>
 </section>
+
+
 
 
 

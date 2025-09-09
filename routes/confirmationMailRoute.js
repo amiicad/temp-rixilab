@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 async function sendBulkConfirmationMails(interns) {
   const sendPromises = interns.map(async (intern) => {
     try {
-      const { intern_id, name, email, domain,duration } = intern;
+      const { intern_id, name, email, domain,duration,whatsappLink } = intern;
 
       const subject = `Internship Confirmation - Welcome to Rixi Lab!`;
       const body = `
@@ -61,7 +61,7 @@ async function sendBulkConfirmationMails(interns) {
 
               <!-- Button -->
               <p style="text-align:center; margin:20px 0;">
-                <a href="https://chat.whatsapp.com/FrydTZpIZPn905SXpyU5Dy?mode=ac_t" target="_blank" 
+                <a href="${whatsappLink}" target="_blank" 
                    style="background-color:#22c55e; color:#ffffff; text-decoration:none; padding:12px 24px; border-radius:6px; font-weight:bold; display:inline-block;">
                   Join WhatsApp Group
                 </a>
@@ -138,26 +138,47 @@ async function sendBulkConfirmationMails(interns) {
 // ==============================
 // ROUTE: Send Confirmation Mail
 // ==============================
+// ==============================
 router.post("/send-confirmation-mail", async (req, res) => {
   try {
-    const interns = req.body.interns; // array of intern_id
+    const { interns, whatsappLink, batchConfirm } = req.body;
 
-    if (!interns || interns.length === 0) {
-      req.flash("error", "No interns selected for confirmation mail.");
-      return res.redirect("back");
+    // Normalize internIds
+    const internIds = interns ? (Array.isArray(interns) ? interns : [interns]) : [];
+
+    if (!internIds.length) {
+      req.flash("error", "No interns selected.");
+      return res.redirect("/superAdmin");
     }
 
-    const internDocs = await User.find({ intern_id: { $in: interns } });
+    if (!whatsappLink || whatsappLink.trim() === "") {
+      req.flash("error", "WhatsApp link is required.");
+      return res.redirect("/superAdmin");
+    }
+
+    if (!batchConfirm || batchConfirm === "all") {
+      req.flash("error", "Please select a batch before sending mails.");
+      return res.redirect("/superAdmin");
+    }
+
+    // Update WhatsApp link for selected batch
+    const result = await User.updateMany(
+      { batch_no: batchConfirm },
+      { $set: { whatsappLink } }
+    );
+    console.log("WhatsApp link update result:", result);
+
+    // Fetch selected interns
+    const internDocs = await User.find({ intern_id: { $in: internIds } });
+
+    // Send mails (using your existing sendBulkConfirmationMails)
     const results = await sendBulkConfirmationMails(internDocs);
 
     const success = results.filter(r => r.status === "fulfilled").length;
     const failed = results.filter(r => r.status === "rejected").length;
 
-    if (failed === 0) {
-      req.flash("success", `✅ ${success} confirmation mails sent successfully.`);
-    } else {
-      req.flash("error", `⚠️ ${success} sent, ${failed} failed. Check logs.`);
-    }
+    if (failed === 0) req.flash("success", `✅ ${success} confirmation mails sent successfully.`);
+    else req.flash("error", `⚠️ ${success} sent, ${failed} failed.`);
 
     res.redirect("/superAdmin");
   } catch (err) {
@@ -166,5 +187,6 @@ router.post("/send-confirmation-mail", async (req, res) => {
     res.redirect("/superAdmin");
   }
 });
+
 
 module.exports = router;

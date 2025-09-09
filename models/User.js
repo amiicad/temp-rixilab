@@ -32,6 +32,8 @@ const userSchema = new mongoose.Schema({
   lastLogin: { type: Date },
   confirmationSent : { type: Boolean, default: false },
   completionSent : { type: Boolean, default: false },
+  whatsappLink: { type: String, default: "" },
+  offer_letter_sent: { type: Boolean, default: false },
 projectAssigned: [
     {
       projectId: {

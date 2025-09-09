@@ -208,3 +208,55 @@ async function sendMails(type) {
     alert("Unexpected error while sending mails. Check console.");
   }
 }
+
+
+function updateRowColor(checkbox, type) {
+  const row = checkbox.closest("tr");
+  if (checkbox.checked) row.classList.add("row-selected");
+  else row.classList.remove("row-selected");
+}
+
+function toggleSelectAll(type) {
+  const table = document.getElementById(type + "Table");
+  const checkboxes = table.querySelectorAll("input[type='checkbox']:not([disabled])");
+  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+  const newCheckedState = !allChecked;
+
+  checkboxes.forEach(cb => {
+    cb.checked = newCheckedState;
+    updateRowColor(cb, type);
+  });
+}
+
+function applyFilters(type) {
+  const filter = document.getElementById("filter" + capitalize(type)).value;
+  const batch = document.getElementById("batch" + capitalize(type)).value;
+  const search = document.getElementById("search" + capitalize(type)).value.toLowerCase();
+  const rows = document.getElementById(type + "Table").querySelectorAll("tr");
+
+  rows.forEach(row => {
+    const status = row.getAttribute("data-status");
+    const rowBatch = row.getAttribute("data-batch");
+    const name = row.getAttribute("data-name");
+    const email = row.getAttribute("data-email");
+
+    let visible = true;
+    if (filter !== "all" && filter !== status) visible = false;
+    if (batch !== "all" && batch !== rowBatch) visible = false;
+    if (search && !name.includes(search) && !email.includes(search)) visible = false;
+
+    row.style.display = visible ? "" : "none";
+  });
+}
+
+function clearFilters(type) {
+  document.getElementById("filter" + capitalize(type)).value = "all";
+  document.getElementById("batch" + capitalize(type)).value = "all";
+  document.getElementById("search" + capitalize(type)).value = "";
+  applyFilters(type);
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
