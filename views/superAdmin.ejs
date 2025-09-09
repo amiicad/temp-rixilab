@@ -10,12 +10,21 @@
   <link href="img/Rixi Lab New Logo PNG.png" rel="icon" />
   <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
   <style>
+    *{
+      font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+    }
      body { overflow-x: hidden; background-color:#ecfeff; }
      .sidebar { width: 250px; }
     .sidebar { min-height: 100vh; background: #343a40; color: white; padding-top: 20px; }
     .sidebar a { color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 20px; border-radius: 6px; margin-bottom: 5px; }
-    .sidebar a:hover { background: #495057; }
+    .sidebar a:hover { background: #495057; border-radius: 30px;}
     .sidebar i { margin-right: 10px; }
     .main-content { margin-left: 250px; padding: 30px; }
     /* .card:hover { transform: scale(1.03); transition: 0.3s; } */
@@ -29,6 +38,7 @@
      background-color: #ff6600;  /* Bootstrap primary */
      color: #fff;
      font-weight: bold;
+     border-radius: 30px;
 }
   /* Sent mail rows */
 table tr.row-sent {
@@ -55,10 +65,11 @@ table tr.row-selected {
     <!-- Sidebar -->
   <div class="sidebar position-fixed w-20 d-flex flex-column justify-content-between" style="height: 100vh;">
   <div>
-    <h2 class="text-center">
-      <img src="/img/Rixi Lab New Logo PNG.png" width="35px" style="margin-bottom: 5px;" alt="Logo"> Rixi Lab
+    <h2 class="text-center" style="font-weight: bold; margin-bottom: 0px;">
+      <img src="/img/Rixi Lab New Logo PNG.png" width="35px" alt="Logo"> Rixi Lab
     </h2>
-    <h4 class="text-center">Super Admin Panel</h4>
+    <p style="font-size: 11px;text-align: center; font-style: italic;">Rethink Innovate eXecute Inspire</p>
+<h4 class="text-center" style="font-size:large; color: #ff6600; margin-bottom: 0px;">Super Admin Panel</h4>
     <br/>
     <a href="#dashboard"><i class="bi bi-person-lines-fill"></i> Dashboard</a>
     <a href="#viewAdmin"><i class="bi bi-person-workspace"></i> View Admins</a>
@@ -343,13 +354,14 @@ table tr.row-selected {
   </div>
 </section>
 <!-- ================= CONFIRMATION MAIL ================= -->
-<section id="confirmationMail" style="display:none;">
-  <h4>Send Confirmation Mail</h4>
+<section id="confirmationMail" style="display:none; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ff6600 !important;">
+  <h4 class="text-center mb-4">Send Confirmation Mail</h4>
 
-  <form action="/send-confirmation-mail" method="POST" id="confirmationForm">
-    <!-- Filters -->
-    <div class="row g-3 mb-3">
-      <div class="col-md-3">
+  <form action="/send-confirmation-mail" method="POST" id="confirmationForm" class="needs-validation" novalidate>
+    <!-- Filters + WhatsApp + Send Button in one row -->
+    <div class="d-flex flex-wrap align-items-end gap-2 mb-3">
+      
+      <div class="flex-grow-0">
         <select id="filterConfirm" class="form-select" onchange="applyFilters('confirm')">
           <option value="all">Show All</option>
           <option value="sent">Sent</option>
@@ -357,8 +369,8 @@ table tr.row-selected {
         </select>
       </div>
 
-      <div class="col-md-3">
-        <select id="batchConfirm" name="batchConfirm" class="form-select" onchange="applyFilters('confirm')">
+      <div class="flex-grow-0">
+        <select id="batchConfirm" name="batchConfirm" class="form-select" onchange="applyFilters('confirm')" >
           <option value="all" selected>All Batches</option>
           <% batches.forEach(batch => { %>
             <option value="<%= batch %>"><%= batch %></option>
@@ -366,19 +378,21 @@ table tr.row-selected {
         </select>
       </div>
 
-      <div class="col-md-4">
+      <div class="flex-grow-1">
         <input type="text" id="searchConfirm" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('confirm')">
       </div>
 
-      <div class="col-md-2">
-        <button type="button" class="btn btn-secondary w-100" onclick="clearFilters('confirm')">Clear Filters</button>
+      <div class="flex-grow-1">
+        <input type="text" name="whatsappLink" id="whatsappLink" class="form-control" placeholder="WhatsApp Group Link" required>
       </div>
-    </div>
 
-    <!-- WhatsApp link input -->
-    <div class="mb-3">
-      <label for="whatsappLink" class="form-label">WhatsApp Group Link (required)</label>
-      <input type="text" name="whatsappLink" id="whatsappLink" class="form-control" placeholder="Enter WhatsApp link">
+      <div class="flex-grow-0">
+        <button type="button" class="btn btn-secondary" onclick="clearFilters('confirm')">Clear Filters</button>
+      </div>
+
+      <div class="flex-grow-0">
+        <button class="btn btn-success" type="submit">Send Mail</button>
+      </div>
     </div>
 
     <table class="table table-bordered">
@@ -414,7 +428,6 @@ table tr.row-selected {
       </tbody>
     </table>
 
-    <button class="btn btn-success" type="submit">Send Confirmation Mail</button>
   </form>
 </section>
 
@@ -499,21 +512,22 @@ table tr.row-selected {
 
 <!-- ================= OFFER LETTER MAIL ================= -->
 
-<section id="offerLetterMail" style="display:none;">
-  <h4>Send Offer Letter Mail</h4>
+<section id="offerLetterMail" style="display:none; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border:1px solid #ff6600 !important">
+  <h4 class="text-center mb-4">Send Offer Letter Mail</h4>
 
-  <form action="/send-offerletter-mail" method="POST" id="offerLetterForm">
-    <!-- Filters -->
-    <div class="row g-3 mb-3">
-      <div class="col-md-3">
+  <form action="/send-offerletter-mail" method="POST" id="offerLetterForm" class="needs-validation" novalidate>
+    <!-- Filters + Search + Send Button in one row -->
+    <div class="d-flex flex-wrap align-items-end gap-2 mb-3">
+      
+      <div class="flex-grow-0">
         <select id="filterOfferLetter" class="form-select" onchange="applyFilters('offerLetter')">
           <option value="all">Show All</option>
           <option value="sent">Sent</option>
-          <option value="notSent">Pending</option>  
+          <option value="notSent">Pending</option>
         </select>
       </div>
 
-      <div class="col-md-3">
+      <div class="flex-grow-0">
         <select id="batchOfferLetter" class="form-select" onchange="applyFilters('offerLetter')">
           <option value="all" selected>All Batches</option>
           <% batches.forEach(batch => { %>
@@ -522,12 +536,16 @@ table tr.row-selected {
         </select>
       </div>
 
-      <div class="col-md-4">
+      <div class="flex-grow-1">
         <input type="text" id="searchOfferLetter" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('offerLetter')">
       </div>
 
-      <div class="col-md-2">
-        <button type="button" class="btn btn-secondary w-100" onclick="clearFilters('offerLetter')">Clear Filters</button>
+      <div class="flex-grow-0">
+        <button type="button" class="btn btn-secondary" onclick="clearFilters('offerLetter')">Clear Filters</button>
+      </div>
+
+      <div class="flex-grow-0">
+        <button class="btn btn-success" type="submit">Send Mail</button>
       </div>
     </div>
 
@@ -554,21 +572,20 @@ table tr.row-selected {
             <td><%= i.intern_id %></td>
             <td><%= i.batch_no %></td>
             <td><%= i.offer_letter_sent ? 'Sent' : 'Not Sent' %></td>
-            <td class="text-center form-check-input " style="padding-left: 5px !important;">
+            <td class="text-center" style="padding-left: 5px !important;">
               <% if (i.offer_letter_sent) { %>
                 <input type="checkbox" disabled>
               <% } else { %>
-                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="offerLetterCheckbox" onclick="updateRowColor(this, 'offerLetter')">
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="offerLetterCheckbox form-check-input" onclick="updateRowColor(this, 'offerLetter')">
               <% } %>
             </td>
           </tr>
         <% }) %>
       </tbody>
     </table>
-
-    <button class="btn btn-primary" type="submit">Send Offer Letter Mail</button>
   </form>
 </section>
+
 
 
 
