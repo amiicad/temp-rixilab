@@ -1,0 +1,68 @@
+* {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+body {
+  overflow-x: hidden;
+  background-color: #f0f2f5;
+}
+.sidebar {
+  min-height: 100vh;
+  background: #343a40;
+  color: white;
+  padding-top: 20px;
+}
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
+.sidebar a:hover {
+  background: #495057;
+  border-radius: 30px;
+}
+.sidebar i {
+  margin-right: 10px;
+}
+.main-content {
+  margin-left: 250px;
+  padding: 30px;
+}
+/* .card:hover { transform: scale(1.03); transition: 0.3s; } */
+.badge-pending {
+  background-color: #ffc107;
+  color: black;
+}
+.badge-approved {
+  background-color: #28a745;
+}
+.badge-rejected {
+  background-color: #dc3545;
+}
+.table td,
+.table th {
+  vertical-align: middle;
+}
+.section-title {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.modal-header {
+  background-color: #343a40;
+  color: white;
+}
+.nav {
+  background-color: #ffc197;
+  color: black;
+}
+.sidebar a.active {
+  background-color: #ff6600; /* Bootstrap primary */
+  color: #fff;
+  font-weight: bold;
+  border-radius: 30px;
+}

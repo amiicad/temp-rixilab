@@ -13,52 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-  <style>
-    *{
-      font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-    }
-     body { overflow-x: hidden; background-color:#ecfeff; }
-     .sidebar { width: 250px; }
-    .sidebar { min-height: 100vh; background: #343a40; color: white; padding-top: 20px; }
-    .sidebar a { color: white; text-decoration: none; display: flex; align-items: center; padding: 12px 20px; border-radius: 6px; margin-bottom: 5px; }
-    .sidebar a:hover { background: #495057; border-radius: 30px;}
-    .sidebar i { margin-right: 10px; }
-    .main-content { margin-left: 250px; padding: 30px; }
-    /* .card:hover { transform: scale(1.03); transition: 0.3s; } */
-    .badge-pending { background-color: #ffc107; color: black; }
-    .badge-approved { background-color: #28a745; }
-    .badge-rejected { background-color: #dc3545; }
-    .table td, .table th { vertical-align: middle; }
-    .section-title { font-weight: 600; margin-bottom: 15px; }
-    .modal-header { background-color: #343a40; color: white; }
-    .sidebar a.active {
-     background-color: #ff6600;  /* Bootstrap primary */
-     color: #fff;
-     font-weight: bold;
-     border-radius: 30px;
-}
-  /* Sent mail rows */
-table tr.row-sent {
-  background-color: #d1fae5 !important; /* light green */
-}
-
-/* Not sent mail rows */
-table tr.row-notSent {
-  background-color: #fee2e2 !important; /* light red */
-}
-
-/* Selected row (always overrides others) */
-table tr.row-selected {
-  background-color: #facc15 !important; /* yellow */
-}
-.admin-tabel td,th{
-  background: none !important;
-}
-
-  </style>
+<link rel="stylesheet" href="/css/superAdmin.css">
 </head>
 <body>
   <div class="d-flex">
@@ -101,54 +56,90 @@ table tr.row-selected {
 
 
       <!-- Dashboard -->
-            <section id="dashboard" class="py-4">
+<section id="dashboard" class="py-4">
+
+  <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0">Super Admin Dashboard</h4>
-    <!-- Admin Profile -->
     <div class="d-flex align-items-center gap-3">
-      <img src="<%= superAdmin.img_url %>" 
-           alt="Admin Image" 
-           class="rounded-circle shadow-sm" 
-           style="width:60px; height:60px; object-fit:cover;">
     </div>
   </div>
 
   <!-- Stats Row -->
-  <div class="row g-4">
+  <div class="row g-4 mb-4">
     <div class="col-md-3">
-      <div class="card  shadow-sm h-100 text-center p-3"style="border-color: #ff6600 !important;" >
-        <div class="card-body" >
-          <h6 class="text-muted">Total Admins</h6>
-          <p class="display-5 fw-bold text-primary mb-0"><%= admins.length %></p>
-        </div>
+      <div class="card stat-card text-center p-3">
+        <h6 class="text-muted">Total Admins</h6>
+        <p class="display-5 fw-bold text-primary mb-0"><%= admins.length %></p>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card  shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
-        <div class="card-body">
-          <h6 class="text-muted">Total Interns</h6>
-          <p class="display-5 fw-bold text-success mb-0"><%= interns.length %></p>
-        </div>
+      <div class="card stat-card text-center p-3">
+        <h6 class="text-muted">Total Interns</h6>
+        <p class="display-5 fw-bold text-success mb-0"><%= interns.length %></p>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card  shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
-        <div class="card-body">
-          <h6 class="text-muted">Total Batches</h6>
-          <p class="display-5 fw-bold text-info mb-0"><%= batches.length %></p>
-        </div>
+      <div class="card stat-card text-center p-3">
+        <h6 class="text-muted">Total Batches</h6>
+        <p class="display-5 fw-bold text-info mb-0"><%= batches.length %></p>
       </div>
     </div>
-     <div class="col-md-3">
-      <div class="card  shadow-sm h-100 text-center p-3" style="border-color: #ff6600 !important;">
-        <div class="card-body">
-          <h6 class="text-muted">Certified Interns</h6>
-          <p class="display-5 fw-bold text-info mb-0"><%= certifiedInternsCount  %></p>
-        </div>
+    <div class="col-md-3">
+      <div class="card stat-card text-center p-3">
+        <h6 class="text-muted">Certified Interns</h6>
+        <p class="display-5 fw-bold text-warning mb-0"><%= certifiedInternsCount %></p>
       </div>
     </div>
   </div>
+
+  <!-- Profile + Notifications -->
+  <div class="row g-4">
+    
+    <!-- Left: Super Admin Profile -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-3 h-100 profile-card">
+        <div class="d-flex align-items-center mb-3">
+          <img src="<%= superAdmin.img_url %>" 
+               alt="Super Admin Image" 
+               class="rounded-circle me-3 profile-img">
+          <div>
+            <h4 class="mb-2"><%= superAdmin.name %></h4>
+            <span class="badge bg-success">Founder & Chief Exceutive Officer</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6"><p><strong>Email:</strong> <%= superAdmin.email %></p></div>
+          <div class="col-6"><p><strong>Phone:</strong> <%= superAdmin.phone %></p></div>
+        </div>
+        <div class="row " style=" text-align: justify;">
+          <p style="padding-right:20px;">I’m Rajnish Sharma, founder of Rixi Lab, driven by passion for technology and design. Rixi Lab reflects my vision to create innovative, user-friendly, and impactful digital solutions. We aim to empower businesses with custom websites, responsive designs, UI/UX, and e-commerce platforms, turning ideas into meaningful online experiences.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Notifications -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-3 h-100 profile-card">
+        <h5 class="mb-3">📢 Notifications</h5>
+        <div class="alert alert-info mb-2 p-2">
+          ✅ New batch of interns added successfully.
+        </div>
+        <div class="alert alert-warning mb-2 p-2">
+          ⚠️ Please review pending admin approvals.
+        </div>
+        <div class="alert alert-success mb-2 p-2">
+          🎉 Congratulations on reaching 500 interns!
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
+
+
+
+
 
       </section>
       <!-- Create Admin -->
