@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const authRole = require('../middleware/authRole');
 // Update user route
@@ -11,11 +11,13 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
 
     // SuperAdmin updating an admin
     if (user.role === "admin" && req.session.role === "superAdmin") {
-      const { name, email, domain, emp_id, phone,designation,img_url } = req.body;
+      const { name, email, domain, emp_id, phone,designation,img_url,password } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       await User.findByIdAndUpdate(req.params.id, {
         name,
         email,
+        password: hashedPassword,
         domain,
         emp_id,
         phone,

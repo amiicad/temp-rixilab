@@ -48,7 +48,8 @@ const homeRoute = require('./routes/homeRoute');
 app.get("/register-superAdmin", (req, res) => res.render("register"));
 
 const registerSuperAdminRouter = require('./routes/registerSuperAdminRoute');
-app.post('/register-superAdmin', registerSuperAdminRouter);
+app.use('/', registerSuperAdminRouter); // now POST /register-superAdmin works
+
 
 
 

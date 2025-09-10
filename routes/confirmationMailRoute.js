@@ -53,7 +53,7 @@ async function sendBulkConfirmationMails(interns) {
               <ul style="padding-left:20px; margin:10px 0;">
                 <li><strong>Start Date:</strong> 1st October 2025</li>
                 <li><strong>Domain:</strong> ${domain}</li>
-                <li><strong>Duration:</strong> ${duration}</li>
+                <li><strong>Duration:</strong> ${duration} Weeks</li>
               </ul>
 
               <h3 style="color:#111827; margin-top:20px; font-size:16px;">Next Steps:</h3>
@@ -75,7 +75,7 @@ async function sendBulkConfirmationMails(interns) {
 
               <!-- ✅ Signature -->
               <p style="font-size: 14px; color: #333; margin-top: 30px; margin-bottom: 5px;">
-                Warm Regards,<br>
+                Thanks & Regards,<br>
                 <b style="font-size:16px; font-weight:700; color:#2c3e50;">Rixi Lab</b><br>
                 <i>"Rethink Innovate eXecute Inspire"</i>
               </p>

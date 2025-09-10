@@ -90,7 +90,7 @@ async function sendBulkCompletionMails(interns) {
       
       <!-- ✅ Signature -->
       <p style="font-size: 14px; color: #333; margin-bottom: 5px;">
-        Warm Regards,<br>
+        Thanks & Regards,<br>
         <b style="font-size:16px; font-weight:700; color:#2c3e50;">Rixi Lab</b><br>
         <i>"Rethink Innovate eXecute Inspire"</i>
       </p>

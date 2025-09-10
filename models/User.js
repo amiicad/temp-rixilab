@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema({
   offer_letter_sent: { type: Boolean, default: false },
   notice: [
   {
-    title: { type: String, required: true },
-    description: { type: String, required: true }
+    title: { type: String },
+    description: { type: String }
   }
 ],
 projectAssigned: [
