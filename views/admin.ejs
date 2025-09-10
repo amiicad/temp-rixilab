@@ -36,7 +36,7 @@
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
     <a href="#submittedProjects"><i class="bi bi-folder2-open"></i> Submitted Project</a>
-    <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+     <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
   <!-- Footer at the bottom -->
@@ -59,35 +59,43 @@
     <!-- Dashboard Section -->
 
 <!-- Admin Dashboard Section -->
-<section id="dashboard" class="py-4">
+<section id="dashboard">
 
   <!-- Stats Row -->
+   <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold mb-0">Admin Dashboard</h4>
+    <div class="d-flex align-items-center gap-3">
+    </div>
+  </div>
+
   <div class="row g-4 mb-4">
     <div class="col-md-3">
-      <div class="card shadow-sm h-100 text-center p-3" style="border-left:6px solid #ff6600;">
+      <div class="card stat-card text-center p-3">
         <h6 class="text-muted">Total Interns</h6>
         <p class="display-5 fw-bold text-primary mb-0"><%= interns.length %></p>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card shadow-sm h-100 text-center p-3" style="border-left:6px solid #ff6600;">
+      <div class="card stat-card text-center p-3">
         <h6 class="text-muted">Total Projects</h6>
         <p class="display-5 fw-bold text-success mb-0"><%= projects.length %></p>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card shadow-sm h-100 text-center p-3" style="border-left:6px solid #ff6600;">
+      <div class="card stat-card text-center p-3">
         <h6 class="text-muted">Total Batches</h6>
         <p class="display-5 fw-bold text-info mb-0"><%= batches.length %></p>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card shadow-sm h-100 text-center p-3" style="border-left:6px solid #ff6600;">
+      <div class="card stat-card text-center p-3">
         <h6 class="text-muted">Certified Interns</h6>
-        <p class="display-5 fw-bold text-success mb-0"><%= certifiedInternsCount %></p>
+        <p class="display-5 fw-bold text-warning mb-0"><%= certifiedInternsCount %></p>
       </div>
     </div>
   </div>
+
 
   <!-- Profile + Message Section -->
   <div class="row g-4">
@@ -146,11 +154,11 @@
 
 
       <!-- Create Intern -->
-   <section id="createUser" style="display:none;">
-  <h4 class="section-title">Create Intern</h4>
-  <div class="card p-4 shadow-sm mb-4">
+   <section id="createUser" style="display:none;"> 
+  <div class="card p-4 shadow-sm " style="border: 1px solid #ff6600">
+     <h4 class="section-title text-center mb-4">Create Intern</h4>
     <form action="/create-user" method="POST" class="row g-3 needs-validation"  novalidate>
-      <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Name" required></div>
+      <div class="col-md-6"><input type="text" name="name" class="form-control" placeholder="Full Name" required></div>
       <div class="col-md-6"><input type="email" name="email" class="form-control" placeholder="Email" required></div>
 
       <div class="col-md-6"><input type="text" name="password" class="form-control" placeholder="Password" required></div>
@@ -192,7 +200,9 @@
       <div class="col-md-6"><input type="text" name="batch_no" class="form-control" placeholder="Batch" required></div>
  
       <div class="col-md-6"><input type="text" name="offer_letter" class="form-control" placeholder="Offer Letter Link" ></div>
-      <div class="col-md-6 mx-auto "><button class="btn btn-primary w-100">Create</button></div>
+      <div class="col-12 text-center mt-3">
+        <button class="btn btn-primary px-5">Create Intern</button>
+      </div>
     </form>
   </div>
 </section>
@@ -200,8 +210,8 @@
 
     <!-- Upload Project -->
 <section id="uploadProject" style="display:none;">
-  <h4 class="section-title mb-4">Upload Project</h4>
-  <div class="card shadow-sm border-0">
+  <div class="card shadow-sm " style="border:1px solid #ff6600">
+    <h4 class="section-title mt-4 mb-0 text-center">Upload Project</h4>
     <div class="card-body p-4">
       <form method="POST" action="/admin/projects" class="row g-4 needs-validation" novalidate>
         
@@ -269,15 +279,15 @@
 
 <!-- View Interns Section -->
 <section id="viewInterns" style="display:none;">
-  <div class="container ">
-    <div class="card shadow-sm border rounded p-3" style="border : 2px solid #ff6600 !important;">
+  <div class="container px-0">
+    <div class="card shadow-sm border rounded p-3" style="border : 1px solid #ff6600 !important;">
       
       <!-- Section Header -->
       <h4 class="text-center mb-4">Interns <%= admin.domain %></h4>
 
       <!-- Filters Row -->
-      <div class="row mb-3 g-2 justify-content-center flex-grow-1">
-        <div class="col-md-3">
+      <div class="row mb-3 g-2 justify-content-center ">
+        <div class="col-md-2">
           <select id="batchFilter" class="form-select" onchange="applyInternFilters()">
             <option value="all" selected>All Batches</option>
             <% batches.forEach(batch => { %>
@@ -285,7 +295,7 @@
             <% }) %>
           </select>
         </div>
-        <div class="col-md-3 flex-grow-1">
+        <div class="col-md-2 flex-grow-1">
           <input type="text" id="internSearch" class="form-control" placeholder="Enter Intern ID" onkeyup="applyInternFilters()">
         </div>
         <div class="col-md-2">
@@ -301,7 +311,7 @@
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Duration (weeks)</th>
+              <th>Duration</th>
               <th>Intern ID</th>
               <th>Batch No</th>
               <th>Actions</th>
@@ -312,7 +322,7 @@
               <tr class="intern-row" data-batch="<%= i.batch_no %>">
                 <td><%= i.name %></td>
                 <td><%= i.email %></td>
-                <td><%= i.duration %></td>
+                <td><%= i.duration %> Weeks</td>
                 <td class="intern-id"><%= i.intern_id %></td>
                 <td><%= i.batch_no %></td>
                 <td class="d-flex justify-content-evenly">
@@ -398,8 +408,8 @@
                         </div>
                       </div>
                       <div class="modal-footer justify-content-center">
-                        <button type="submit" class="btn btn-warning btn-sm">Update</button>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">Update</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm px-3 rounded-pill shadow-sm" data-bs-dismiss="modal">Close</button>
                       </div>
                     </form>
                   </div>
@@ -420,10 +430,10 @@
 
     <!-- View Projects -->
 <section id="viewProjects" style="display:none;">
-  <div class="container my-4">
-    <div class="card shadow-sm border rounded p-3">
+  <div class="container p-0 " >
+    <div class="card shadow-sm border rounded p-4 "style="border: 1px solid #ff6600 !important;" >
       <!-- Section Header -->
-      <h4 class="text-center mb-4">Projects</h4>
+      <h4 class="text-center mb-3">Total Assigned Projects</h4>
 
       <!-- Filters Row -->
       <div class="row mb-3 g-2 justify-content-center">
@@ -458,8 +468,8 @@
                 <td><%= p.batch_no %></td>
                 <td><%= p.domain %></td>
                 <td class="d-flex justify-content-evenly">
-                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">Update</button>
-                  <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProjectModal<%= p._id %>">Delete</button>
+                  <button class="btn btn-outline-secondary btn-sm px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#updateModal<%= p._id %>">Update</button>
+                  <button class="btn btn-outline-danger btn-sm px-3 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteProjectModal<%= p._id %>">Delete</button>
                 </td>
               </tr>
 
@@ -634,7 +644,24 @@
 
 
 
-<!-- JS for Filters -->
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 10vh;"> <!-- Adjust top margin -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to log out?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

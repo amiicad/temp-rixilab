@@ -51,8 +51,7 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
     }
 
     // If role mismatch
-    req.flash('error', err.message);
-    console.log(err);
+    req.flash('error',"No Authority to make this change");
     return res.redirect('/login');
 
   } catch (err) {

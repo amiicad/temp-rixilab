@@ -45,27 +45,28 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 
    function applyInternFilters() {
-    const batchFilter = document.getElementById("batchFilter").value.toLowerCase();
-    const searchValue = document.getElementById("internSearchInput").value.toLowerCase();
-    const cards = document.querySelectorAll("#internCardsContainer .intern-card");
+  const batchFilter = document.getElementById("batchFilter").value.toLowerCase();
+  const searchValue = document.getElementById("internSearchInput").value.toLowerCase();
+  const rows = document.querySelectorAll("#viewInterns table tbody .intern-row");
 
-    cards.forEach(card => {
-      const cardBatch = card.getAttribute("data-batch").toLowerCase();
-      const name = card.querySelector(".intern-name").textContent.toLowerCase();
-      const internId = card.querySelector(".intern-id").textContent.toLowerCase();
+  rows.forEach(row => {
+    const rowBatch = row.getAttribute("data-batch").toLowerCase();
+    const name = row.cells[0].textContent.toLowerCase();      // Name column
+    const internId = row.cells[3].textContent.toLowerCase();  // Intern ID column
 
-      const matchesBatch = batchFilter === "all" || cardBatch === batchFilter;
-      const matchesSearch = name.includes(searchValue) || internId.includes(searchValue);
+    const matchesBatch = batchFilter === "all" || rowBatch === batchFilter;
+    const matchesSearch = name.includes(searchValue) || internId.includes(searchValue);
 
-      card.style.display = (matchesBatch && matchesSearch) ? "block" : "none";
-    });
-  }
+    row.style.display = (matchesBatch && matchesSearch) ? "" : "none";
+  });
+}
 
-  function clearInternFilters() {
-    document.getElementById("batchFilter").value = "all";
-    document.getElementById("internSearchInput").value = "";
-    applyInternFilters();
-  }
+function clearInternFilters() {
+  document.getElementById("batchFilter").value = "all";
+  document.getElementById("internSearchInput").value = "";
+  applyInternFilters();
+}
+
 
 
 

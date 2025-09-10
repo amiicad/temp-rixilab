@@ -37,7 +37,7 @@
     <a href="#offerLetterMail"><i class="bi bi-envelope-paper"></i> Offer Letter Mail</a>
     <a href="#completionMail"><i class="bi bi-envelope-heart"></i> Certificate Mail</a>
     <!-- <a href="#"><i class="bi bi-chat-left-text"></i> Circulate Notice</a> -->
-    <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
   <!-- Footer at the bottom -->
@@ -51,7 +51,7 @@
 
       <!-- Welcome Message -->
       <div class="mb-4">
-        <h4 class="section-title mb-4 text-center">Welcome to Rixi Lab, <%= superAdmin.name %>, <%=superAdmin.designation%></h4>
+        <h4 class="section-title mb-4 text-center">Welcome to Rixi Lab, <%= superAdmin.name %> - <%=superAdmin.designation%></h4>
         <hr>
       </div>
 
@@ -106,7 +106,7 @@
                class="rounded-circle me-3 profile-img">
           <div>
             <h4 class="mb-2"><%= superAdmin.name %></h4>
-            <span class="badge bg-success">Founder & Chief Exceutive Officer</span>
+            <span class="badge bg-success">Chief Exceutive Officer</span>
           </div>
         </div>
         <div class="row">
@@ -143,57 +143,61 @@
 
 
       </section>
-      <!-- Create Admin -->
+<!-- Create Admin -->
 <section id="createAdmin" style="display:none;">
-  <h4 class="section-title">Create Admin</h4>
-  <div class="card p-4 shadow-sm mb-4 " style="border-color: #ff6600 !important;">
+  <div class="card p-4 shadow-sm mb-4" style="border-color: #ff6600 !important;">
+    <h4 class="text-center mb-4">Create Employee / Admin</h4>
     <form action="/create-admin" method="POST" class="row g-3 needs-validation" novalidate>
       
-      <!-- First Row -->
-      <div class="col-md-4">
-        <input type="text" name="name" class="form-control" placeholder="Name" required>
+      <!-- Row 1 -->
+      <div class="col-md-6">
+        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <input type="email" name="email" class="form-control" placeholder="Email" required>
       </div>
-      <div class="col-md-4">
+
+      <!-- Row 2 -->
+      <div class="col-md-6">
         <input type="text" name="password" class="form-control" placeholder="Password" required>
       </div>
-
-      <!-- Second Row -->
-      <div class="col-md-4">
+      <div class="col-md-6">
         <select name="domain" class="form-select" required>
           <option value="" disabled selected>Domain</option>
           <option value="Web Development">Web Development</option>
           <option value="Graphics Designing">Graphics Designing</option>
           <option value="Data Analytics">Data Analytics</option>
-          <option value="DSA in C++">DSA in C++</option>
+          <option value="DSA">DSA</option>
           <option value="Java Programming">Java Programming</option>
           <option value="Python Programming">Python Programming</option>
         </select>
       </div>
-      <div class="col-md-4">
+
+      <!-- Row 3 -->
+      <div class="col-md-6">
         <input type="text" name="emp_id" class="form-control" placeholder="Employee ID" required>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <input type="text" name="phone" class="form-control" placeholder="Phone" required>
       </div>
 
-      <!-- Third Row -->
+      <!-- Row 4 -->
       <div class="col-md-6">
         <input type="text" name="designation" class="form-control" placeholder="Designation" required>
       </div>
       <div class="col-md-6">
-        <input type="text" name="img_url" class="form-control" placeholder="Image" required>
+        <input type="text" name="img_url" class="form-control" placeholder="Image URL" required>
       </div>
 
       <!-- Button Centered -->
       <div class="col-12 text-center mt-3">
         <button class="btn btn-primary px-5">Create Admin</button>
       </div>
+
     </form>
   </div>
 </section>
+
 
       <!-- View Admins -->
      <section id="viewAdmin" style="display:none;">
@@ -257,7 +261,7 @@
       </div>
 
       <!-- Update Admin Modal -->
-      <div class="modal fade" id="updateAdminModal<%= admin._id %>" tabindex="-1" aria-hidden="true">
+      <div class="modal fade mt-0" id="updateAdminModal<%= admin._id %>" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -313,72 +317,87 @@
 </section>
 
       <!-- View Interns -->
-      <section id="viewInterns" style="display:none;">
-  <h4 class="section-title">List of Interns</h4>
+     <section id="viewInterns" style="display:none;">
+  <div class="container px-0">
+    <div class="card shadow-sm border rounded p-3" style="border: 2px solid #ff6600 !important;">
 
-  <!-- Filters in one line -->
-  <div class="mb-3 d-flex flex-wrap align-items-center gap-2">
-    <!-- Batch Filter -->
-    <div class="flex-grow-1" style="min-width: 150px;">
-      <select id="batchFilter" class="form-select" onchange="applyInternFilters()">
-        <option value="all" selected>All Batches</option>
-        <% batches.forEach(batch => { %>
-          <option value="<%= batch %>">Batch <%= batch %></option>
-        <% }) %>
-      </select>
-    </div>
+      <!-- Section Header -->
+      <h4 class="text-center mb-3">Total Interns</h4>
 
-    <!-- Intern Search -->
-    <div class="flex-grow-2" style="min-width: 200px;">
-      <input type="text" id="internSearchInput" class="form-control" placeholder="Search by Name or ID" onkeyup="applyInternFilters()">
-    </div>
-
-    <!-- Clear Filters -->
-    <div>
-      <button class="btn btn-secondary" onclick="clearInternFilters()">Clear Filters</button>
-    </div>
-  </div>
-
-  <div class="row row-cols-1 row-cols-md-1 g-2" id="internCardsContainer">
-    <% interns.forEach(intern => { %>
-      <div class="col intern-card" data-batch="<%= intern.batch_no %>">
-        <div class="card h-20 shadow-sm "style="border-color: #ff6600 !important;">
-          <div class="card-body d-flex justify-content-between align-items-center">
-            <div class="row w-100 align-items-center">
-              <div class="col-md-3"><strong>Name:</strong> <span class="intern-name"><%= intern.name %></span></div>
-              <div class="col-md-3"><strong>Email:</strong> <%= intern.email %></div>
-              <div class="col-md-3"><strong>Domain:</strong> <%= intern.domain %></div>
-              <div class="col-md-3"><strong>Intern ID:</strong> <span class="intern-id"><%= intern.intern_id %></span></div>
-            </div>
-            <div class="d-flex gap-2 ms-3">
-              <a href="/admin/intern/<%= intern._id %>" class="btn btn-info btn-sm">View</a>
-              <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteInternModal<%= intern._id %>">Delete</button>
-            </div>
-          </div>
+      <!-- Filters Row -->
+      <div class="row mb-3 g-2 justify-content-center flex-grow-1">
+        <div class="col-md-2">
+          <select id="batchFilter" class="form-select" onchange="applyInternFilters()">
+            <option value="all" selected>All Batches</option>
+            <% batches.forEach(batch => { %>
+              <option value="<%= batch %>">Batch <%= batch %></option>
+            <% }) %>
+          </select>
         </div>
-
-        <!-- Delete Modal -->
-        <div class="modal fade" id="deleteInternModal<%= intern._id %>" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Delete <%= intern.name %>?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">Are you sure you want to delete this intern?</div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <form action="/delete-user/<%= intern._id %>" method="POST">
-                  <button class="btn btn-danger">Delete</button>
-                </form>
-              </div>
-            </div>
-          </div>
+        <div class="col-md-2 flex-grow-1">
+          <input type="text" id="internSearchInput" class="form-control" placeholder="Search by Name or ID" onkeyup="applyInternFilters()">
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-secondary w-100" onclick="clearInternFilters()">Clear Filters</button>
         </div>
       </div>
-    <% }) %>
+
+      <!-- Intern Table -->
+      <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <table class="table table-striped table-bordered align-middle text-center mb-0">
+          <thead class="table-light" style="position: sticky; top: 0; z-index: 2;">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Domain</th>
+              <th>Intern ID</th>
+              <th>Batch No</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% interns.forEach(i => { %>
+              <tr class="intern-row" data-batch="<%= i.batch_no %>">
+                <td><%= i.name %></td>
+                <td><%= i.email %></td>
+                <td><%= i.domain %></td>
+                <td class="intern-id"><%= i.intern_id %></td>
+                <td><%= i.batch_no %></td>
+                <td class="d-flex justify-content-evenly">
+                  <a href="/admin/intern/<%= i._id %>" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">View</a>
+                  <!-- <button class="btn btn-outline-secondary btn-sm px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button> -->
+                  <button class="btn btn-outline-danger btn-sm px-3 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteModal<%= i._id %>">Delete</button>
+                </td>
+              </tr>
+
+              <!-- Delete Intern Modal -->
+              <div class="modal fade" id="deleteModal<%= i._id %>" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Delete <%= i.name %>?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">Are you sure you want to delete this intern?</div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <form action="/delete-user/<%= i._id %>" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
   </div>
 </section>
+
 <!-- ================= CONFIRMATION MAIL ================= -->
 <section id="confirmationMail" style="display:none; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ff6600 !important;">
   <h4 class="text-center mb-4">Send Confirmation Mail</h4>
@@ -610,6 +629,25 @@
     </table>
   </form>
 </section>
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog" style="margin-top: 10vh;"> <!-- Adjust top margin -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to log out?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
