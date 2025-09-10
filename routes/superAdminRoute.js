@@ -12,6 +12,13 @@ router.get("/superAdmin", authRole("superAdmin"), async (req, res) => {
     const certifiedInternsCount = interns.filter(
       i => i.certificate_link && i.certificate_link.trim() !== ""
     ).length;
+      const adminNotices = admins.flatMap(a =>
+      a.notice.map(n => ({
+        title: n.title,
+        description: n.description,
+        adminName: a.name
+      }))
+    );
 
     res.render("superAdmin", {
       interns,
@@ -19,6 +26,7 @@ router.get("/superAdmin", authRole("superAdmin"), async (req, res) => {
       superAdmin,
       batches,
       certifiedInternsCount,
+      adminNotices
     });
   } catch (err) {
     console.error(err);

@@ -15,9 +15,11 @@ router.get("/superAdmin/admin/:adminId", authRole("superAdmin"), async (req, res
   const projects = await Project.find({});
   const batches = [...new Set(interns.map(i => i.batch_no).filter(Boolean))];
   const certifiedInternsCount = interns.filter(i => i.certificate_link && i.certificate_link.trim() !== "").length;
+  const superAdmin = await User.findOne({ role: "superAdmin" });
+  const notices = superAdmin ? superAdmin.notice : [];
   
   req.flash('info', `Viewing Admin: ${admin.name}`);
-  res.render("admin", { admin, interns,projects,batches, certifiedInternsCount });
+  res.render("admin", { admin, interns,projects,batches, certifiedInternsCount,notices });
   } catch (err) {
     console.error(err);
     res.redirect("/superAdmin");

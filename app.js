@@ -145,6 +145,14 @@ const updateUserRouter = require('./routes/updateUserRoute');
 app.post('/update-user/:id', updateUserRouter);
 
 
+// Notice Route
+const noticeRoute = require('./routes/noticeRoute');
+app.use('/superAdmin', noticeRoute);
+
+const deleteNoticeRoute = require('./routes/deleteNoticeRoute');
+app.use('/superAdmin', deleteNoticeRoute);
+
+
 
 // --- Intern Routes ---
 

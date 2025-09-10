@@ -175,3 +175,27 @@ th {
   border-radius: 8px;
 }
 
+
+/* Fixed height for profile */
+.fixed-profile {
+  height: 20rem !important; /* or any fixed height you want */
+}
+
+/* Scrollable right card */
+.scrollable-notice {
+  max-height: 460px; /* same as left card for symmetry */
+  overflow-y: auto;  /* vertical scroll if content exceeds height */
+}
+
+/* Optional: nice scrollbar for right card */
+.scrollable-notice::-webkit-scrollbar {
+  width: 0px;
+  visibility: hidden;
+}
+
+.scrollable-notice::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+

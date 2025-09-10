@@ -108,3 +108,15 @@ body {
   padding: 6px 10px;
   border-radius: 8px;
 }
+
+.scrollable-notice {
+  max-height: 460px; /* same as left card for symmetry */
+  overflow-y: auto;  /* vertical scroll if content exceeds height */
+}
+.fixed-profile {
+  height: 15rem !important; /* or any fixed height you want */
+}
+.scrollable-notice::-webkit-scrollbar {
+  width: 0px;
+  visibility: hidden;
+}
