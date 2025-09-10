@@ -52,7 +52,7 @@
     <!--Header Section -->
     <div class="header  w-100 !important  ">
       <h4 class="section-title mb-4 text-center" >Welcome to Rixi Lab, <%= admin.name %> - <%=admin.designation%></h4>
-      <hr style="margin: 0px !important;">
+      <hr>
     </div>
 
     
@@ -107,7 +107,9 @@
           <div class="col-6"><p><strong>Phone:</strong> <%= admin.phone %></p></div>
           <div class="col-6"><p><strong>Domain:</strong> <%= admin.domain %></p></div>
           <div class="col-6"><p><strong>Employee ID:</strong> <%= admin.emp_id %></p></div>
-          <div class="col-6"><p><strong>Joining Date:</strong> <%= admin.joining_date %></p></div>
+          <div class="col-6"><p><strong>Joining Date:</strong> <%= new Date(admin.joining_date)
+                  .toLocaleDateString("en-GB", { day:"2-digit", month:"2-digit", year:"2-digit" })
+                  .replace(/\//g, "-") %></p></div>
         </div>
       </div>
     </div>

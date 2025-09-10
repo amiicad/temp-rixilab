@@ -125,3 +125,53 @@ th {
   padding: 6px 10px;
   border-radius: 8px;
 }
+
+
+
+
+
+
+
+
+#viewAdmin .card {
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border-left: 6px solid #ff6600;
+}
+
+#viewAdmin .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Stats Cards */
+#viewAdmin .stat-card h6 {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+#viewAdmin .stat-card p {
+  font-size: 2rem;
+}
+
+/* Profile Card */
+#viewAdmin .profile-card .profile-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+#viewAdmin .profile-card h4 {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+#viewAdmin .profile-card .badge {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
