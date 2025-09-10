@@ -22,7 +22,7 @@ router.get("/admin/intern/:internId", authRole(['admin','superAdmin']), async (r
   req.flash('info', `Viewing Intern: ${intern.name}`);
   res.render("intern", { intern, projects,progress });
   }catch(err){
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Intern details loading failed");
     res.redirect("/admin");
   }

@@ -6,7 +6,7 @@ const authRole = require('../middleware/authRole');
 
 router.post("/admin/projects", authRole("admin"), async (req, res) => {
   try {
-    console.log("📌 Incoming Project Data:", req.body);
+    // console.log("📌 Incoming Project Data:", req.body);
 
     const adminId = req.session.user;
     const admin = await User.findById(adminId);
@@ -29,7 +29,7 @@ router.post("/admin/projects", authRole("admin"), async (req, res) => {
       createdBy: admin._id
     });
     await newProject.save();
-    console.log("✅ Project Created:", newProject._id);
+    // console.log("✅ Project Created:", newProject._id);
 
     // 🔹 Determine eligible intern durations
     const allDurations = [4, 6, 8];
@@ -54,7 +54,7 @@ router.post("/admin/projects", authRole("admin"), async (req, res) => {
       }
     );
     req.flash('success', 'Project Created Successfully!');
-    console.log(`✅ Users updated for batch ${batch_no}:`, result.modifiedCount);
+    // console.log(`✅ Users updated for batch ${batch_no}:`, result.modifiedCount);
     res.redirect("/admin#uploadProject");
   } catch (err) {
    req.flash('error', 'Project Creation Failed! '+err.message);

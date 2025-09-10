@@ -55,7 +55,7 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
     return res.redirect('/login');
 
   } catch (err) {
-    console.error("Update Error:", err);
+    // console.error("Update Error:", err);
     req.flash("error",err.message);
   }
 });

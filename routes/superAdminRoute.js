@@ -29,7 +29,7 @@ router.get("/superAdmin", authRole("superAdmin"), async (req, res) => {
       adminNotices
     });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Failed to load Super Admin Dashboard");
     res.redirect("/login");
   }

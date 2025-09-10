@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
       return res.redirect("/intern");
     }
   } catch (err) {
-    console.error("🔥 Login Error:", err);
+    // console.error("🔥 Login Error:", err);
     req.flash("error", "Something went wrong, please try again.");
     res.redirect("/login");
   }

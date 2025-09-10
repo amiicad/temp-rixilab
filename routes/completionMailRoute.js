@@ -129,10 +129,10 @@ async function sendBulkCompletionMails(interns) {
 
       await User.findOneAndUpdate({ intern_id }, { completionSent: true });
 
-      console.log(`✅ Completion mail sent to ${email}`);
+      // console.log(`✅ Completion mail sent to ${email}`);
       return { status: "fulfilled", email };
     } catch (err) {
-      console.error(`❌ Completion mail failed for ${intern.email}:`, err.message);
+      // console.error(`❌ Completion mail failed for ${intern.email}:`, err.message);
       return { status: "rejected", email: intern.email, reason: err.message };
     }
   });
@@ -166,7 +166,7 @@ router.post("/send-completion-mail", async (req, res) => {
 
     res.redirect("/superAdmin");
   } catch (err) {
-    console.error("Error in completion route:", err);
+    // console.error("Error in completion route:", err);
     req.flash("error", "Server error while sending completion mails.");
     res.redirect("/superAdmin");
   }

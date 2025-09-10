@@ -9,7 +9,7 @@ router.post('/projects/update-status', async (req, res) => {
 
     // Check for missing fields
     if (!userId || !projectId || !status) {
-      console.error('Missing required fields:', req.body);
+      // console.error('Missing required fields:', req.body);
       req.flash('error', 'Missing required fields');
       res.redirect('/admin')
     }
@@ -27,15 +27,15 @@ router.post('/projects/update-status', async (req, res) => {
      }
 
     if (!updatedUser) {
-      console.error('User or project not found:', req.body);
+      // console.error('User or project not found:', req.body);
       req.flash('error', 'User or Project not found');
       return res.redirect('/admin');
     }
 
-    console.log('Updated user:', updatedUser);
+    // console.log('Updated user:', updatedUser);
     res.redirect('/admin'); // back to admin dashboard
   } catch (err) {
-    console.error('🔥 Error updating project status:', err);
+    // console.error('🔥 Error updating project status:', err);
     req.flash('error', 'Error Updating Project Status');
     res.redirect('/admin')
   }

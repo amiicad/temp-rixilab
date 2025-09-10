@@ -24,7 +24,7 @@ router.post("/delete-user/:id", authRole("superAdmin"), async (req, res) => {
       return res.redirect("/superAdmin"); // fallback
     }
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash('error', 'Failed to Delete User');
     res.redirect("/superAdmin");
   }

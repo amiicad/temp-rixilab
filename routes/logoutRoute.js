@@ -9,14 +9,14 @@ try{
 
   req.session.destroy((err) => {
     if (err) {
-      console.error("Logout error:", err);
+      // console.error("Logout error:", err);
       return res.status(500).send("Failed to log out");
     }
     res.clearCookie("connect.sid");
     res.redirect("/login");
   });
 }catch(err){
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Error logging out");
     res.redirect("/login");
   }

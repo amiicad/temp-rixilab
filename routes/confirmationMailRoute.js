@@ -51,7 +51,7 @@ async function sendBulkConfirmationMails(interns) {
 
               <h3 style="color:#111827; margin-top:20px; font-size:16px;">Internship Details:</h3>
               <ul style="padding-left:20px; margin:10px 0;">
-                <li><strong>Start Date:</strong> 1st August 2025</li>
+                <li><strong>Start Date:</strong> 1st October 2025</li>
                 <li><strong>Domain:</strong> ${domain}</li>
                 <li><strong>Duration:</strong> ${duration}</li>
               </ul>
@@ -124,10 +124,10 @@ async function sendBulkConfirmationMails(interns) {
 
       await User.findOneAndUpdate({ intern_id }, { confirmationSent: true });
 
-      console.log(`✅ Confirmation mail sent to ${email}`);
+      // console.log(`✅ Confirmation mail sent to ${email}`);
       return { status: "fulfilled", email };
     } catch (err) {
-      console.error(`❌ Confirmation mail failed for ${intern.email}:`, err.message);
+      // console.error(`❌ Confirmation mail failed for ${intern.email}:`, err.message);
       return { status: "rejected", email: intern.email, reason: err.message };
     }
   });
@@ -166,7 +166,7 @@ router.post("/send-confirmation-mail", async (req, res) => {
       { batch_no: batchConfirm },
       { $set: { whatsappLink } }
     );
-    console.log("WhatsApp link update result:", result);
+    // console.log("WhatsApp link update result:", result);
 
     // Fetch selected interns
     const internDocs = await User.find({ intern_id: { $in: internIds } });
@@ -182,7 +182,7 @@ router.post("/send-confirmation-mail", async (req, res) => {
 
     res.redirect("/superAdmin");
   } catch (err) {
-    console.error("Error in confirmation route:", err);
+    // console.error("Error in confirmation route:", err);
     req.flash("error", "Server error while sending confirmation mails.");
     res.redirect("/superAdmin");
   }

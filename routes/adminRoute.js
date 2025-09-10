@@ -33,7 +33,7 @@ router.get("/admin", authRole("admin"), async (req, res) => {
     req.flash("info", `Welcome ${admin.name}`); 
     res.render("admin", { admin, interns, projects, batches, certifiedInternsCount, notices });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Server Error");
     res.redirect("/login");
   }

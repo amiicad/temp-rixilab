@@ -18,7 +18,7 @@ router.post('/notice/delete/:index', authRole('superAdmin'), async (req, res) =>
 
     res.redirect('/superAdmin');
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash('error', 'Failed to delete notice.');
     res.redirect('/superAdmin');
   }

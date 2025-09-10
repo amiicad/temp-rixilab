@@ -20,7 +20,7 @@ router.post("/verify-certificate", async (req, res) => {
       res.redirect("/certificate");
     }
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash('error_msg', 'Server Error');
   }
 })

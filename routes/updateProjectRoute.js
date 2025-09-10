@@ -20,7 +20,7 @@ router.post("/admin/project/update/:id", authRole("admin"), async (req, res) => 
 
     res.redirect("/admin"); // go back to dashboard
   } catch (err) {
-    console.error("🔥 Error updating project:", err);
+    // console.error("🔥 Error updating project:", err);
     res.status(500).send("Server Error");
   }
 });

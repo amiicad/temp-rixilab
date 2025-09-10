@@ -59,11 +59,11 @@ router.post("/create-user", authRole("admin"), async (req, res) => {
       await user.save();
     }
      req.flash("success", `Intern ${name} created successfully!`);
-    console.log(`✅ Intern ${user.name} created & synced with ${eligibleProjects.length} projects`,user);
+    // console.log(`✅ Intern ${user.name} created & synced with ${eligibleProjects.length} projects`,user);
     res.redirect("/admin");
 
   } catch (err) {  
-    console.error("🔥 Error creating user:", err);
+    // console.error("🔥 Error creating user:", err);
     req.flash("error", "Error creating Intern.");
     res.redirect("/admin");
   }

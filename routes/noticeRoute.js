@@ -19,7 +19,7 @@ router.post('/notice', authRole('superAdmin'), async (req, res) => {
     req.flash('success', 'Notice added successfully.');
     res.redirect('/superAdmin');
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash('error', 'Failed to add notice.');
     res.redirect('/superAdmin');
   }

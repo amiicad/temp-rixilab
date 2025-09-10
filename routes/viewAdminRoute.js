@@ -21,7 +21,7 @@ router.get("/superAdmin/admin/:adminId", authRole("superAdmin"), async (req, res
   req.flash('info', `Viewing Admin: ${admin.name}`);
   res.render("admin", { admin, interns,projects,batches, certifiedInternsCount,notices });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     res.redirect("/superAdmin");
   }
 });

@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   if (!superAdminExists) return res.redirect("/register-superAdmin");
   res.render("index");
   }catch(err){
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Server Error");
     res.redirect("/login");
   }

@@ -16,7 +16,7 @@ try{
   res.redirect("/admin");
 }
 catch(err){
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Server Error");
     res.redirect("/admin");
   }

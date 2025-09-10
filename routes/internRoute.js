@@ -24,7 +24,7 @@ router.get("/intern", authRole("intern"), async (req, res) => {
       let duration = intern.duration;
       let arr = [0,1,2,3,4,6,8];
       const progress = Math.round((arr[acceptedCount] / duration)*100);
-      console.log("Progress:", progress);
+      // console.log("Progress:", progress);
 
 
       // filter based on intern duration rules
@@ -43,7 +43,7 @@ router.get("/intern", authRole("intern"), async (req, res) => {
       req.flash('success_msg', 'Welcome to Intern Dashboard');
       res.render("intern", { intern, projects, progress });
     } catch (err) {
-      console.error("Error in /intern:", err);
+      // console.error("Error in /intern:", err);
       res.status(500).send("Server Error");
     }
   });

@@ -25,7 +25,7 @@ router.post("/delete-project/:id", authRole("admin"), async (req, res) => {
     req.flash("success", `${deletedProject.title} deleted successfully`);
     res.redirect('/admin');
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     req.flash("error", "Error deleting project");
     res.redirect('/admin/projects');
   }

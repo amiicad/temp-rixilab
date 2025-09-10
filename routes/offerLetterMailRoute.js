@@ -109,10 +109,10 @@ async function sendBulkOfferLetterMails(interns) {
         html: body,
       });
 
-      console.log(`✅ Offer Letter sent to ${email}`);
+      // console.log(`✅ Offer Letter sent to ${email}`);
       return { status: "fulfilled", email, intern_id };
     } catch (err) {
-      console.error(`❌ Offer Letter failed for ${email}:`, err.message);
+      // console.error(`❌ Offer Letter failed for ${email}:`, err.message);
       return { status: "rejected", email, intern_id, reason: err.message };
     }
   });
@@ -161,7 +161,7 @@ router.post("/send-offerletter-mail", async (req, res) => {
         { intern_id: { $in: successfulInternIds } },
         { $set: { offer_letter_sent: true } }
       );
-      console.log("DB update result:", updateResult);
+      // console.log("DB update result:", updateResult);
     }
 
     // Flash messages
@@ -179,7 +179,7 @@ router.post("/send-offerletter-mail", async (req, res) => {
 
     res.redirect("/superAdmin");
   } catch (err) {
-    console.error("Error in offer letter route:", err);
+    // console.error("Error in offer letter route:", err);
     req.flash("error", "Server error while sending offer letters.");
     res.redirect("/superAdmin");
   }

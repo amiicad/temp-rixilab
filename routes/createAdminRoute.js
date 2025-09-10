@@ -13,7 +13,7 @@ router.post("/create-admin", authRole("superAdmin"), async (req, res) => {
   req.flash('success_msg', 'Admin created successfully!');
   res.redirect("/superAdmin");
 }catch(err){
-  console.error(err);
+  // console.error(err);
   req.flash('error', 'Error creating admin');
   res.redirect("/superAdmin");
 }
