@@ -53,37 +53,10 @@ function filterProjectsByBatch() {
     row.style.display = (selectedBatch === "all" || rowBatch === selectedBatch) ? "" : "none";
   });
 }
-    // Client-side batch filter
-  function filterSubmittedProjects(batch) {
-    const cards = document.querySelectorAll('#submittedProjects .intern-card');
-    cards.forEach(card => {
-      const internBatch = card.dataset.batch;
-      card.style.display = (batch === 'all' || internBatch === batch) ? 'block' : 'none';
-    });
-  }
 
-  function applyFilters() {
-  let batchFilter = document.getElementById("submittedBatchFilter").value.toLowerCase();
-  let internSearch = document.getElementById("internSearch").value.toLowerCase();
-  let cards = document.querySelectorAll("#submittedProjects .intern-card");
 
-  cards.forEach(card => {
-    let cardBatch = card.getAttribute("data-batch").toLowerCase();
-    let internId = card.querySelector(".intern-id")?.textContent.toLowerCase() || "";
 
-    let matchesBatch = (batchFilter === "all" || cardBatch === batchFilter);
-    let matchesIntern = (internSearch === "" || internId.includes(internSearch));
 
-    // Show only if BOTH match
-    card.style.display = (matchesBatch && matchesIntern) ? "block" : "none";
-  });
-}
-
-function clearFilters() {
-  document.getElementById("submittedBatchFilter").value = "all";
-  document.getElementById("internSearch").value = "";
-  applyFilters();
-}
 
 // Intern Filters for Table
 function applyInternFilters() {
@@ -126,42 +99,49 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 
 
-    // Scoped helpers (Submitted Projects only)
-  function getSubmittedSection() {
-    return document.getElementById('submittedProjects');
-  }
+    // Helper to get the Submitted Projects section
+function getSubmittedSection() {
+  return document.getElementById('submittedProjects');
+}
 
-  function filterSubmittedByBatch(card, batchFilter) {
-    const cardBatch = (card.getAttribute('data-batch') || '').toLowerCase();
-    return (batchFilter === 'all' || cardBatch === batchFilter);
-  }
+// Main filter function
+function applySubmittedFilters() {
+  const section = getSubmittedSection();
+  if (!section) return;
 
-  function filterSubmittedByIntern(card, internSearch) {
-    const internId = (card.querySelector('.intern-id')?.textContent || '').toLowerCase().trim();
-    return (internSearch === '' || internId.includes(internSearch));
-  }
+  const batchFilter = section.querySelector('#submittedBatchFilter')?.value.toLowerCase() || 'all';
+  const internSearch = section.querySelector('#submittedInternSearch')?.value.toLowerCase().trim() || '';
 
-  function applySubmittedFilters() {
-    const section = getSubmittedSection();
-    const batchFilter = section.querySelector('#submittedBatchFilter').value.toLowerCase();
-    const internSearch = section.querySelector('#submittedInternSearch').value.toLowerCase().trim();
-    const cards = section.querySelectorAll('.intern-card');
+  const cards = section.querySelectorAll('.intern-card');
 
-    cards.forEach(card => {
-      const matchesBatch = filterSubmittedByBatch(card, batchFilter);
-      const matchesIntern = filterSubmittedByIntern(card, internSearch);
-      card.style.display = (matchesBatch && matchesIntern) ? '' : 'none';
-    });
-  }
+  cards.forEach(card => {
+    const cardBatch = (card.dataset.batch || '').toLowerCase();
+    const cardInternId = (card.querySelector('.intern-id')?.textContent || '').toLowerCase().trim();
 
-  function clearSubmittedFilters() {
-    const section = getSubmittedSection();
-    section.querySelector('#submittedBatchFilter').value = 'all';
-    section.querySelector('#submittedInternSearch').value = '';
-    applySubmittedFilters();
-  }
+    const matchesBatch = (batchFilter === 'all' || cardBatch === batchFilter);
+    const matchesIntern = (internSearch === '' || cardInternId.includes(internSearch));
 
-  document.addEventListener('DOMContentLoaded', applySubmittedFilters);
+    // Show card only if both match
+    card.style.display = (matchesBatch && matchesIntern) ? 'block' : 'none';
+  });
+}
+
+// Clear filters
+function clearSubmittedFilters() {
+  const section = getSubmittedSection();
+  if (!section) return;
+
+  section.querySelector('#submittedBatchFilter').value = 'all';
+  section.querySelector('#submittedInternSearch').value = '';
+  applySubmittedFilters();
+}
+
+// Apply filters on page load
+window.addEventListener('DOMContentLoaded', () => {
+  applySubmittedFilters(); // ensures all cards are visible by default
+});
+
+  // document.addEventListener('DOMContentLoaded', applySubmittedFilters);
 
   (() => {
     'use strict'

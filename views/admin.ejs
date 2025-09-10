@@ -35,7 +35,7 @@
     <a href="#createUser"><i class="bi bi-person-plus"></i> Create Intern</a>
     <a href="#uploadProject"><i class="bi bi-upload"></i> Upload Project</a>
     <a href="#viewProjects"><i class="bi bi-folder2-open"></i> View Projects</a>
-    <a href="#submittedProjects"><i class="bi bi-folder2-open"></i> Submitted Project</a>
+    <a href="#submittedProjects"><i class="bi bi-folder2-open"></i> Review Project</a>
      <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
@@ -326,8 +326,8 @@
                 <td class="intern-id"><%= i.intern_id %></td>
                 <td><%= i.batch_no %></td>
                 <td class="d-flex justify-content-evenly">
-                  <a href="/admin/intern/<%= i._id %>" class="btn btn-info btn-sm">View</a>
-                  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button>
+                  <a href="/admin/intern/<%= i._id %>" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">View</a>
+                  <button class="btn btn-outline-secondary btn-sm px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#updateModal<%= i._id %>">Update</button>
                 </td>
               </tr>
 
@@ -408,8 +408,8 @@
                         </div>
                       </div>
                       <div class="modal-footer justify-content-center">
-                        <button type="submit" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">Update</button>
-                        <button type="button" class="btn btn-outline-danger btn-sm px-3 rounded-pill shadow-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger btn-sm px-3  shadow-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning btn-sm px-3  shadow-sm">Update</button>
                       </div>
                     </form>
                   </div>
@@ -550,33 +550,38 @@
 
 
 <section id="submittedProjects" style="display:none;">
-  <h4 class="section-title text-center mb-2">Submitted Projects</h4>
 
   <% var currentSubmittedBatch = typeof submittedBatch !== 'undefined' ? submittedBatch : 'all'; %>
 
   <!-- Filters -->
-  <div class="mb-3 d-flex align-items-center flex-wrap gap-3">
+  <div class="card p-3 mb-3 shadow-sm" style="border-color: #ff6600 !important;">
+  <!-- Card Heading (optional) -->
+  <h4 class="section-title text-center mb-3">Review Submitted Projects</h4>
+
+  <div class=" d-flex align-items-center flex-wrap gap-3">
     <!-- Batch Filter -->
-    <div class="flex-grow-1">
-      <select class="form-select" id="submittedBatchFilter" onchange="applySubmittedFilters()">
-        <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
-        <% batches.forEach(batch => { %>
-          <option value="<%= batch %>" <%= currentSubmittedBatch === batch ? 'selected' : '' %>>Batch <%= batch %></option>
-        <% }) %>
-      </select>
+    <div >
+    <select class="form-select" id="submittedBatchFilter" onchange="applySubmittedFilters()">
+  <option value="all" <%= currentSubmittedBatch === 'all' ? 'selected' : '' %>>All Batches</option>
+  <% batches.forEach(batch => { %>
+    <option value="<%= batch %>" <%= currentSubmittedBatch === batch ? 'selected' : '' %>>Batch <%= batch %></option>
+  <% }) %>
+</select>
     </div>
 
-    <!-- Intern Search (UNIQUE ID) -->
+    <!-- Intern Search -->
     <div class="flex-grow-1">
       <input type="text" id="submittedInternSearch" class="form-control"
-             placeholder="Enter Intern ID" onkeyup="applySubmittedFilters()">
+       placeholder="Enter Intern ID" onkeyup="applySubmittedFilters()">
     </div>
 
     <!-- Clear Filters -->
     <div class="align-self-end">
       <button class="btn btn-secondary" onclick="clearSubmittedFilters()">Clear Filters</button>
-    </div>
+    </div>  
   </div>
+</div>
+
 
   <div class="row row-cols-1 row-cols-md-1 g-8">
     <% interns.forEach(intern => { %>
@@ -595,7 +600,7 @@
                   </span>
                 </div>
 
-                <table class="table table-bordered">
+                <table class="table table-bordered mb-0">
                   <thead>
                     <tr style="text-align:center;">
                       <th>Project Title</th>
@@ -625,7 +630,7 @@
                               <option value="accepted" <%= sub.status === 'accepted' ? 'selected' : '' %>>Approve</option>
                               <option value="rejected" <%= sub.status === 'rejected' ? 'selected' : '' %>>Reject</option>
                             </select>
-                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                            <button type="submit" class="btn btn-outline-secondary btn-sm px-3 rounded-pill">Update</button>
                           </form>
                         </td>
                       </tr>
