@@ -120,7 +120,7 @@ body {
   width: 0px;
   visibility: hidden;
 }
-#viewInterns::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0px;
-  visibility: hidden;
+  display: none;
 }

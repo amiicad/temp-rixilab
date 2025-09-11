@@ -200,3 +200,7 @@ th {
   border-radius: 3px;
 }
 
+::-webkit-scrollbar {
+  width: 0px;
+  display: none;
+}
