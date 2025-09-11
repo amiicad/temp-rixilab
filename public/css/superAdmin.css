@@ -130,8 +130,10 @@ th {
 
 
 
-
-
+#viewAdmin::-webkit-scrollbar {
+  width: 0px;
+  visibility: hidden;
+}
 
 #viewAdmin .card {
   border-radius: 16px;
@@ -197,5 +199,4 @@ th {
   background-color: rgba(0,0,0,0.2);
   border-radius: 3px;
 }
-
 
