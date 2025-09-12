@@ -1,4 +1,25 @@
 const express = require("express");
+
+const url = "https://render-hosting-se2b.onrender.com";
+
+const interval = 30000;
+
+function reloadWebsite() {
+
+  axios
+    .get(url)
+    .then((response) => {
+      console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(`Error : ${error.message}`);
+    });
+}
+
+setInterval(reloadWebsite,interval);
+
+
+setInterval(reloadWebsite, interval);
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
@@ -8,7 +29,6 @@ require('dotenv').config();
 const flash = require('connect-flash');
 require("./db"); // Mongoose connection
 const User = require("./models/User");
-const Project = require("./models/Project");
 
 const app = express();
 app.use(express.static("public"));
