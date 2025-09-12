@@ -2,13 +2,13 @@ const express = require("express");
 const axios = require('axios');
 const url = "https://rixilab.onrender.com/";
 
-const interval = 30000;
+const interval = 60000;
 
 function reloadWebsite() {
   axios
     .get(url)
     .then((response) => {
-      console.log("website reloded");
+      // console.log("website reloded");
     })
     .catch((error) => {
       console.error(`Error : ${error.message}`);
@@ -41,9 +41,12 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(session({
-  secret: "secretKey",
+  secret: process.env.SESSION_SECRET || "xjdshjsgbhbusguhiusgughiuhaiuhahah",
   resave: false,
   saveUninitialized: true,
+  cookie: {
+    maxAge: 10 * 60 * 1000 // 10 minutes in milliseconds
+  }
 }));
 app.use(flash());
 // Make flash messages available in all templates
@@ -61,7 +64,6 @@ const authRole = require('./middleware/authRole');
 // --- Routes ---
 
 const homeRoute = require('./routes/homeRoute');
-// app.get("/", homeRoute);
 
 // Register first superAdmin
 app.get("/register-superAdmin", (req, res) => res.render("register"));
