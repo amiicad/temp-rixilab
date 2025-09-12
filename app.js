@@ -1,11 +1,10 @@
 const express = require("express");
-
+const axios = require('axios');
 const url = "https://rixilab.onrender.com/";
 
 const interval = 30000;
 
 function reloadWebsite() {
-
   axios
     .get(url)
     .then((response) => {
