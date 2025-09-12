@@ -1,6 +1,6 @@
 const express = require("express");
 
-const url = "https://render-hosting-se2b.onrender.com";
+const url = "https://rixilab.onrender.com/";
 
 const interval = 30000;
 
