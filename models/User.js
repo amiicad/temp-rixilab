@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   university: { type: String },
   year_sem: { type: String },
   intern_id: { type: String, unique: true ,sparse: true },
-  phone: { type: String , unique: true ,required: true },
+  phone: { type: String ,required: true },
   role: { type: String,default: "intern" },
   emp_id: { type: String, unique: true ,sparse: true },
   designation: { type: String },
