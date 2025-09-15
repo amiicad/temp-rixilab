@@ -37,7 +37,7 @@
     <a href="#offerLetterMail"><i class="bi bi-envelope-paper"></i> Offer Letter Mail</a>
     <a href="#completionMail"><i class="bi bi-envelope-heart"></i> Certificate Mail</a>
     <!-- <a href="#"><i class="bi bi-chat-left-text"></i> Circulate Notice</a> -->
-    <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <a href="#dashboard" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
   <!-- Footer at the bottom -->
@@ -498,7 +498,7 @@
               <% if (i.confirmationSent) { %>
                 <input type="checkbox" disabled>
               <% } else { %>
-                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="confirmCheckbox form-check-input" onclick="updateRowColor(this, 'confirm')">
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="confirmCheckbox form-check-input">
               <% } %>
             </td>
           </tr>
@@ -538,7 +538,7 @@
       </div>
 
       <div class="flex-grow-1">
-        <input type="text" id="searchCompletion" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('completion')">
+        <input type="text" id="searchCompletion" class="form-control" placeholder="Search by name or email">
       </div>
 
       <div class="flex-grow-0">
@@ -577,7 +577,7 @@
               <% if (i.completionSent) { %>
                 <input type="checkbox" disabled>
               <% } else { %>
-                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="completionCheckbox form-check-input" onclick="updateRowColor(this, 'completion')">
+                <input type="checkbox" name="interns[]" value="<%= i.intern_id %>" class="completionCheckbox form-check-input">
               <% } %>
             </td>
           </tr>
@@ -614,7 +614,7 @@
       </div>
 
       <div class="flex-grow-1">
-        <input type="text" id="searchOfferLetter" class="form-control" placeholder="Search by name or email" onkeyup="applyFilters('offerLetter')">
+        <input type="text" id="searchOfferLetter" class="form-control" placeholder="Search by name or email">
       </div>
 
       <div class="flex-grow-0">

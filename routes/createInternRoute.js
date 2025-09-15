@@ -17,6 +17,17 @@ router.post("/create-user", authRole("admin"), async (req, res) => {
       req.flash("error", "All required fields must be filled!");
       return res.redirect("/admin"); 
     }
+    const existingUser = await User.findOne({ $or: [{ email }, { intern_id }] });
+    if (existingUser) {
+      if (existingUser.email === email) {
+        console.log("❌ Email already exists:", email);
+        if (req.flash) req.flash("error", "Email already exists!");
+      } else if (existingUser.intern_id === intern_id) {
+        console.log("❌ Intern ID already exists:", intern_id);
+        if (req.flash) req.flash("error", "Intern ID already exists!");
+      }
+      return res.redirect("/admin");
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

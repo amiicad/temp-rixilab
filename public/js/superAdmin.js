@@ -223,14 +223,38 @@ function updateRowColor(checkbox, type) {
 
 function toggleSelectAll(type) {
   const table = document.getElementById(type + "Table");
-  const checkboxes = table.querySelectorAll("input[type='checkbox']:not([disabled])");
-  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-  const newCheckedState = !allChecked;
+  const rows = table.querySelectorAll("tr");
+  const master = document.getElementById(
+    type === "confirm" ? "selectAllConfirm" : "selectAllCompletion"
+  );
 
-  checkboxes.forEach(cb => {
-    cb.checked = newCheckedState;
-    updateRowColor(cb, type);
+  // only check/uncheck checkboxes from visible rows
+  rows.forEach(row => {
+    if (row.style.display !== "none") {
+      const cb = row.querySelector("input[type='checkbox']:not([disabled])");
+      if (cb) {
+        cb.checked = master.checked;
+        updateRowColor(cb, type);
+      }
+    }
   });
+}
+
+function updateMasterCheckbox(type) {
+  const table = document.getElementById(type + "Table");
+  const rows = table.querySelectorAll("tr");
+  const master = document.getElementById(
+    type === "confirm" ? "selectAllConfirm" : "selectAllCompletion"
+  );
+
+  if (!master) return;
+
+  const visibleCheckboxes = Array.from(rows)
+    .filter(row => row.style.display !== "none")
+    .map(row => row.querySelector("input[type='checkbox']:not([disabled])"))
+    .filter(cb => cb);
+
+  master.checked = visibleCheckboxes.length > 0 && visibleCheckboxes.every(cb => cb.checked);
 }
 
 function applyFilters(type) {
@@ -252,6 +276,12 @@ function applyFilters(type) {
 
     row.style.display = visible ? "" : "none";
   });
+
+  // reset master checkbox whenever filters or batch changes
+  const master = document.getElementById(
+    type === "confirm" ? "selectAllConfirm" : "selectAllCompletion"
+  );
+  if (master) master.checked = false;
 }
 
 function clearFilters(type) {
