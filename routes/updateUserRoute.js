@@ -31,12 +31,14 @@ router.post("/update-user/:id", authRole(['admin','superAdmin']), async (req, re
 
     // Admin updating an intern
     if (user.role === "intern" && req.session.role === "admin") {
-      const { name, email, domain, college, university, year_sem, phone, branch,batch_no, certificate_id,offer_letter,certificate_link,duration} = req.body;
+      const { name, email, domain, college, university, year_sem, phone, branch,batch_no, certificate_id,offer_letter,certificate_link,duration,password} = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       await User.findByIdAndUpdate(req.params.id, {
         name,
         email,
         domain,
+        password: hashedPassword,
         college,
         university,
         year_sem,
