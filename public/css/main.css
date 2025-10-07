@@ -3803,3 +3803,6 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+#contactMessage::-webkit-scrollbar{
+  display: none;
+}
