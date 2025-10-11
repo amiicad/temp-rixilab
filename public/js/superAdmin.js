@@ -313,3 +313,44 @@ function capitalize(str) {
       }, false)
     })
   })()
+ 
+
+  // Calender 
+
+  flatpickr("#meeting_datetime", {
+    enableTime: true,        // enable time selection
+    dateFormat: "Y-m-d H:i", // format for backend (YYYY-MM-DD HH:MM)
+    minDate: "today",        // optional: don't allow past dates
+    time_24hr: true          // 24-hour format
+  });
+
+  // Meeting Batch Filter
+
+const batchFilter = document.getElementById('Meeting_batchFilter');
+const tableBody = document.getElementById('meetingsTableBody');
+
+  batchFilter.addEventListener('change', () => {
+    const selectedBatch = batchFilter.value;
+    Array.from(tableBody.rows).forEach(row => {
+      if (selectedBatch === 'all' || row.dataset.batch === selectedBatch) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  });
+
+  // Image Preview
+const imageInput = document.getElementById('imageInput');
+  const previewImage = document.getElementById('previewImage');
+
+  imageInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        previewImage.src = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+  });

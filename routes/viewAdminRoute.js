@@ -17,9 +17,21 @@ router.get("/superAdmin/admin/:adminId", authRole("superAdmin"), async (req, res
   const certifiedInternsCount = interns.filter(i => i.certificate_link && i.certificate_link.trim() !== "").length;
   const superAdmin = await User.findOne({ role: "superAdmin" });
   const notices = superAdmin ? superAdmin.notice : [];
+
+    // ✅ Fetch only upcoming meetings for admin
+    let upcomingMeetings = (admin.meetings || []).filter(
+      m => m.status === "upcoming"
+    );
+
+    // ✅ Sort by creation time (newest first)
+    const getObjectIdTime = id =>
+      new Date(parseInt(id.toString().substring(0, 8), 16) * 1000);
+    upcomingMeetings = upcomingMeetings.sort(
+      (a, b) => getObjectIdTime(b._id) - getObjectIdTime(a._id)
+    );
   
   req.flash('info', `Viewing Admin: ${admin.name}`);
-  res.render("admin", { admin, interns,projects,batches, certifiedInternsCount,notices });
+  res.render("admin", { admin, interns,projects,batches, certifiedInternsCount,notices,meetings: upcomingMeetings,showPasswordPopup: admin.isFirstLogin });
   } catch (err) {
     // console.error(err);
     res.redirect("/superAdmin");

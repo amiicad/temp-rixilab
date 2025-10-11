@@ -5,58 +5,53 @@ const User = require("../models/User");
 const Project = require("../models/Project");
 const authRole = require('../middleware/authRole');
 
+
+
+
+// =============================
+// 👩‍🎓 CREATE INTERN (Admin Only)
+// =============================
 router.post("/create-user", authRole("admin"), async (req, res) => {
   try {
     const { 
       name, email, password, role, domain, college, university, 
-      phone, course, year_sem, branch, duration, intern_id, batch_no 
+      phone, course, year_sem, branch, duration, intern_id, batch_no,referal_code
     } = req.body;
+
+    // ✅ Validation
     if (!name || !email || !password || !domain || !college || !university ||
-      !phone || !course || !year_sem || !duration || !intern_id || !batch_no) {
-      console.log("❌ Validation failed: Missing required fields");
+        !phone || !course || !year_sem || !duration || !intern_id || !batch_no) {
       req.flash("error", "All required fields must be filled!");
       return res.redirect("/admin"); 
     }
+
+    // ✅ Check for existing email or intern_id
     const existingUser = await User.findOne({ $or: [{ email }, { intern_id }] });
     if (existingUser) {
-      if (existingUser.email === email) {
-        console.log("❌ Email already exists:", email);
-        if (req.flash) req.flash("error", "Email already exists!");
-      } else if (existingUser.intern_id === intern_id) {
-        console.log("❌ Intern ID already exists:", intern_id);
-        if (req.flash) req.flash("error", "Intern ID already exists!");
-      }
+      if (existingUser.email === email) req.flash("error", "Email already exists!");
+      else req.flash("error", "Intern ID already exists!");
       return res.redirect("/admin");
     }
 
+    // ✅ Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    let user = new User({ 
-      name, 
-      email, 
-      password: hashedPassword, 
-      role, 
-      domain,
-      college,
-      university,
-      phone,
-      course,
-      year_sem,
-      branch,
-      duration : Number(duration),
-      intern_id,
-      batch_no
-    });
+    // ✅ Prepare user data
+    let userData = {
+      name, email, password: hashedPassword, role, domain, college, university,
+      phone, course, year_sem, branch, duration: Number(duration),
+      intern_id, batch_no, referal_code
+    };
 
+    // ✅ Create the user
+    const user = new User(userData);
     await user.save();
 
-    // 🔹 Fetch all projects for the same domain + batch
+    // ✅ Assign eligible projects
     const projects = await Project.find({ domain, batch_no });
-
-    // 🔹 Apply duration rules
     const eligibleProjects = projects.filter(p => {
-      if (p.week <= 4 && [4, 6, 8].includes(Number(duration))) return true;
-      if (p.week === 6 && [6, 8].includes(Number(duration))) return true;
+      if (p.week <= 4 && [4,6,8].includes(Number(duration))) return true;
+      if (p.week === 6 && [6,8].includes(Number(duration))) return true;
       if (p.week === 8 && [8].includes(Number(duration))) return true;
       return false;
     });
@@ -69,12 +64,12 @@ router.post("/create-user", authRole("admin"), async (req, res) => {
       }));
       await user.save();
     }
-     req.flash("success", `Intern ${name} created successfully!`);
-    // console.log(`✅ Intern ${user.name} created & synced with ${eligibleProjects.length} projects`,user);
+
+    req.flash("success", `Intern ${name} created successfully!`);
     res.redirect("/admin");
 
-  } catch (err) {  
-    // console.error("🔥 Error creating user:", err);
+  } catch (err) {
+    console.error("Error creating intern:", err);
     req.flash("error", "Error creating Intern.");
     res.redirect("/admin");
   }

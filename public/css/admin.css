@@ -124,3 +124,17 @@ body {
   width: 0px;
   display: none;
 }
+
+/* Hide scrollbar for all browsers */
+  .meetings-container::-webkit-scrollbar,
+  .extra-meetings::-webkit-scrollbar {
+    display: none;
+  }
+  .meetings-container, .extra-meetings {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;      /* Firefox */
+  }
+
+.question-slide { display: none; background:#fff; }
+.progress { background:#eee; }
+.progress-bar { background:#ff6600; font-weight:600; text-align:center; }

@@ -162,5 +162,77 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   })()
 
+// Filters
+function applyAttendanceFilters() {
+  const batch = document.getElementById('attendanceBatchFilter').value.toLowerCase();
+  const week = document.getElementById('attendanceWeekFilter').value.toLowerCase();
+  const search = document.getElementById('attendanceSearch').value.toLowerCase().trim();
 
-  // Dashboard
+  document.querySelectorAll('#attendanceTable tbody .attendance-row').forEach(row => {
+    const rowBatch = row.dataset.batch.toLowerCase();
+    const rowWeek = row.dataset.week.toLowerCase();
+    const rowIntern = row.dataset.intern.toLowerCase();
+    const rowName = row.children[1].textContent.toLowerCase();
+
+    const matches = 
+      (batch==='all' || batch===rowBatch) &&
+      (week==='all' || week===rowWeek) &&
+      (search==='' || rowIntern.includes(search) || rowName.includes(search));
+
+    row.style.display = matches ? 'table-row' : 'none';
+  });
+}
+
+function clearAttendanceFilters() {
+  document.getElementById('attendanceBatchFilter').value = 'all';
+  document.getElementById('attendanceWeekFilter').value = 'all';
+  document.getElementById('attendanceSearch').value = '';
+  applyAttendanceFilters();
+}
+
+// Select All checkbox
+function toggleSelectAll(master) {
+  const checkboxes = document.querySelectorAll('.row-checkbox');
+  checkboxes.forEach(cb => cb.checked = master.checked);
+}
+
+// Populate bulk form and submit
+document.getElementById('bulkAttendanceForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const selected = [];
+  document.querySelectorAll('.row-checkbox:checked').forEach(cb => {
+    selected.push({ userId: cb.dataset.user, meetingId: cb.dataset.meeting });
+  });
+
+  if(selected.length===0){
+    alert('Select at least one intern!');
+    return;
+  }
+
+  document.getElementById('bulkInternsInput').value = JSON.stringify(selected);
+  this.submit(); // submit normal form
+});
+
+
+// Image Preview
+const imageInput = document.getElementById('imageInput');
+  const previewImage = document.getElementById('previewImage');
+
+  imageInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = function(e){
+        previewImage.src = e.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+
+
+
+// Disable left-click
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault(); // block right-click
+  // alert("Right-click is disabled!");
+});

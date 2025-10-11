@@ -14,6 +14,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/superAdmin.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 <body>
   <div class="d-flex">
@@ -32,11 +35,13 @@
     <a href="#dashboard"><i class="bi bi-person-lines-fill"></i> Dashboard</a>
     <a href="#viewAdmin"><i class="bi bi-person-workspace"></i> View Admins</a>
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
+    <a href="#viewAmbassador"><i class="bi bi-person-circle"></i> View Ambassador</a>
     <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
-    <a href="#confirmationMail"><i class="bi bi-envelope-check"></i> Confirmation Mail</a>
-    <a href="#offerLetterMail"><i class="bi bi-envelope-paper"></i> Offer Letter Mail</a>
-    <a href="#completionMail"><i class="bi bi-envelope-heart"></i> Certificate Mail</a>
-    <!-- <a href="#"><i class="bi bi-chat-left-text"></i> Circulate Notice</a> -->
+     <a href="#createAmbassador"><i class="bi bi-person-plus"></i> Create Ambassador</a>
+    <!-- <a href="#confirmationMail"><i class="bi bi-envelope-check"></i> Confirmation Mail</a> -->
+    <!-- <a href="#offerLetterMail"><i class="bi bi-envelope-paper"></i> Offer Letter Mail</a> -->
+    <!-- <a href="#completionMail"><i class="bi bi-envelope-heart"></i> Certificate Mail</a> -->
+    <a href="#meetingsSection"><i class="bi bi-camera-video-fill"></i> Schedule Meeting</a>
     <a href="#dashboard" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right"></i> Logout</a>
   </div>
 
@@ -103,7 +108,7 @@
         <div class="d-flex align-items-center mb-3">
           <img src="<%= superAdmin.img_url %>" 
                alt="Super Admin Image" 
-               class="rounded-circle me-3 profile-img">
+               class="rounded-circle me-3 profile-img" data-bs-toggle="modal" data-bs-target="#updateProfileModal" style="cursor: pointer;">
           <div>
             <h4 class="mb-2"><%= superAdmin.name %></h4>
             <span class="badge bg-success">Chief Exceutive Officer</span>
@@ -173,12 +178,11 @@
 
 
 
-      </section>
 <!-- Create Admin -->
 <section id="createAdmin" style="display:none;">
   <div class="card p-4 shadow-sm mb-4" style="border-color: #ff6600 !important;">
     <h4 class="text-center mb-4">Create Employee / Admin</h4>
-    <form action="/create-admin" method="POST" class="row g-3 needs-validation" novalidate>
+    <form action="/create-admin" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
       
       <!-- Row 1 -->
       <div class="col-md-6">
@@ -217,7 +221,7 @@
         <input type="text" name="designation" class="form-control" placeholder="Designation" required>
       </div>
       <div class="col-md-6">
-        <input type="text" name="img_url" class="form-control" placeholder="Image URL" required>
+       <input type="file" name="image" id="img" class="form-control" accept="image/*">
       </div>
 
       <!-- Button Centered -->
@@ -229,6 +233,321 @@
   </div>
 </section>
 
+<!-- Create Ambassador -->
+<section id="createAmbassador" style="display:none;">
+  <div class="card p-4 shadow-sm mb-4" style="border-color: #ff6600 !important;">
+    <h4 class="text-center mb-4">Create Ambassador</h4>
+    <form action="/create-ambassador" method="POST" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
+
+      <!-- Row 1 -->
+      <div class="col-md-6">
+        <input type="text" name="ambassador_id" class="form-control" placeholder="Ambassador ID" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="col-md-6">
+        <input type="email" name="email" class="form-control" placeholder="Email" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="password" class="form-control" placeholder="Password" required>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="col-md-6">
+        <input type="text" name="phone" class="form-control" placeholder="Phone" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="college" class="form-control" placeholder="College" required>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="col-md-6">
+        <input type="text" name="university" class="form-control" placeholder="University" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="designation" class="form-control" placeholder="Designation" required>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="col-md-6">
+         <input type="file" name="image" class="form-control" accept="image/*">
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="address[street]" class="form-control" placeholder="Street" required>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="col-md-6">
+        <input type="text" name="address[city]" class="form-control" placeholder="City" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="address[state]" class="form-control" placeholder="State" required>
+      </div>
+
+      <!-- Row 7 -->
+      <div class="col-md-6">
+        <input type="text" name="address[country]" class="form-control" placeholder="Country" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="address[pincode]" class="form-control" placeholder="Pincode" required>
+      </div>
+
+      <!-- Row 8 -->
+      <div class="col-md-6">
+        <select name="gender" class="form-select" required>
+          <option value="" disabled selected>Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <input type="url" name="linkedin_profile_url" class="form-control" placeholder="LinkedIn URL" required>
+      </div>
+
+      <!-- Row 9: Social Profiles -->
+      <div class="col-md-6">
+        <input type="url" name="insta_profile_url" class="form-control" placeholder="Instagram URL" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" name="referralId" class="form-control" placeholder="Reffral ID" required>
+      </div> <!-- Empty div to keep layout -->
+
+      <!-- Row 10: Submit Button (centered) -->
+      <div class="col-12 text-center mt-3">
+        <button class="btn btn-primary px-5">Create Ambassador</button>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+<!-- View Ambassador -->
+<section id="viewAmbassador" style="display:none;">
+  <h4 class="section-title mb-3">List of Ambassadors</h4>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <% ambassadors.forEach(ambassador => { %>
+      <div class="col">
+        <div class="card shadow-sm p-3 h-100 profile-card" style="border-radius: 20px;">
+
+          <!-- Top: Profile Image + Name + Badge -->
+          <div class="d-flex align-items-center mb-3">
+            <img src="<%= ambassador.img_url %>" 
+                 alt="<%= ambassador.name %>" 
+                 class="rounded-circle me-3 profile-img"
+                 style="width:80px; height:80px; object-fit:cover;">
+            <div>
+              <h4 class="mb-1"><%= ambassador.name %></h4>
+              <span class="badge bg-info"><%= ambassador.badge %></span>
+            </div>
+          </div>
+
+          <!-- Info List -->
+          <dl class="row mb-3 small">
+            <dt class="col-5 text-muted">Ambassador ID</dt>
+            <dd class="col-7 text-end fw-bold mb-2"><%= ambassador.ambassador_id %></dd>
+
+            <dt class="col-5 text-muted">Referral ID</dt>
+            <dd class="col-7 text-end fw-bold mb-2"><%= ambassador.referralId %></dd>
+
+            <dt class="col-5 text-muted">Email</dt>
+            <dd class="col-7 text-end fw-bold mb-2 text-truncate" title="<%= ambassador.email %>">
+              <%= ambassador.email %>
+            </dd>
+
+            <dt class="col-5 text-muted">Phone</dt>
+            <dd class="col-7 text-end fw-bold mb-2"><%= ambassador.phone %></dd>
+
+            <dt class="col-5 text-muted">Designation</dt>
+            <dd class="col-7 text-end fw-bold mb-2"><%= ambassador.designation %></dd>
+
+            <dt class="col-5 text-muted">College</dt>
+            <dd class="col-7 text-end fw-bold mb-2 text-truncate" title="<%= ambassador.college %>">
+              <%= ambassador.college %>
+            </dd>
+
+            <dt class="col-5 text-muted">University</dt>
+            <dd class="col-7 text-end fw-bold mb-2 text-truncate" title="<%= ambassador.university %>">
+              <%= ambassador.university %>
+            </dd>
+
+            <dt class="col-5 text-muted">Interns Referred</dt>
+            <dd class="col-7 text-end fw-bold mb-2"><%= ambassador.internCount %></dd>
+
+            <dt class="col-5 text-muted">Joined</dt>
+            <dd class="col-7 text-end fw-bold mb-0">
+              <%= new Date(ambassador.joining_date)
+                    .toLocaleDateString("en-GB", { day:"2-digit", month:"2-digit", year:"2-digit" })
+                    .replace(/\//g, "-") %>
+            </dd>
+          </dl>
+
+          <!-- Buttons -->
+          <div class="d-flex justify-content-center gap-2 mt-auto flex-wrap">
+            <a href="/superAdmin/ambassador/<%= ambassador._id %>" 
+               class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm" target="_blank">View</a>
+            <button class="btn btn-outline-secondary btn-sm px-3 rounded-pill" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#updateAmbassadorModal<%= ambassador._id %>">Update</button>
+            <button class="btn btn-outline-danger btn-sm px-3 rounded-pill shadow-sm" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deleteAmbassadorModal<%= ambassador._id %>">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Update Ambassador Modal -->
+      <div class="modal fade mt-0" id="updateAmbassadorModal<%= ambassador._id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update <%= ambassador.name %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/update-ambassador/<%= ambassador._id %>" method="POST" class="needs-validation" novalidate>
+        <div class="modal-body">
+          <div class="row g-3">
+
+            <!-- Row 1 -->
+            <div class="col-md-6">
+              <label class="form-label">Name <span class="text-danger">*</span></label>
+              <input type="text" name="name" class="form-control" value="<%= ambassador.name %>" placeholder="Full Name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" name="email" class="form-control" value="<%= ambassador.email %>" placeholder="Email Address" required>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="col-md-6">
+              <label class="form-label">Password</label>
+              <input type="text" name="password" class="form-control" placeholder="Enter new password (leave blank if unchanged)">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Ambassador ID <span class="text-danger">*</span></label>
+              <input type="text" name="ambassador_id" class="form-control" value="<%= ambassador.ambassador_id %>" placeholder="Unique ID" required>
+            </div> 
+
+            <!-- Row 3 -->
+            <div class="col-md-6">
+              <label class="form-label">Designation</label>
+              <input type="text" name="designation" class="form-control" value="<%= ambassador.designation %>" placeholder="Designation">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone <span class="text-danger">*</span></label>
+              <input type="text" name="phone" class="form-control" value="<%= ambassador.phone %>" placeholder="Phone Number" required>
+            </div>
+            <!-- Row 4 -->
+            <div class="col-md-6">
+              <label class="form-label">Reffral Code</label>
+              <input type="text" name="reffralID" class="form-control" value="<%= ambassador.referralId %>" readonly>
+            </div>
+
+            
+            <div class="col-md-6">
+  <label class="form-label">Mail Sent</label>
+  <select name="mail_sent" class="form-select">
+    <option value="">Select Mail Type</option>
+     <option value="reset">Reset</option>
+    <option value="bronze">Bronze</option>
+    <option value="silver">Silver</option>
+    <option value="gold">Gold</option>
+  </select>
+</div>
+
+            <!-- Row 5 -->
+            <div class="col-md-6">
+              <label class="form-label">Offer Letter Link</label>
+              <input type="text" name="offer_letter_link" class="form-control" value="<%= ambassador.offer_letter_link %>" >
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Certificate Link</label>
+              <input type="text" name="certificate_link" class="form-control" value="<%= ambassador.certificate_link %>" >
+            </div>
+
+            <!-- Row 6 -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">Gender</label>
+              <select name="gender" class="form-select">
+                <option value="Male" <%= ambassador.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                <option value="Female" <%= ambassador.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                <option value="Other" <%= ambassador.gender === 'Other' ? 'selected' : '' %>>Other</option>
+              </select>
+            </div> -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">LinkedIn URL</label>
+              <input type="url" name="linkedin_profile_url" class="form-control" value="<%= ambassador.linkedin_profile_url %>" placeholder="LinkedIn Profile URL">
+            </div> -->
+
+            <!-- Row 7 -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">Instagram URL</label>
+              <input type="url" name="insta_profile_url" class="form-control" value="<%= ambassador.insta_profile_url %>" placeholder="Instagram Profile URL">
+            </div> -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">Street</label>
+              <input type="text" name="address[street]" class="form-control" value="<%= ambassador.address.street %>" placeholder="Street Address">
+            </div> -->
+
+            <!-- Row 8 -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">City</label>
+              <input type="text" name="address[city]" class="form-control" value="<%= ambassador.address.city %>" placeholder="City">
+            </div> -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">State</label>
+              <input type="text" name="address[state]" class="form-control" value="<%= ambassador.address.state %>" placeholder="State">
+            </div> -->
+
+            <!-- Row 9 -->
+            <!-- <div class="col-md-6">
+              <label class="form-label">Country</label>
+              <input type="text" name="address[country]" class="form-control" value="<%= ambassador.address.country %>" placeholder="Country">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Pincode</label>
+              <input type="text" name="address[pincode]" class="form-control" value="<%= ambassador.address.pincode %>" placeholder="Pincode">
+            </div> -->
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Delete Ambassador Modal -->
+      <div class="modal fade" id="deleteAmbassadorModal<%= ambassador._id %>" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete <%= ambassador.name %>?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">Are you sure you want to delete this ambassador?</div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <form action="/delete-ambassador/<%= ambassador._id %>" method="POST">
+                <button class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% }) %>
+  </div>
+</section>
 
       <!-- View Admins -->
      <section id="viewAdmin" style="display:none;">
@@ -299,7 +618,7 @@
               <h5 class="modal-title">Update <%= admin.name %></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="/update-user/<%= admin._id %>" method="POST">
+            <form action="/update-user/<%= admin._id %>" method="POST" enctype="multipart/form-data" >
               <div class="modal-body">
                 <label class="form-label">Name</label>
                 <input type="text" name="name" class="form-control mb-2" value="<%= admin.name %>" required>
@@ -316,7 +635,7 @@
                 <label class="form-label">Designation</label>
                 <input type="text" name="designation" class="form-control mb-2" value="<%= admin.designation %>" required>
                 <label class="form-label">Profile Image URL</label>
-                <input type="text" name="img_url" class="form-control mb-2" value="<%= admin.img_url %>" required>
+                <input type="file" name="img_url" class="form-control mb-2" value="<%= admin.img_url %>" required>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -430,6 +749,240 @@
     </div>
   </div>
 </section>
+
+<!-- ================= MEETING  ================= -->
+<section id="meetingsSection" class="container my-4">
+
+  <!-- Allot Meeting Form -->
+  <div class="card mb-5 rounded-3  bg-white shadow-sm" style="border: 1px solid #ff6600 !important;">
+    <div class="card-body p-4">
+      <h4 class="text-center mb-4 fw-bold text-dark">Allot Meeting to Interns</h4>
+      <form action="/allot-meetings" method="POST" class="row g-3 needs-validation" novalidate>
+
+        <!-- Domain -->
+        <div class="col-12 col-md-4">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-layers-fill"></i></span>
+            <select name="domain" class="form-select border-start-0" required>
+              <option value="" disabled selected>Select Domain</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Graphics Designing">Graphics Designing</option>
+              <option value="Data Analytics">Data Analytics</option>
+              <option value="DSA">DSA</option>
+              <option value="Java Programming">Java Programming</option>
+              <option value="Python Programming">Python Programming</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Week -->
+        <div class="col-12 col-md-2">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar-week-fill"></i></span>
+            <select name="week" class="form-select border-start-0" required>
+              <option value="" disabled selected>Week</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="6">6</option>
+              <option value="8">8</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Batch -->
+        <div class="col-12 col-md-2">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-people-fill"></i></span>
+            <select name="batch_no" class="form-select border-start-0" required>
+              <option value="" disabled selected>Select Batch</option>
+              <% batches.forEach(batch => { %>
+                <option value="<%= batch %>">Batch <%= batch %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="col-12 col-md-4">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-card-text"></i></span>
+            <input type="text" name="title" class="form-control border-start-0" placeholder="Meeting Title" required>
+          </div>
+        </div>
+
+        <!-- Link -->
+        <div class="col-12 col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-link-45deg"></i></span>
+            <input type="url" name="link" class="form-control border-start-0" placeholder="Meeting Link" required>
+          </div>
+        </div>
+
+        <!-- Scheduled Time -->
+        <div class="col-12 col-md-6">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-clock-fill"></i></span>
+            <input type="text" id="meeting_datetime" name="scheduledTime" class="form-control border-start-0" placeholder="Select date & time" required>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="col-12 text-center mt-3">
+          <button class="btn btn-primary btn-lg px-5 shadow-sm rounded-pill" 
+            style="transition: 0.3s;" 
+            onmouseover="this.style.backgroundColor='#0056b3'" 
+            onmouseout="this.style.backgroundColor='#0d6efd'">
+            Allot Meeting
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Batch Filter -->
+<div class="mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
+  <label for="batchFilter" class="fw-bold mb-1 mb-md-0">Filter by Batch:</label>
+  <select id="Meeting_batchFilter" class="form-select w-auto">
+    <option value="all" selected>All Batches</option>
+    <% batches.slice().sort((a, b) => a - b).forEach(batch => { %>
+      <option value="<%= batch %>">Batch <%= batch %></option>
+    <% }) %>
+  </select>
+</div>
+
+
+  <!-- Meetings Table -->
+  <div class="table-responsive shadow-sm " style="max-height: 500px; overflow-y: auto;">
+    <table class="table table-striped table-bordered align-middle text-center mb-0" style="min-width: 700px;">
+      <thead class="table-light" style="position: sticky; top: 0; z-index: 2;">
+        <tr>
+          <th>Title</th>
+          <th>Domain</th>
+          <th>Week</th>
+          <th>Scheduled Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="meetingsTableBody">
+        <% meetings.forEach(meeting => { %>
+        <tr data-batch="<%= meeting.batch_no %>">
+          <td class="text-truncate" style="max-width: 150px;"><%= meeting.title %></td>
+          <td><%= meeting.domain %></td>
+          <td><%= meeting.week %></td>
+          <td><%= new Date(meeting.scheduledTime).toLocaleString() %></td>
+          <td>
+            <span class="badge <%= meeting.status === 'upcoming' ? 'bg-success' : (meeting.status==='completed' ? 'bg-secondary' : 'bg-danger') %>">
+              <%= meeting.status.charAt(0).toUpperCase() + meeting.status.slice(1) %>
+            </span>
+          </td>
+          <td class="d-flex justify-content-evenly flex-wrap gap-1">
+            <button class="btn btn-outline-success btn-sm px-3 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#updateMeetingModal<%= meeting._id %>">Update</button>
+            <button class="btn btn-outline-danger btn-sm px-3 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteMeetingModal<%= meeting._id %>">Delete</button>
+          </td>
+        </tr>
+
+        <!-- Update Meeting Modal -->
+        <div class="modal fade mt-0" id="updateMeetingModal<%= meeting._id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update <%= meeting.title %></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <form action="/update-meeting/<%= meeting._id %>" method="POST">
+                <div class="modal-body">
+                  <input type="hidden" name="domain" value="<%= meeting.domain %>">
+                  <label class="form-label">Batch No.</label>
+                  <select name="batch_no" class="form-select" required>
+                    <% batches.forEach(batch => { %>
+                      <option value="<%= batch %>" <%= batch == meeting.batch_no ? "selected" : "" %>>Batch <%= batch %></option>
+                    <% }) %>
+                  </select>
+
+                  <label class="form-label mt-2">Title</label>
+                  <input type="text" name="title" class="form-control mb-2" value="<%= meeting.title %>" required>
+
+                  <label class="form-label">Link</label>
+                  <input type="url" name="link" class="form-control mb-2" value="<%= meeting.link %>" required>
+
+                  <label class="form-label">Week</label>
+                  <select name="week" class="form-select mb-2" required>
+                    <option value="1" <%= meeting.week==1 ? "selected" : "" %>>1</option>
+                    <option value="2" <%= meeting.week==2 ? "selected" : "" %>>2</option>
+                    <option value="3" <%= meeting.week==3 ? "selected" : "" %>>3</option>
+                    <option value="4" <%= meeting.week==4 ? "selected" : "" %>>4</option>
+                    <option value="6" <%= meeting.week==6 ? "selected" : "" %>>6</option>
+                    <option value="8" <%= meeting.week==8 ? "selected" : "" %>>8</option>
+                  </select>
+
+                  <label class="form-label">Scheduled Time</label>
+                  <input type="text" id="meeting_datetime" name="scheduledTime" class="form-control mb-2" placeholder="Select date & time" value="<%= meeting.scheduledTime.toISOString().slice(0,16) %>" required>
+
+                  <label class="form-label">Status</label>
+                  <select name="status" class="form-select mb-2" required>
+                    <option value="upcoming" <%= meeting.status === "upcoming" ? "selected" : "" %>>Upcoming</option>
+                    <option value="completed" <%= meeting.status === "completed" ? "selected" : "" %>>Completed</option>
+                    <option value="cancelled" <%= meeting.status === "cancelled" ? "selected" : "" %>>Cancelled</option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Meeting Modal -->
+        <div class="modal fade" id="deleteMeetingModal<%= meeting._id %>" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete <%= meeting.title %>?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this meeting for all interns in <%= meeting.domain %> - Batch <%= meeting.batch_no %>?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="/delete-meeting/<%= meeting._id %>" method="POST">
+                  <input type="hidden" name="domain" value="<%= meeting.domain %>">
+                  <input type="hidden" name="batch_no" value="<%= meeting.batch_no %>">
+                  <button class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- ================= CONFIRMATION MAIL ================= -->
 <section id="confirmationMail" style="display:none; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #ff6600 !important;">
@@ -682,8 +1235,71 @@
   </div>
 </div>
 
+<!-- First Login Password Reset -->
+
+  <% if (showPasswordPopup) { %>
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg" style="background-color: #1e1e1e; border: 1px solid #ff6600;">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="passwordModalLabel">Change Your Password</h5>
+      </div>
+      <div class="modal-body">
+        <form action="/intern/change-password" method="POST" id="passwordForm" novalidate>
+          <div class="mb-3">
+            <label class="form-label text-white">New Password</label>
+            <input type="password" name="newPassword" class="form-control" placeholder="Enter new Password" minlength="6">
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-white">Confirm Password</label>
+            <input type="password" name="confirmPassword" class="form-control"placeholder="Confirm Password" required minlength="6">
+          </div>
+          <button type="submit" class="btn w-100 text-white" style="background-color: #ff6600; font-weight: 500;">Update Password</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const passwordModalEl = document.getElementById('passwordModal');
+  const passwordModal = new bootstrap.Modal(passwordModalEl, {
+    backdrop: 'static',
+    keyboard: false
+  });
+  passwordModal.show();
+
+</script>
+<% } %>
 
 
+<!-- Profile Picture Change Modal -->
+  <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: #1e1e1e ;border: 1px solid #ff6600;">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="updateProfileLabel">Update Profile Picture</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <!-- Image Preview -->
+        <div class="mb-3">
+          <img id="previewImage" src="<%= superAdmin.img_url %>" 
+               style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;" 
+               alt="Preview">
+        </div>
+
+        <!-- Upload Form -->
+        <form action="/update-image" method="POST" enctype="multipart/form-data" id="updateImageForm">
+          <input type="file" name="image" id="imageInput" class="form-control mb-3" accept="image/*" required>
+          <button type="submit" class="btn  w-100 text-white" style="background-color: #ff6600;">Update Picture</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

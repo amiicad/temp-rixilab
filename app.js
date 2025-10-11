@@ -1,24 +1,6 @@
 const express = require("express");
 const axios = require('axios');
-const url = "https://rixilab.tech";
 
-const interval = 60000;
-
-function reloadWebsite() {
-  axios
-    .get(url)
-    .then((response) => {
-      // console.log("website reloded");
-    })
-    .catch((error) => {
-      console.error(`Error : ${error.message}`);
-    });
-}
-
-setInterval(reloadWebsite,interval);
-
-
-setInterval(reloadWebsite, interval);
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
@@ -28,6 +10,9 @@ require('dotenv').config();
 const flash = require('connect-flash');
 require("./db"); // Mongoose connection
 const User = require("./models/User");
+
+const cloudinary = require("cloudinary").v2;
+
 
 const app = express();
 app.use(express.static("public"));
@@ -45,7 +30,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge: 10 * 60 * 1000 // 10 minutes in milliseconds
+    maxAge: 80 * 60 * 1000 // 80 minutes in milliseconds
   }
 }));
 app.use(flash());
@@ -57,6 +42,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 // Role-based middleware
 const authRole = require('./middleware/authRole');
@@ -174,8 +165,26 @@ app.use('/superAdmin', noticeRoute);
 const deleteNoticeRoute = require('./routes/deleteNoticeRoute');
 app.use('/superAdmin', deleteNoticeRoute);
 
+// Ambassador Routes 
 
+const ambassadorRoute = require('./routes/ambassadorRoute');
+app.get('/ambassador',ambassadorRoute);
+// Create Ambassador
+const createAmbassdorRoute = require('./routes/createAmbassedorRoute');
+app.post('/create-ambassador', createAmbassdorRoute);
 
+// Update Ambassador
+
+const updateAmbassadorRoute = require('./routes/updateAmbassadorRoute');
+app.post('/update-ambassador/:id',updateAmbassadorRoute);
+
+// Delete Ambassador 
+const deleteAmbassadorRoute = require('./routes/deleteAmbassadorRoute');
+app.post('/delete-ambassador/:id',deleteAmbassadorRoute);
+
+// View Ambassador
+const viewAmbassadorRoute = require('./routes/viewAmbassadorRoute');
+app.get('/superAdmin/ambassador/:ambassadorId',viewAmbassadorRoute);
 // --- Intern Routes ---
 
 const internRouter = require('./routes/internRoute');
@@ -184,5 +193,35 @@ app.get('/intern', internRouter);
 const viewAdminRouter = require('./routes/viewAdminRoute');
 app.get('/superAdmin/admin/:adminId', viewAdminRouter);
 
+// Meeting
+
+const meetings = require('./routes/allotMeetingsRoute');
+app.post('/allot-meetings',meetings);
+app.post('/update-meeting/:meetingId',meetings);
+app.post('/delete-meeting/:meetingId',meetings);
+
+// Attendence
+
+const updateAttendence = require('./routes/updateAttendanceRoute');
+app.post('/meetings/update-attendance',updateAttendence)
+
+//Password Change
+const updatePasswordRoute = require('./routes/changePasswordRoute');
+app.post('/intern/change-password',updatePasswordRoute);
+app.post('/ambassador/change-password',updatePasswordRoute);
+
+// Update Image Route
+const updateImageRoute = require('./routes/updateImageRoute');
+app.post('/update-image',updateImageRoute);
+app.post('/ambassador/update-image',updateImageRoute);
+
+const forgotPasswordRouter = require('./routes/forgotPassword');
+app.use('/', forgotPasswordRouter);
+
+const quizRoutes = require("./routes/quizRoute");
+app.use("/quiz", quizRoutes);
+
+const startQuizRoutes = require("./routes/startQuizRoute");
+app.use("/intern", startQuizRoutes);
 
 app.listen(3000, () => console.log("Server running at http://localhost:3000"));
