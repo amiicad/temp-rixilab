@@ -39,23 +39,23 @@ router.post("/ambassador/change-password",async (req, res) => {
     res.redirect("/logout");
 
   } catch (err) {
-    console.error("Error changing password:", err);
+    // console.error("Error changing password:", err);
     req.flash("error", "Server error while changing password.");
     res.redirect("/ambassador");
   }
 });
 router.post("/intern/change-password", authRole(['admin','intern','superAdmin']), async (req, res) => {
   try {
-    console.log("🔹 Intern password change route hit");
+    // console.log("🔹 Intern password change route hit");
     console.log("Session user:", req.session.user);
 
     const { newPassword, confirmPassword } = req.body;
 
     const intern = await User.findById(req.session.user);
-    console.log("🔹 Intern found:", intern ? intern.email : "No intern found");
+    // console.log("🔹 Intern found:", intern ? intern.email : "No intern found");
 
     if (!intern) {
-      console.log("❌ Intern not found");
+      // console.log("❌ Intern not found");
       req.flash("error", "Intern not found");
       return res.redirect("/login");
     }
@@ -66,38 +66,38 @@ router.post("/intern/change-password", authRole(['admin','intern','superAdmin'])
     else if (intern.role === "superAdmin") redirectUrl = "/superAdmin";
 
     if (!newPassword || !confirmPassword) {
-      console.log("❌ Missing password fields");
+      // console.log("❌ Missing password fields");
       req.flash("error", "Please fill in all fields.");
      return res.redirect(redirectUrl);
     }
 
     if (newPassword !== confirmPassword) {
-      console.log("❌ Passwords do not match");
+      // console.log("❌ Passwords do not match");
       req.flash("error", "Passwords do not match.");
       return res.redirect(redirectUrl);
     }
 
     if (newPassword.length < 6) {
-      console.log("❌ Password too short");
+      // console.log("❌ Password too short");
       req.flash("error", "Password must be at least 6 characters.");
      return res.redirect(redirectUrl);
     }
 
     console.log("🔸 Hashing new password...");
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    console.log("🔸 Hash complete:", hashedPassword);
+    // console.log("🔸 Hash complete:", hashedPassword);
 
     intern.password = hashedPassword;
     intern.isFirstLogin = false;
 
-    console.log("🔸 Saving intern...");
+    // console.log("🔸 Saving intern...");
     req.flash("success", "Password changed");
     await intern.save();
    
 
     res.redirect("/logout");
   } catch (err) {
-    console.error("❌ Error changing intern password:", err);
+    // console.error("❌ Error changing intern password:", err);
     req.flash("error", "Server error while changing password.");
     res.redirect("/intern");
   }
