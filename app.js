@@ -1,5 +1,22 @@
 const express = require("express");
 const axios = require('axios');
+const url = "https://rixilab.tech";
+
+const interval = 60000;
+
+function reloadWebsite() {
+  axios
+    .get(url)
+    .then((response) => {
+      // console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(`Error : ${error.message}`);
+    });
+}
+
+setInterval(reloadWebsite,interval);
+
 
 const session = require("express-session");
 const bodyParser = require("body-parser");
