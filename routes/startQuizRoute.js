@@ -121,7 +121,7 @@ router.post("/quiz/:quizId/submit", async (req, res) => {
 
     const totalQuestions = quiz.questions.length;
     const percentage = ((score / totalQuestions) * 100).toFixed(2);
-    if (percentage >= 70) {
+    if (percentage >= 60) {
       intern.isPassed = true;
     }
 
