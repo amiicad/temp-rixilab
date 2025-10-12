@@ -33,7 +33,7 @@ const cloudinary = require("cloudinary").v2;
 
 const app = express();
 app.use(express.static("public"));
-
+app.use(express.json({ limit: '15mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -232,13 +232,20 @@ const updateImageRoute = require('./routes/updateImageRoute');
 app.post('/update-image',updateImageRoute);
 app.post('/ambassador/update-image',updateImageRoute);
 
+// forgott password
 const forgotPasswordRouter = require('./routes/forgotPassword');
 app.use('/', forgotPasswordRouter);
 
+// Assign and create Quiz
 const quizRoutes = require("./routes/quizRoute");
 app.use("/quiz", quizRoutes);
 
+// Get and Submit Quiz
 const startQuizRoutes = require("./routes/startQuizRoute");
 app.use("/intern", startQuizRoutes);
+
+// Screenshot of the Intern
+const uploadScreenshotRoute = require("./routes/uploadScreenshotRoute");
+app.use("/", uploadScreenshotRoute);
 
 app.listen(3000, () => console.log("Server running at http://localhost:3000"));
