@@ -41,6 +41,8 @@ const userSchema = new mongoose.Schema({
   offer_letter_sent: { type: Boolean, default: false },
   quiz_score: { type: Number, default: 0 },
   isPassed: { type: Boolean, default: false },
+  screenshot_img : { type: String , default: "" },
+  screenshot_public_id: { type: String },
   notice: [
   {
     title: { type: String },
