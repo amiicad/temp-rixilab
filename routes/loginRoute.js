@@ -3,9 +3,10 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const Ambassador = require("../models/Ambassador");
+const loginLimiter = require("../middleware/rateLimiter")
 
 // 🔑 Login Route (for all roles)
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimiter,async (req, res) => {
   try {
     const { email, password } = req.body;
 

@@ -643,7 +643,15 @@
                    <% if (intern.quiz_score > 0) { %>
                     <span class="text-success"> <b>Quiz score: </b><%= intern.quiz_score %>&nbsp;&nbsp;</span>
                      <% } %>
-                    <b>Email:</b> <%= intern.email %>&nbsp;&nbsp;
+                      <% if (intern.quiz_score > 1) { %>
+                       <% if (intern.isPassed) { %>
+                         <span class="badge bg-success ms-2">Pass</span>
+                       <% } else { %>
+                         <span class="badge bg-danger ms-2">Fail</span>
+                       <% } %>
+                       &nbsp;
+                     <% } %>
+                    <b>Duration:</b> <%= intern.duration %> Weeks&nbsp;
                     <b>Intern ID:</b>
                     <span class="intern-id d-none"><%= intern.intern_id %></span>
                     <%= intern.intern_id %>
@@ -1217,7 +1225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- Screenshot Modal -->
 <div class="modal fade" id="viewScreenshotModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="background-color: #1e1e1e; border: 1px solid #ff6600">
+    <div class="modal-content" style=" border: 1px solid #ff6600">
       <div class="modal-header">
         <h5 class="modal-title text-white">Intern Screenshot</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
