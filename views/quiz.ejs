@@ -675,6 +675,30 @@ document.addEventListener('fullscreenchange', () => {
 
   </script>
 
+   <script>
+  function isMobileDevice() {
+    if (/Mobi|Android|iPhone|iPad|Tablet/i.test(navigator.userAgent)) {
+      return true;
+    }
+
+    if (navigator.userAgentData && navigator.userAgentData.mobile) {
+      return true;
+    }
+
+    if (screen.width < 1024 || window.innerWidth < 1024) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (isMobileDevice()) {
+    window.location.href = "/mobile-blocked";
+  }
+
+</script>
+
+
 </body>
 </html>
   

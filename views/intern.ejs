@@ -659,6 +659,7 @@
                     <a
                       href="/intern/quiz/<%= q.quiz._id %>"
                       class="btn btn-outline-success rounded-3 px-3"
+                      id="startQuizBtn"
                     >
                       Start Quiz
                     </a>
@@ -974,5 +975,14 @@
     <script src="/js/main.js"></script>
     <script type="module" src="/js/login.js"></script>
     <script src="/js/intern.js"></script>
+   <script>
+     window.addEventListener("resize", function () {
+      if (window.innerWidth < 1024) {
+        document.querySelector('startQuizBtn').addEventListener("click",()=>{
+        window.location.href = "/mobile-blocked";
+        })
+      }
+  });
+  </script>
   </body>
 </html>

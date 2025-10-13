@@ -35,6 +35,7 @@
     <a href="#dashboard"><i class="bi bi-person-lines-fill"></i> Dashboard</a>
     <a href="#viewAdmin"><i class="bi bi-person-workspace"></i> View Admins</a>
     <a href="#viewInterns"><i class="bi bi-people"></i> View Interns</a>
+    <a href="#completedInterns"><i class="bi bi-person-check"></i> Certified Interns</a>
     <a href="#viewAmbassador"><i class="bi bi-person-circle"></i> View Ambassador</a>
     <a href="#createAdmin"><i class="bi bi-person-plus"></i> Create Admin</a>
      <a href="#createAmbassador"><i class="bi bi-person-plus"></i> Create Ambassador</a>
@@ -703,7 +704,7 @@
               <th>Email</th>
               <th>Domain</th>
               <th>Intern ID</th>
-              <th>Batch No</th>
+              <th>Batch</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -1062,9 +1063,138 @@
   </form>
 </section>
 
+<!-- Certified Interns Section -->
+<section id="completedInterns" style="display:none;">
+  <div class="container px-0">
+    <div class="card shadow-sm border rounded p-3" style="border: 1px solid #ff6600 !important;">
 
+      <!-- Section Header -->
+      <h4 class="text-center mb-3">Certified Interns</h4>
 
-<!-- Row selection styles -->
+      <!-- Filters Row -->
+      <div class="row mb-3 g-2 justify-content-center flex-grow-1">
+        <div class="col-md-2">
+          <select id="batchFilterCompleted" class="form-select" onchange="applyCompletedFilters()">
+            <option value="all" selected>All Batches</option>
+            <% batches.forEach(batch => { %>
+              <option value="<%= batch %>">Batch <%= batch %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select id="domainFilterCompleted" class="form-select" onchange="applyCompletedFilters()">
+            <option value="all" selected>All Domains</option>
+            <% let domains = [...new Set(interns.map(i => i.domain))]; %>
+            <% domains.forEach(domain => { %>
+              <option value="<%= domain %>"><%= domain %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="col-md-2 flex-grow-1">
+          <input type="text" id="completedSearchInput" class="form-control" placeholder="Search by Intern ID" onkeyup="applyCompletedFilters()">
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-secondary w-100" onclick="clearCompletedFilters()">Clear Filters</button>
+        </div>
+      </div>
+
+      <!-- Intern Table -->
+      <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+        <table class="table table-striped table-bordered align-middle text-center mb-0">
+          <thead class="table-light" style="position: sticky; top: 0; z-index: 2; background-color: #fff;">
+            <tr>
+              <th>Name</th>
+              <th>Domain</th>
+              <th>Batch</th>
+              <th>Duration</th>
+              <th>Intern ID</th>
+              <th>Quiz Score</th>
+              <th>Status</th>
+              <th>Screenshot</th>
+            </tr>
+          </thead>
+          <tbody id="completedInternTable">
+            <% interns
+                 .filter(i => i.intern_progress === 100)
+                 .forEach(i => { %>
+              <tr class="completed-intern-row" data-batch="<%= i.batch_no %>" data-domain="<%= i.domain %>">
+                <td><%= i.name %></td>
+                <td><%= i.domain %></td>
+                <td><%= i.batch_no %></td>
+                <td><%= i.duration %> Weeks</td>
+                <td class="intern-id"><%= i.intern_id %></td>
+                <td><%= i.quiz_score %></td>
+                <td>
+                  <% if (i.quizAssignments && i.quizAssignments.some(q => q.attemptCount >= 1)) { %>
+                    <% if (i.isPassed) { %>
+                      <span class="badge bg-success">Pass</span>
+                    <% } else { %>
+                      <span class="badge bg-danger">Fail</span>
+                    <% } %>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (i.screenshot_img) { %>
+                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#screenshotModal<%= i._id %>">
+                      <i class="bi bi-eye"></i> View
+                    </button>
+
+                    <!-- Screenshot Modal -->
+                    <div class="modal fade" id="screenshotModal<%= i._id %>" tabindex="-1" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Screenshot - <%= i.name %></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                          </div>
+                          <div class="modal-body text-center">
+                            <img src="<%= i.screenshot_img %>" alt="Screenshot" class="img-fluid">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+function applyCompletedFilters() {
+  const batch = document.getElementById('batchFilterCompleted').value.toLowerCase();
+  const domain = document.getElementById('domainFilterCompleted').value.toLowerCase();
+  const search = document.getElementById('completedSearchInput').value.toLowerCase();
+
+  document.querySelectorAll('.completed-intern-row').forEach(row => {
+    const rowBatch = row.dataset.batch.toLowerCase();
+    const rowDomain = row.dataset.domain.toLowerCase();
+    const internId = row.querySelector('.intern-id').innerText.toLowerCase();
+
+    const matchBatch = (batch === 'all' || rowBatch === batch);
+    const matchDomain = (domain === 'all' || rowDomain === domain);
+    const matchSearch = (internId.includes(search));
+
+    if(matchBatch && matchDomain && matchSearch) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+function clearCompletedFilters() {
+  document.getElementById('batchFilterCompleted').value = 'all';
+  document.getElementById('domainFilterCompleted').value = 'all';
+  document.getElementById('completedSearchInput').value = '';
+  applyCompletedFilters();
+}
+</script>
 
 <!-- ================= COMPLETION MAIL ================= -->
 <section id="completionMail" style="display:none; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);  border: 1px solid #ff6600 !important;">

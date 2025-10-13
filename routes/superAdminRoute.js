@@ -85,6 +85,14 @@ const meetings = Array.from(meetingsMap.values()).sort(
       }))
     );
 
+   const arr = [0, 1, 2, 3, 4, 6, 8];
+interns.forEach(intern => {
+  const assignedProjects = intern.projectAssigned || [];
+  const acceptedCount = assignedProjects.filter(p => p.status === 'accepted').length;
+  const duration = intern.duration || 1;
+  intern.intern_progress = Math.round((arr[acceptedCount] / duration) * 100);
+});
+
     res.render("superAdmin", {
       interns,
       admins,
@@ -94,7 +102,7 @@ const meetings = Array.from(meetingsMap.values()).sort(
       certifiedInternsCount,
       adminNotices,
       meetings,
-      showPasswordPopup: superAdmin.isFirstLogin
+      showPasswordPopup: superAdmin.isFirstLogin,
     });
   } catch (err) {
     console.error(err);

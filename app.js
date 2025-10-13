@@ -248,4 +248,8 @@ app.use("/intern", startQuizRoutes);
 const uploadScreenshotRoute = require("./routes/uploadScreenshotRoute");
 app.use("/", uploadScreenshotRoute);
 
+// Desktop Mode change prevent route
+const blockedMobileRouter = require('./routes/mobileBlockedRoute');
+app.use('/',blockedMobileRouter);
+
 app.listen(3000, () => console.log("Server running at http://localhost:3000"));
